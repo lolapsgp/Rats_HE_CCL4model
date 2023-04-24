@@ -3,7 +3,7 @@ title: "Dada2_pipeline_CIPF_2018"
 author: "Lola Giner Pérez"
 date: "2023-03-28"
 output: html_document
----hi
+---
 
 ```{r Dada2 installation}
 if (!require("BiocManager", quietly = TRUE))
