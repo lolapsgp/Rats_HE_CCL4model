@@ -84,7 +84,7 @@ rownames(asvmat)<-NULL
 rownames(asvmat) <- paste0("ASV", 1:nrow(asvmat))
 #colnames(asvmat) <- paste0("Sample", 1:ncol(asvmat)) #keep original sample ID
 head(asvmat)
-write.csv(asvmat, "/fast/AG_Forslund/Lola/CIPF_2018/output/Tables/otu_table.csv", row.names = F, col.names = F)
+write.csv(asvmat, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/output/Tables/otu_table.csv", row.names = F, col.names = F)
 
 ##Get count of ASVs detected by sample
 asv.sample<- as.data.frame(asvmat)
@@ -99,7 +99,7 @@ asv.sample<- as.matrix(test)
 colnames(asv.sample)<- "ASVs_dada2"
 rm(test,asv, i)
 #Important not to loose the connection between the seq and the ASVs
-write.csv(asv.names, "/fast/AG_Forslund/Lola/CIPF_2018/output/Tables/asv_table.csv", row.names = F, col.names = F)
+write.csv(asv.names, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/output/Tables/asv_table.csv", row.names = F, col.names = F)
 
 ###Track reads through the pipeline 
 getN <- function(x) sum(getUniques(x))
@@ -122,7 +122,7 @@ taxa.print <- taxa # Removing sequence rownames for display only
 rownames(taxa.print) <- NULL
 head(taxa.print)
 
-write.csv(taxa, "/fast/AG_Forslund/Lola/CIPF_2018/output/Tables/tax_table.csv", row.names = F, col.names = F)
+write.csv(taxa, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/output/Tables/tax_table.csv", row.names = F, col.names = F)
 
 
 library(phyloseq); packageVersion("phyloseq")
