@@ -1,0 +1,17 @@
+---
+title: "2_phyloseq_object"
+output: html_document
+---
+
+```{r phyloseq}
+library(phyloseq); packageVersion("phyloseq")
+library(ggplot2); packageVersion("ggplot2")
+theme_set(theme_bw())
+samples.out <- rownames(seqtab.nochim)
+
+
+ps <- phyloseq(otu_table(asvmat, taxa_are_rows=FALSE), 
+               sample_data(), 
+               tax_table(taxa))
+```
+

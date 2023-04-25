@@ -84,7 +84,7 @@ rownames(asvmat)<-NULL
 rownames(asvmat) <- paste0("ASV", 1:nrow(asvmat))
 #colnames(asvmat) <- paste0("Sample", 1:ncol(asvmat)) #keep original sample ID
 head(asvmat)
-write.csv(asvmat, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/output/Tables/otu_table.csv", row.names = F, col.names = F)
+write.csv(asvmat, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/otu_table.csv", row.names = F, col.names = F)
 
 ##Get count of ASVs detected by sample
 asv.sample<- as.data.frame(asvmat)
@@ -122,7 +122,7 @@ taxa.print <- taxa # Removing sequence rownames for display only
 rownames(taxa.print) <- NULL
 head(taxa.print)
 
-write.csv(taxa, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/output/Tables/tax_table.csv", row.names = F, col.names = F)
+write.csv(taxa, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table_with seq.csv", row.names = F, col.names = F)
 
 
 library(phyloseq); packageVersion("phyloseq")
@@ -131,8 +131,4 @@ theme_set(theme_bw())
 samples.out <- rownames(seqtab.nochim)
 
 
-ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
-               sample_data(), 
-               tax_table(taxa))
-ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
-ps
+```
