@@ -138,7 +138,7 @@ write.csv(taxa_asvs, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4mode
   ##Create a DNAString set from the ASVs
   dna <- DNAStringSet(getSequences(seqtab.nochim))
   names(dna)<- paste0("ASV", 1:length(dna)) ##Give short names to each sequence
- writeXStringSet(dna, "~/CF_project/output/ASV.fasta") ##Export fasta seq
+ writeXStringSet(dna, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/ASV.fasta") ##Export fasta seq
   
   ##Create a Phylogenetic tree
   library(phangorn)

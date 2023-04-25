@@ -6,9 +6,16 @@ output: html_document
 ```{r phyloseq}
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
-theme_set(theme_bw())
-samples.out <- rownames(seqtab.nochim)
 
+asvmat<- read.csv("~/Documents/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/otu_table.csv")
+
+taxamat<- read.csv("~/Documents/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table.csv")
+
+dna<- readDNAStringSet("~/Documents/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/ASV.fasta")
+
+metadata<- read_excel("~/Documents/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/metadata.xlsx")
+
+tree<- readRDS("~/Documents/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/phylo_tree.rds")
 
 ps <- phyloseq(otu_table(asvmat, taxa_are_rows=FALSE), 
                sample_data(), 
