@@ -152,10 +152,12 @@ write.csv(taxa_asvs, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4mode
   fitGTR16S <- update(fit1, k=4, inv=0.2)
   fitGTR16S <- optim.pml(fitGTR16S, model="GTR", optInv=TRUE, optGamma=TRUE,
                          rearrangement = "stochastic", control = pml.control(trace = 0))
-  plot(fitGTR16S, type= "rooted", use.edge.length= FALSE, no.margin= TRUE, show.tip.label= FALSE)
+  plot(fitGTR16S, type= "unrooted", use.edge.length= FALSE, no.margin= TRUE, show.tip.label= FALSE)
   
   tree<- fitGTR16S$tree
 
+saveRDS(fitGTR16S, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/phylo_tree.rds")  
+  
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
 theme_set(theme_bw())
