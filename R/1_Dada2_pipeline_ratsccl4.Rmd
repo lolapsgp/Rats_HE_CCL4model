@@ -122,8 +122,39 @@ taxa.print <- taxa # Removing sequence rownames for display only
 rownames(taxa.print) <- NULL
 head(taxa.print)
 
-write.csv(taxa, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table_with seq.csv", row.names = F, col.names = F)
+write.csv(taxa, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table_with_seq.csv", row.names = F, col.names = F)
 
+
+##Create an Taxa matrix with ASV as rows and taxonomic level as columns
+taxa_asvs <- taxa # Removing sequence rownames for display only
+rownames(taxa_asvs) <- NULL
+rownames(taxa_asvs) <- paste0("ASV", 1:nrow(asv.names))
+head(taxa_asvs)
+write.csv(taxa_asvs, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table.csv", row.names = F, col.names = F)
+
+
+##Transform seqtab.nochim to fasta file 
+  library(DECIPHER); packageVersion("DECIPHER")
+  ##Create a DNAString set from the ASVs
+  dna <- DNAStringSet(getSequences(seqtab.nochim))
+  names(dna)<- paste0("ASV", 1:length(dna)) ##Give short names to each sequence
+ writeXStringSet(dna, "~/CF_project/output/ASV.fasta") ##Export fasta seq
+  
+  ##Create a Phylogenetic tree
+  library(phangorn)
+  Align16S<- AlignSeqs(dna, anchor= NA, verbose= FALSE) ##Alignment
+  
+  phangAlign16S <- phyDat(as(Align16S, "matrix"), type="DNA")
+  dm16S <- dist.ml(phangAlign16S) ## Distance matrix
+  treeNJ16S <- NJ(dm16S) # Note, tip order != sequence order
+  plot(treeNJ16S, type= "unrooted", use.edge.length= FALSE, no.margin= TRUE, show.tip.label= TRUE) ##Neighbor-Joining tree
+  fit1 <- pml(treeNJ16S, data=phangAlign16S)
+  fitGTR16S <- update(fit1, k=4, inv=0.2)
+  fitGTR16S <- optim.pml(fitGTR16S, model="GTR", optInv=TRUE, optGamma=TRUE,
+                         rearrangement = "stochastic", control = pml.control(trace = 0))
+  plot(fitGTR16S, type= "rooted", use.edge.length= FALSE, no.margin= TRUE, show.tip.label= FALSE)
+  
+  tree<- fitGTR16S$tree
 
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
