@@ -41,7 +41,7 @@ ps_2
  # Remove samples with less than MINREADS from phyloseq object
 ps.rarefied.clean <- prune_taxa(taxa_sums(ps.rarefied) > 1, ps.rarefied)
 # merge all taxa that are detected rare
-total_samples <- phyloseq::nsamples(ps.rarefied.clean)
+total_samples2 <- phyloseq::nsamples(ps.rarefied.clean)
 ps.rarefied.clean
 
 ps_2_genus <- tax_glom(ps_2, taxrank = 'Genus', NArm = FALSE)
@@ -60,55 +60,49 @@ dev.off()
 Para guardar los plots en pdf.
 
 ```{r Alpha Diversity}
-
+library(ggsignif)
 #Observed 
-plot_richness(ps_2, x="Group", measures=c("Observed")) +
+plot_richness(ps_2_genus, x="Group", measures=c("Observed")) +
    geom_boxplot() +
    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
       geom_signif(stat="identity",
                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(125, 130, 135), annotation=c("*", "NS", " * ")),
+                               y=c(78, 80, 82), annotation=c("*", " * ", "NS")),
                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 140, tip_length = 0, vjust=0.4)  +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4")), annotations="*",
-               y_position = 145, tip_length = 0, vjust=0.4) 
+               y_position = 84, tip_length = 0, vjust=0.4) 
  
  #Shannon
- plot_richness(ps_2, x="Group", measures=c("Shannon")) +
+ plot_richness(ps_2_genus, x="Group", measures=c("Shannon")) +
    geom_boxplot() +
    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
    geom_signif(stat="identity",
                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(3.25, 3.30, 3.35), annotation=c("  NS  ", "NS", " NS ")),
+                               y=c(3.05, 3.13, 3.21), annotation=c("  NS  ", "NS", " NS ")),
                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation))
  
  
  #Chao1
-plot_richness(ps_2, x="Group", measures=c("Chao1")) +
+plot_richness(ps_2_genus, x="Group", measures=c("Chao1")) +
    geom_boxplot() +
    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
       geom_signif(stat="identity",
                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(135, 142, 149), annotation=c("*", "NS", " * ")),
+                               y=c(78, 80, 82), annotation=c("*", " * ", " NS ")),
                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 155, tip_length = 0, vjust=0.4)  +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4")), annotations="*",
-               y_position = 164, tip_length = 0, vjust=0.4) 
+               y_position = 84, tip_length = 0, vjust=0.4) 
  
  #Fisher
-plot_richness(ps_2, x="Group", measures=c("Fisher")) +
+plot_richness(ps_2_genus, x="Group", measures=c("Fisher")) +
    geom_boxplot() +
    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
       geom_signif(stat="identity",
                 data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(14.5, 14.90, 15.30), annotation=c("*", "NS", " ** ")),
+                               y=c(9.0, 9.20, 9.40), annotation=c("**", " ** ", "NS")),
                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",
-               y_position = 15.70, tip_length = 0, vjust=0.4)  +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4")), annotations="**",
-               y_position = 16.3, tip_length = 0, vjust=0.4) 
+               y_position = 9.60, tip_length = 0, vjust=0.4) 
 ```
 
 ##Test Wilcoxon y Shannon
@@ -120,9 +114,9 @@ hacer através del índice de Shannon.
 
 ```{r Wilcoxon y Shannon}
  ## pairwise test with Wilcoxon rank-sum test, corrected by FDR method.
- rich = estimate_richness(ps_2, measures = c("Observed", "Chao1","Shannon", "Fisher"))
+ rich = estimate_richness(ps_2_genus, measures = c("Observed", "Chao1","Shannon", "Fisher"))
  wilcox.observed <- pairwise.wilcox.test(rich$Observed, 
-                                         sample_data(ps_2)$Group, 
+                                         sample_data(ps_2_genus)$Group, 
                                          p.adjust.method = "BH")
  wilcox.observed
 
@@ -135,7 +129,7 @@ hacer através del índice de Shannon.
  
 #Lo mismo pero usando el índice de Shannon
  wilcox.shannon <- pairwise.wilcox.test(rich$Shannon, 
-                                        sample_data(ps_2)$Group, 
+                                        sample_data(ps_2_genus)$Group, 
                                         p.adjust.method = "BH")
  wilcox.shannon 
  tab.shannon <- wilcox.shannon$p.value %>%
@@ -147,7 +141,7 @@ hacer através del índice de Shannon.
  
  #Lo mismo pero usando el índice Chao1
  wilcox.chao <- pairwise.wilcox.test(rich$Chao1, 
-                                        sample_data(ps_2)$Group, 
+                                        sample_data(ps_2_genus)$Group, 
                                         p.adjust.method = "BH")
  wilcox.chao 
  tab.chao <- wilcox.chao$p.value %>%
@@ -159,7 +153,7 @@ hacer através del índice de Shannon.
  
   #Lo mismo pero usando el índice Fisher
  wilcox.fisher <- pairwise.wilcox.test(rich$Fisher, 
-                                        sample_data(ps_2)$Group, 
+                                        sample_data(ps_2_genus)$Group, 
                                         p.adjust.method = "BH")
  wilcox.fisher 
  tab.fisher <- wilcox.fisher$p.value %>%
@@ -169,4 +163,3 @@ hacer através del índice de Shannon.
    na.omit()
  tab.fisher
 ```
-library(ggsignif)

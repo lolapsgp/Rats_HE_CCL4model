@@ -18,6 +18,8 @@ metadata <- read_excel("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xl
 tree<- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/phylo_tree.rds")
 dna<- readDNAStringSet("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ASV.fasta")
 
+tax_table$Species<- ifelse(is.na(tax_table$Species...7) == TRUE, tax_table$Species...8, ifelse(is.na(tax_table$Species...7) == FALSE, tax_table$Species...7, "NA"))
+tax_table <- subset(tax_table, select = -c(Species...7, Species...8))
 
  OTU = otu_table(otu_ok, taxa_are_rows = TRUE)
  TAX = tax_table(as.matrix(tax_table))
@@ -28,6 +30,8 @@ rownames(SAMPLE) <-metadata$SampleID
 
  ps_1 <- phyloseq(OTU, TAX, SAMPLE, TREE)
  ps_1
+saveRDS(ps_1, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_1.Rds")  
+saveRDS(otu_ok, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/otu_ok.Rds")  
 
 #Rarefaction curve
 S <- specnumber(t(otu_ok)) # observed number of species
