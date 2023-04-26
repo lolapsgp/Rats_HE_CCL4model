@@ -7,23 +7,34 @@ output: html_document
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
 library(readr)
+library(readxl)
 
-tax_table <- read_csv("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/tax_table.csv")
+library(readr)
+tax_table <- read_csv("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/tax_table.csv")
+asvmat <- read_csv("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/otu_table.csv")
+otu_ok <- subset(asvmat, select = -c(CV1_S1, CV16_S2, CR23_S3, CR24_S4, CC34_36_S5, CC37_1_S6, CCR55_S7, CCR56_S8))
 
-asvmat<- read_csv("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/otu_table.csv")
-
-dna<- readDNAStringSet("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ASV.fasta")
-
-metadata <- read_excel("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
-
+metadata <- read_excel("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
 tree<- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/phylo_tree.rds")
+dna<- readDNAStringSet("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ASV.fasta")
 
 
- OTU = otu_table(asvmat, taxa_are_rows = FALSE)
+ OTU = otu_table(otu_ok, taxa_are_rows = TRUE)
  TAX = tax_table(as.matrix(tax_table))
- SAMPLE <- sample_data(metadata)
+ SAMPLE = sample_data(metadata)
+ TREE = read_tree(tree)
+ 
+rownames(SAMPLE) <-metadata$SampleID
 
- ps_1 <- phyloseq(OTU, TAX, SAMPLE)
+ ps_1 <- phyloseq(OTU, TAX, SAMPLE, TREE)
  ps_1
+
+#Rarefaction curve
+S <- specnumber(t(otu_ok)) # observed number of species
+(raremax <- min(rowSums(t(otu_ok))))
+Srare <- rarefy(t(otu_ok), raremax)
+plot(S, Srare, xlab = "Observed No. of Species", ylab = "Rarefied No. of Species")
+abline(0, 1)
+rarecurve(t(otu_ok), step = 20, sample = raremax, col = "black", cex = 0.6)
 ```
 
