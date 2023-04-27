@@ -33,10 +33,11 @@ reads_per_sample_after_raref <- as.matrix(rowSums(t(as.matrix(otu_table(ps.raref
 
 ```{r Clean}
  # Remove samples with less than MINREADS from phyloseq object
-ps_2 <- prune_taxa(taxa_sums(ps_1) > 1, ps_1)
+ps_2 <- prune_taxa(taxa_sums(ps_1) >= 1, ps_1)
 # merge all taxa that are detected rare
 total_samples <- phyloseq::nsamples(ps_2)
 ps_2
+saveRDS(ps_2, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
 
  # Remove samples with less than MINREADS from phyloseq object
 ps.rarefied.clean <- prune_taxa(taxa_sums(ps.rarefied) > 1, ps.rarefied)
@@ -47,6 +48,11 @@ ps.rarefied.clean
 ps_2_genus <- tax_glom(ps_2, taxrank = 'Genus', NArm = FALSE)
 ps_raref_genus <- tax_glom(ps.rarefied.clean, taxrank = 'Genus', NArm = FALSE)
 ```
+
+It is important to not use filtered data because many richness estimates are modeled on singletons and doubletons in the occurrence table. So, you need to leave them in the dataset if you want a meaningful estimate.
+Moreover, we usually not using normalized data because we want to assess the diversity on the raw data and we are not comparing samples to each other but only assessing diversity within each sample.
+
+I have tested with and without rarefaction and filtering the zeros and without and the differences stay consisent.
 
 # AlphaDiversity 
 

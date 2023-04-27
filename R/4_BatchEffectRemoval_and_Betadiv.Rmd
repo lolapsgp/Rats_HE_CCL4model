@@ -1,0 +1,154 @@
+---
+title: "4_BatchEffectRemoval_and_Betadiv"
+output: html_document
+date: "2023-04-27"
+---
+###Only zeros data removal
+```{r Percentage, log and zeros removal}
+#Raw data
+rawDada2_Species <- as.data.frame(otu_table(ps_1))
+rawDada2_Species <- data.frame(rawDada2_Species)
+rawDada2_Species <- rawDada2_Species[,metadata$SampleID]
+
+# Delete rows with all values = 0
+rawDada2_Species <- rawDada2_Species[rowSums(rawDada2_Species) != 0,]
+
+# Add 1 count to avoid log problems
+rawDada2_Species <- rawDada2_Species + 1
+
+# Data in percentage (%)
+total = colSums(rawDada2_Species)
+
+```
+
+###Boxplots
+```{r Boxplots}
+boxplot(rawDada2_Species, las = 2)
+boxplot(log(rawDada2_Species), las = 2)
+``` 
+
+###Low counts: removing zeros
+```{r Zeros}
+# Note: we replaced all zero values by 1 to avoid log errors
+zeros <- t(apply(rawDada2_Species, 1, function(i){
+  do.call(cbind, lapply(unique(metadata$Group), function(x){
+    sum(i[c(metadata$Group == x)] == 1)
+  }))
+}))
+colnames(zeros) = unique(metadata$Group)
+zeros <- data.frame(zeros[rownames(rawDada2_Species),])
+
+bp <- do.call(cbind, lapply(1:10, function(y){
+  logic_z <- data.frame(zeros <= y)
+  logic_z$sum <- rowSums(logic_z)
+  sum(logic_z$sum >= 1)
+}))
+colnames(bp)= 1:10
+
+{my_bar <- barplot(bp, main = "filter in at least 1 group <= number of zeros", 
+        xlab = "Number of zeros", ylab = "number of final Species",
+        ylim = c(0,max(bp)+20))
+text(my_bar, bp+10 , paste("n: ", bp, sep="") ,cex=1) }
+``` 
+
+
+###Filtering: removing zeros
+```{r Filter}
+logic_z <- data.frame(zeros <= 5)
+logic_z$sum <- rowSums(logic_z)
+rawDada2_Species_f = rawDada2_Species[logic_z$sum >= 1,]
+
+# Data in percentage (%)
+total = colSums(rawDada2_Species_f)
+
+
+boxplot(rawDada2_Species_f, las = 2)
+boxplot(log(rawDada2_Species_f+1), las = 2)
+```
+
+###PCAs: before removing batch effect
+```{r before removing batch effect}
+library(mixOmics)
+pca = pca(t(log10(rawDada2_Species_f)), ncomp = 2, center = T, scale = F)
+plotIndiv(pca, group = metadata$Group, legend = T, title = "log10")
+
+plotIndiv(pca, group = metadata$Batch, legend = T, title = "Log10")
+
+plot(pca$loadings$X[,1], pca$loadings$X[,2], xlab = "Comp1", ylab = "Comp2",
+     main = "loading plot")
+```
+
+###Limma package- function: removebatcheffect
+```{r Batch Correction}
+library(limma)
+y <- removeBatchEffect((log10(rawDada2_Species_f)), batch = metadata$Batch)
+pca = pca(t(y), ncomp = 2, center = T, scale = F)
+plotIndiv(pca, group = metadata$Group, legend = T, title = "log10 + removelima") 
+```
+
+##New Phyloseq object with transformed data(limma)
+```{r new phyloseq} 
+OTU_data_t <- as.data.frame(y+6)
+Taxa <- rownames(y)
+OTU_data_t$TAXONOMY <- Taxa
+
+ # clean the taxonomy, Greengenes format,genus
+ tax.clean <- OTU_data_t %>% subset(select = c(TAXONOMY)) %>%
+   separate(TAXONOMY, c("Phylum", "Class", "Order", "Family", "Genus", "Species"), ";") 
+ 
+
+ tax.clean[is.na(tax.clean)] <- ""
+ tax.clean[tax.clean=="__"] <- ""
+ 
+ otu <- subset(OTU_data_t, select = -c(TAXONOMY))
+
+ OTU = otu_table(as.matrix(otu), taxa_are_rows = TRUE)
+ TAX = tax_table(as.matrix(tax.clean))
+ SAMPLE <- sample_data(metadata)
+ 
+ #Como me daba error hetenido que especificar qué datos son qué columnas
+ rownames(SAMPLE) <-metadata$SampleID
+
+ 
+ # merge the data
+ ps <- phyloseq(OTU, TAX, SAMPLE)
+ ps
+ 
+  tax_table(ps)[, colnames(tax_table(ps))] <- gsub(tax_table(ps)[, colnames(tax_table(ps))],  pattern = "[a-z]__", replacement = "") 
+```
+
+##New Phyloseq object without zeros - no transformations data
+
+```{r new phyloseq no zeros} 
+# Remove samples with less than MINREADS from phyloseq object
+ps_2 <- prune_taxa(taxa_sums(ps_1) >= 1, ps_1)
+# merge all taxa that are detected rare
+total_samples <- phyloseq::nsamples(ps_2)
+ps_2
+saveRDS(ps_2, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+
+
+OTU_data_0 <- rawDada2_Species[logic_z$sum >= 1,]
+OTU_data_0$names <-row.names(OTU_data_0)
+tax_table_0 <-as.data.frame(as.matrix(tax_table(ps_2)))
+tax_table_0$names <-row.names(tax_table_0)
+
+NewTAX <- semi_join(tax_table_0, OTU_data_0, by = join_by(names))
+NewTAX <- subset(NewTAX, select = -c(names))
+OTU_data_0 <- rawDada2_Species[logic_z$sum >= 1,]
+
+OTU = otu_table(OTU_data_0, taxa_are_rows = FALSE)
+TAX = tax_table(NewTAX, taxa_are_rows = FALSE)
+SAMPLE <- sample_data(metadata)
+
+#Como me daba error hetenido que especificar qué datos son qué columnas
+rownames(SAMPLE) <-metadata$SampleID
+
+
+# merge the data
+ps_0 <- phyloseq(OTU, TAX, SAMPLE)
+ps_0
+
+ 
+  tax_table(ps_0)[, colnames(tax_table(ps_0))] <- gsub(tax_table(ps_0)[, colnames(tax_table(ps_0))],  pattern = "[a-z]__", replacement = "") 
+```
