@@ -33,7 +33,7 @@ reads_per_sample_after_raref <- as.matrix(rowSums(t(as.matrix(otu_table(ps.raref
 
 ```{r Clean}
  # Remove samples with less than MINREADS from phyloseq object
-ps_2 <- prune_taxa(taxa_sums(ps_1) >= 1, ps_1)
+ps_2 <- prune_taxa(taxa_sums(ps_1) > 1, ps_1)
 # merge all taxa that are detected rare
 total_samples <- phyloseq::nsamples(ps_2)
 ps_2
@@ -47,6 +47,14 @@ ps.rarefied.clean
 
 ps_2_genus <- tax_glom(ps_2, taxrank = 'Genus', NArm = FALSE)
 ps_raref_genus <- tax_glom(ps.rarefied.clean, taxrank = 'Genus', NArm = FALSE)
+```
+
+#Trees
+```{r random tress}
+myTaxa = names(sort(taxa_sums(ps_2), decreasing = TRUE)[1:100])
+ex1 = prune_taxa(myTaxa, ps_2)
+plot(phy_tree(ex1), show.node.label = FALSE)
+plot_tree(ex1, color = "Group", label.tips = "Phylum", ladderize = "left", justify = "left" , size = "Abundance")
 ```
 
 It is important to not use filtered data because many richness estimates are modeled on singletons and doubletons in the occurrence table. So, you need to leave them in the dataset if you want a meaningful estimate.

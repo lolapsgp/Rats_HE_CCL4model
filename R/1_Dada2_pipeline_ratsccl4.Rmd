@@ -81,10 +81,14 @@ asvmat <- t(seqtab.nochim) #Removing sequence rownames for display only
 asv.names <- as.data.frame(rownames(asvmat))
 rownames(asv.names) <- paste0("ASV", 1:nrow(asv.names))
 rownames(asvmat)<-NULL
+asvmat <- as.data.frame(asvmat)
 rownames(asvmat) <- paste0("ASV", 1:nrow(asvmat))
 #colnames(asvmat) <- paste0("Sample", 1:ncol(asvmat)) #keep original sample ID
 head(asvmat)
 write.csv(asvmat, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/otu_table.csv", row.names = F, col.names = F)
+
+#Creating the OTU table saving the ASV names
+make_csv_table(asvmat, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/otu_table", info = "otu_table")
 
 ##Get count of ASVs detected by sample
 asv.sample<- as.data.frame(asvmat)
@@ -126,11 +130,11 @@ write.csv(taxa, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/out
 
 
 ##Create an Taxa matrix with ASV as rows and taxonomic level as columns
-taxa_asvs <- taxa # Removing sequence rownames for display only
+taxa_asvs <- as.data.frame(taxa) # Removing sequence rownames for display only
 rownames(taxa_asvs) <- NULL
 rownames(taxa_asvs) <- paste0("ASV", 1:nrow(asv.names))
 head(taxa_asvs)
-write.csv(taxa_asvs, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table.csv", row.names = F, col.names = F)
+make_csv_table(taxa_asvs, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table", info = "tax_table")
 
 
 ##Transform seqtab.nochim to fasta file 

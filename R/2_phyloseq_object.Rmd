@@ -8,23 +8,31 @@ library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
 library(readr)
 library(readxl)
-
 library(readr)
-tax_table <- read_csv("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/tax_table.csv")
-asvmat <- read_csv("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/otu_table.csv")
-otu_ok <- subset(asvmat, select = -c(CV1_S1, CV16_S2, CR23_S3, CR24_S4, CC34_36_S5, CC37_1_S6, CCR55_S7, CCR56_S8))
+
+otu_table <- read_delim("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/otu_table.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+tax_table <- read_delim("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/tax_table.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 metadata <- read_excel("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
 tree<- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/phylo_tree.rds")
 dna<- readDNAStringSet("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ASV.fasta")
 
-tax_table$Species<- ifelse(is.na(tax_table$Species...7) == TRUE, tax_table$Species...8, ifelse(is.na(tax_table$Species...7) == FALSE, tax_table$Species...7, "NA"))
-tax_table <- subset(tax_table, select = -c(Species...7, Species...8))
+
+otu_table <- as.data.frame(otu_table)
+rownames(otu_table) <- otu_table$...1
+otu_ok <- subset(otu_table, select = -c(CV1_S1, CV16_S2, CR23_S3, CR24_S4, CC34_36_S5, CC37_1_S6, CCR55_S7, CCR56_S8, ...1))
+
+tax_table <- as.data.frame(tax_table)
+rownames(tax_table) <- tax_table$...1
+tax_table$Species<- ifelse(is.na(tax_table$Species...8) == TRUE, tax_table$Species...9, ifelse(is.na(tax_table$Species...8) == FALSE, tax_table$Species...8, "NA"))
+tax_table <- subset(tax_table, select = -c(Species...8, Species...9, ...1))
 
  OTU = otu_table(otu_ok, taxa_are_rows = TRUE)
  TAX = tax_table(as.matrix(tax_table))
  SAMPLE = sample_data(metadata)
- TREE = read_tree(tree)
+ TREE = tree<- phylo_tree$tree
  
 rownames(SAMPLE) <-metadata$SampleID
 
