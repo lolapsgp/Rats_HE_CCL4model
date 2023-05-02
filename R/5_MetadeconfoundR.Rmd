@@ -1,0 +1,38 @@
+---
+title: "5_MetadeconfoundR"
+author: "Lola"
+date: "5/2/2023"
+output: html_document
+---
+
+##MetadeconfoundR
+```{r MetadeconfoundR heatmaps}
+library(metadeconfoundR)
+Meta_Species <- t((rawDada2_Species_f))
+
+metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5))
+metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
+metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
+metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
+rownames(metadata_R) <- (metadata$SampleID)
+
+# check correct ordering
+all(rownames(metadata_R) == rownames(Meta_Species))
+## [1] TRUE
+all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
+## [1] TRUE
+Meta_Species<- as.data.frame(Meta_Species)
+Output1 <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
+                                 metaMat = as.data.frame(metadata_R), nnodes = 4)
+                                 
+Output2_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
+                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                                                                        c("Batch")))
+View(Output1)
+View(Output2_batch)
+
+left <- BuildHeatmap(Output1)
+right <- BuildHeatmap(Output2_batch)
+plot(left)
+plot(right)
+```
