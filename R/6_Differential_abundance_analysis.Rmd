@@ -1,0 +1,205 @@
+---
+title: "6_Differential_abundance_analysis"
+output: html_document
+date: "2023-05-03"
+---
+
+Using Ps_0 because we cannot model adonis with the data transformed by limma. About removebatcheffect from the limma package:
+
+    - This function is useful for removing unwanted batch effects, associated with hybridization time or other technical variables, ready for plotting or unsupervised analyses such as PCA, MDS or heatmaps. The design matrix is used to describe comparisons between the samples, for example treatment effects, that should not be removed. The function (in effect) fits a linear model to the data, including both batches and regular treatments, then removes the component due to the batch effects.
+    - This function is not intended to be used prior to linear modelling. For linear modelling, it is better to include the batch factors in the linear model.
+
+##Check the homogeneity condition
+Check that variance homogeneity assumptions hold (to ensure the reliability of the results):
+
+Note the assumption of similar multivariate spread among the groups ie. analogous to variance homogeneity
+```{r homogeneity}
+pseq.rel <- microbiome::transform(ps_0, "compositional")
+otu <- abundances(pseq.rel)
+dist <- vegdist(t(otu))
+meta <- meta(pseq.rel)
+anova(betadisper(dist, meta$Group))
+```
+
+## Permanova/ADONIS
+```{r PERMANOVA/ADONIS}
+library(vegan)
+#PERMANOVA/ADONIS
+pseq.rel <- microbiome::transform(ps_0, "compositional")
+otu <- abundances(pseq.rel)
+meta <- meta(pseq.rel)
+library(vegan)
+permanova <- adonis(t(otu) ~ Antibiotic + Treated_CCL + Batch,
+                    data = meta, permutations=99, method = "bray")
+
+# P-value
+print(as.data.frame(permanova$aov.tab)["Antibiotic", "Pr(>F)"])
+
+```
+
+```{r Adonis}
+BC_dist<- phyloseq::distance(ps_0, method="bray", weighted=T)
+ordination<- ordinate(ps_0,
+                      method="PCoA", distance= BC_dist)
+#Adonis2
+vegan::adonis2(BC_dist~ Group + Batch , permutations = 999, data = metadata, na.action = F)
+```
+
+##Using transformed data
+###Wilcoxon & Welch test
+Wilcoxon test is a nonparametric test, the data need not be normally distributed.
+Welch t-test asumes normally distributed data.
+```{r Wilcox }
+hist((abundances(ps)), 113)
+
+set.seed(321)
+ps.t<- subset_samples(ps, Group %in% c("ctr", "ccl4+rif")) %>% tax_glom(taxrank = 'Genus')
+test.taxa <- taxa(ps.t)
+pvalue.wilcoxon <- c()
+foldchange <- c()
+for (taxa in test.taxa) {
+    # Create a new data frame for each taxonomic group
+    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
+                     Group = meta(ps.t)$Group)
+    # Calculate pvalue and effect size (difference beween log means)       
+    pvalue.wilcoxon[[taxa]] <- wilcox.test(Abundance ~ Group, data = df)$p.value
+}
+
+pvalue.welch <- c()
+foldchange <- c()
+for (taxa in test.taxa) {
+    # Create a new data frame for each taxonomic group
+    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
+                     Group = meta(ps.t)$Group)
+    # Calculate pvalue and effect size (difference beween log means)       
+    pvalue.welch[[taxa]] <- t.test(Abundance ~ Group, data = df)$p.value
+}
+# Correct p-values for multiple testing
+pvalue.wilcoxon.adjusted <- p.adjust(pvalue.wilcoxon)
+pvalue.welch.adjusted <- p.adjust(pvalue.welch)
+```
+write.csv(as.data.frame(pvalue.wilcoxon.adjusted), "Wilcocxon_ccl4+rifvsctr_genus")
+write.csv(as.data.frame(pvalue.welch.adjusted), "Welch_ccl4+rifvsctr_genus")
+
+##Bloking Batch: Using non-transformed data
+###Wilcoxon & kruskal-wallis (>2 group variables) test
+```{r Wilcox }
+library("coin")
+#Wilcoxon
+pseq.rel <- microbiome::transform(ps_0, "compositional")
+otu <- abundances(pseq.rel)
+hist(otu, 113)
+
+set.seed(321)
+ps.t<- pseq.rel %>% subset_samples(Group %in% c("ccl4", "ccl4+rif")) %>% tax_glom(taxrank = 'Genus')
+test.taxa <- taxa(ps.t)
+pvalue_wilcoxon <- c()
+foldchange <- c()
+for (taxa in test.taxa) {
+   # Create a new data frame for each taxonomic group
+    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
+                     Group = as.factor(meta(ps.t)$Group), Batch = as.factor(meta(ps.t)$Batch))
+    
+pvalue_wilcoxon[[taxa]] <- coin::wilcox_test(Abundance ~ Group|Batch, data = df)
+}
+
+#Kruskal-wallis
+pseq.rel1 <- microbiome::transform(ps_0, "compositional")
+otu <- abundances(pseq.rel1)
+hist(otu, 113)
+
+set.seed(321)
+ps.t<- pseq.rel1 %>% tax_glom(taxrank = 'Genus')
+test.taxa <- taxa(ps.t)
+pvalue_kruskal <- c()
+foldchange <- c()
+for (taxa in test.taxa) {
+   # Create a new data frame for each taxonomic group
+    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
+                     Group = as.factor(meta(ps.t)$Group), Batch = as.factor(meta(ps.t)$Batch))
+pvalue_kruskal[[taxa]] <- coin::kruskal_test(Abundance ~ Group|Batch, data = df)
+}
+
+#For getting an object with the pvalues without adjusting
+pvalues_wilcoxcoin <- data.frame()
+for(i in 1:length(pvalue_wilcoxon))
+{
+     Lola<-data.frame()
+     Lola<-as.data.frame(names(pvalue_wilcoxon[i]))
+     Lola[,2]<-p.adjust(pvalue(pvalue_wilcoxon[[i]]))
+     pvalues_wilcoxcoin<-rbind(pvalues_wilcoxcoin, Lola)
+}
+
+pvalues_kruskalcoin <- data.frame()
+for(i in 1:length(pvalue_wilcoxon))
+{
+     Lola<-data.frame()
+     Lola<-as.data.frame(names(pvalue_wilcoxon[i]))
+     Lola[,2]<-p.adjust(pvalue(pvalue_wilcoxon[[i]]))
+     pvalues_kruskalcoin<-rbind(pvalues_kruskalcoin, Lola)
+}
+```
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4+rifvsctr_genus")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsctr_genus")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsccl4+rif_genus")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4+rifvsctr")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsctr")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsccl4+rif")
+write.csv(as.data.frame(pvalues_kruskalcoin), "Kruskalcoin_allgroups_genus")
+write.csv(as.data.frame(pvalues_kruskalcoin), "Kruskalcoin_allgroups")
+
+pvalues_wilcoxcoin <- as.data.frame(sapply(pvalue_wilcoxon, pvalue))
+pvalues_kruskalcoin <- as.data.frame(sapply(pvalue_kruskal, pvalue))
+
+pvalues_wilcoxcoin <- data.frame()
+for(i in 1:length(test.taxa)){
+    print(paste(names(pvalue_wilcoxon[i]), p.adjust(pvalue(pvalue_wilcoxon[[i]]))))
+}
+
+###Graphical representation of the ASVs abundance differences
+```{r Wilcox representez}
+set.seed(321)
+ps.t<- (ps)
+df <- data.frame(Abundance = t(abundances(ps.t)),
+                 Group = meta(ps.t)$Group)
+
+##Reorder variables
+data_new$Group <- factor(df$Group,                 
+                         levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))
+p2 <- df %>%
+  mutate(Group = fct_relevel(Group, 
+            "ctr", "ctr+rif", "ccl4", "ccl4+rif")) %>% ggplot(aes(x = Group, y = df$Abundance.ASV1)) +
+    geom_boxplot() +
+    labs(title = "Absolute abundances", subtitle = "ASV1", y = "Abundance")+ theme(plot.title = element_text(size=18), axis.text.x = element_text(size = 14), axis.title = element_text(size = 16))
+
+p2
+```
+
+
+###Top factors
+```{r top factors}
+# samples x species as input
+ ps.taxa.sub <- subset_samples(ps_0, Group %in% c("ccl4", "ccl4+rif"))
+pseq.rel <- microbiome::transform(ps.taxa.sub, "identity")
+otu <- abundances(pseq.rel)
+rownames(otu) <- as.character(tax_table(pseq.rel)[, "Genus"])
+rownames(otu) <- gsub("g__", "", rownames(otu))
+meta <- meta(pseq.rel)
+
+library(vegan)
+permanova <- adonis(t(otu) ~ Group,
+               data = meta, permutations=99, method = "horn")
+
+# P-value
+print(as.data.frame(permanova$aov.tab)["Group", "Pr(>F)"])
+
+# Analysis of Variance Table
+dist <- vegdist(t(otu))
+anova(betadisper(dist, meta$Group))
+
+
+coef <- coefficients(permanova)["Group1",]
+top.coef <- coef[rev(order(abs(coef)))[1:30]]
+par(mar = c(3, 14, 2, 1))
+barplot(sort(top.coef), horiz = T, las = 1, main = "Top taxa")
+```

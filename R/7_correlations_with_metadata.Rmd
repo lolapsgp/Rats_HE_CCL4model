@@ -1,0 +1,131 @@
+---
+title: "7_correlations_with_metadata"
+output: html_document
+date: "2023-05-03"
+---
+
+#Correlations
+```{r Check if there are actual differences}
+newmetadata <- metadata %>%
+    group_by(Antibiotic) %>%
+    filter(!any(Antibiotic == "Yes"))
+    
+t.test(newmetadata$Average_velocity~newmetadata$Treated_CCL)
+t.test(newmetadata$Stereotipic_Counts~newmetadata$Treated_CCL)
+t.test(newmetadata$Vertcal_Counts~newmetadata$Treated_CCL)
+t.test(newmetadata$Ambulatory_Counts~newmetadata$Treated_CCL)
+t.test(newmetadata$GLT1~newmetadata$Treated_CCL)
+t.test(newmetadata$GLAST~newmetadata$Treated_CCL)
+t.test(newmetadata$OLM~newmetadata$Treated_CCL)
+t.test(newmetadata$Learning_index_Rmaze~newmetadata$Treated_CCL)
+t.test(newmetadata$Ymaze_trialstolearn~newmetadata$Treated_CCL)
+
+t.test(metadata$Average_velocity~metadata$Treated_CCL)
+t.test(metadata$Stereotipic_Counts~metadata$Treated_CCL)
+t.test(metadata$Vertcal_Counts~metadata$Treated_CCL)
+t.test(metadata$Ambulatory_Counts~metadata$Treated_CCL)
+t.test(metadata$GLT1~metadata$Treated_CCL)
+t.test(metadata$GLAST~metadata$Treated_CCL)
+t.test(metadata$OLM~metadata$Treated_CCL)
+t.test(metadata$Learning_index_Rmaze~metadata$Treated_CCL)
+t.test(metadata$Ymaze_trialstolearn~metadata$Treated_CCL)
+
+newmetadata2 <- metadata %>%
+    group_by(Treated_CCL) %>%
+    filter(!any(Treated_CCL == "No"))
+
+t.test(newmetadata2$Average_velocity~newmetadata2$Antibiotic)
+t.test(newmetadata2$Stereotipic_Counts~newmetadata2$Antibiotic)
+t.test(newmetadata2$Vertcal_Counts~newmetadata2$Antibiotic)
+t.test(newmetadata2$Ambulatory_Counts~newmetadata2$Antibiotic)
+t.test(newmetadata2$GLT1~newmetadata2$Antibiotic)
+t.test(newmetadata2$GLAST~newmetadata2$Antibiotic)
+t.test(newmetadata2$OLM~newmetadata2$Antibiotic)
+t.test(newmetadata2$Learning_index_Rmaze~newmetadata2$Antibiotic)
+t.test(newmetadata2$Ymaze_trialstolearn~newmetadata2$Antibiotic)
+
+t.test(metadata$Average_velocity~metadata$Antibiotic)
+t.test(metadata$Stereotipic_Counts~metadata$Antibiotic)
+t.test(metadata$Vertcal_Counts~metadata$Antibiotic)
+t.test(metadata$Ambulatory_Counts~metadata$Antibiotic)
+t.test(metadata$GLT1~metadata$Antibiotic)
+t.test(metadata$GLAST~metadata$Antibiotic)
+t.test(metadata$OLM~metadata$Antibiotic)
+t.test(metadata$Learning_index_Rmaze~metadata$Antibiotic)
+t.test(metadata$Ymaze_trialstolearn~metadata$Antibiotic)
+
+kruskal.test(metadata$Average_velocity~metadata$Group)
+kruskal.test(metadata$Stereotipic_Counts~metadata$Group)
+kruskal.test(metadata$Vertcal_Counts~metadata$Group)
+kruskal.test(metadata$Ambulatory_Counts~metadata$Group)
+kruskal.test(metadata$GLT1~metadata$Group)
+kruskal.test(metadata$GLAST~metadata$Group)
+kruskal.test(metadata$OLM~metadata$Group)
+kruskal.test(metadata$Learning_index_Rmaze~metadata$Group)
+kruskal.test(metadata$Ymaze_trialstolearn~metadata$Group)
+
+```
+
+
+```{r correlation plot 1}
+ps_3 <- tax_glom(ps_log_signif, taxrank = 'Genus', NArm = FALSE) 
+otu <- as.matrix(otu_table(ps_3))
+taxa <- as.data.frame(as.matrix(tax_table(ps_3)))
+
+
+y <- as.data.frame(cbind(taxa, otu)) 
+x <- log10(t(otu_table(ps_3)))
+colnames(x) <- as.character(tax_table(ps_3)[, "Genus"])
+
+metadata1 <- subset(metadata, select = -c(SampleID, Group, Antibiotic, Treated_CCL, FisabioID, Week, Batch, OLM,	GLAST,	GLT1,	GAT1,	GAT3,	TNFR1,	NR2B,	NR2A,	NR1,	GLUA1,	GLUA2,	GABAa1,	GABAa5,	Ambulatory_Counts,	Vertcal_Counts,	Stereotipic_Counts,	Average_velocity,	CCL2,	CCL5,	CCL20,	CX3CL1,	CCR2,	CCR5,	CX3CR1,	Occludine, Ammonia))
+# Cosas no eliminadas 
+#"IL-6",	"IL1-b",	"TNF-a",	"IFN-gamma",	"IL-15",	"IL-17",	"IL-10",	#"IL-4",	"TGF-b"
+
+y <- as.matrix(metadata1)
+
+z <- cbind(x, y)
+ggcorr(z)
+ggcorr(z, label_size = 3, angle = 270, hjust = 0.97)
+```
+
+corrplot(cor(z), method = "square",
+         title = "method = 'circle'",
+         tl.pos = "n", mar = c(2, 1, 3, 1)) 
+
+corrgram(z,
+         order = TRUE,              
+         upper.panel = panel.pie,   
+         lower.panel = panel.shade, 
+         text.panel = panel.txt,    
+         main = "Correlogram")
+
+```{r ggcorr 2}
+ # agglomerate taxa
+ glom <- tax_glom(ps_1, taxrank = 'Genus', NArm = FALSE)
+ ps.melt <- psmelt(glom)
+ # change to character for easy-adjusted level
+ ps.melt$Genus <- as.character(ps.melt$Genus)
+ 
+ ps.melt <- ps.melt %>%
+   group_by(Group, Genus) %>%
+   mutate(median=median(Abundance))
+ # select group mean > 1
+ keep <- unique(ps.melt$Genus[ps.melt$median > 1])
+ ps.melt$Genus[!(ps.melt$Genus %in% keep)] <- "< 1%"
+ #to get the same rows together
+ ps.melt_sum <- ps.melt %>%
+   group_by(Sample,Group,Genus) %>%
+   summarise(Abundance=sum(Abundance))
+ 
+ otu <- as.matrix(otu_table(ps_3))
+taxa <- as.data.frame(as.matrix(tax_table(ps_3)))
+rownames(taxa) <- as.character(tax_table(ps_3)[, "Phylum"])
+
+y <- as.data.frame(cbind(taxa, otu)) 
+x <- log10(t(otu_table(ps_3)))
+colnames(x) <- as.character(tax_table(ps_3)[, "Phylum"])
+
+metadata1 <- subset(metadata, select = -c(SampleID, Group, Antibiotic, Treated_CCL, FisabioID, Week, Batch, OLM,	GLAST,	GLT1,	GAT1,	GAT3,	TNFR1,	NR2B,	NR2A,	NR1,	GLUA1,	GLUA2,	GABAa1,	GABAa5,	Ambulatory_Counts,	Vertcal_Counts,	Stereotipic_Counts,	Average_velocity,	CCL2,	CCL5,	CCL20,	CX3CL1,	CCR2,	CCR5,	CX3CR1,	Occludine, Ammonia))
+# Cosas no eliminadas 
+#"IL-6",	"IL1-b",	"TNF-a",	"IFN-gamma",	"IL-15",	"IL-17",	"IL-10",	#"IL-4",	"TGF-b"
+``` 

@@ -383,6 +383,7 @@ plot.points %>%
 ```
 
 #PCoAs changing aesthetic
+
 ```{r PCoA representation after batch effect removal 2}
 BC_dist<- phyloseq::distance(ps, method="bray", weighted=T)
 ordination<- ordinate(ps,
@@ -398,8 +399,3 @@ plot_ordination(ps, ordination, shape= "Group")+
     ylab(paste0("PCo 2 [", round(ordination$values[2,2]*100, digits = 2), "%]"))
 ```
 
-
-```{r Adonis}
-#Adonis2
-vegan::adonis(BC_dist~ Group + Batch , permutations = 999, data = metadata, na.action = F)
-```
