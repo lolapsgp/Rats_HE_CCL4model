@@ -399,3 +399,77 @@ plot_ordination(ps, ordination, shape= "Group")+
     ylab(paste0("PCo 2 [", round(ordination$values[2,2]*100, digits = 2), "%]"))
 ```
 
+
+#3D PCoAs
+```{r PCoA representation after batch effect removal 2}
+library(rgl)
+library(knitr)
+library(tibble)
+library(ggplot2)
+library(dplyr)
+# start with your phyloseq object
+ps.taxa.sub <- subset_samples(ps)
+phyloseq.obj <- ps.taxa.sub
+
+pco.data <- phyloseq.obj@otu_table %>%
+    t() %>%
+    as.data.frame() %>%
+    # bray-curtis dissimilarity
+    vegan::vegdist(method = 'bray',
+                   diag = TRUE, upper = TRUE) %>%
+    # multidimensional scaling, aka PCoA
+    stats::cmdscale(k = 3, eig = TRUE) 
+# get group labels 
+cohort.labels <- phyloseq.obj@sam_data %>%
+    data.frame() %>%
+    as_tibble()
+
+# add cohort labels/metadata for plotting
+plot.points <- pco.data$points %>%
+    as.data.frame() %>%
+    rownames_to_column('SampleID') %>%
+    as_tibble() %>%
+    left_join(cohort.labels)
+axes <- sprintf(fmt='%.2f',
+                (pco.data$eig[1:3]/sum(pco.data$eig[pco.data$eig > 0])) * 100)
+
+# This is to output a rgl plot in a rmarkdown document. Note that you must add webgl=TRUE, results='hide' in the chunck header
+library(knitr)
+knit_hooks$set(webgl = hook_webgl)
+
+# Data: the iris data is provided by R
+data <- plot.points
+
+# Add a new column with color
+mycolors <- c('royalblue1', 'lightgreen', 'pink', 'orange')
+data$color <- mycolors[ as.factor(data$Group) ]
+
+# Plot
+par(mar=c(0,0,0,0))
+p<-plot3d( 
+    x=data$V1, y=data$V2, z=data$V3, 
+    col = data$color, size = 3,
+    type = 's', radius=1/500,
+    xlab=paste0('PCo 1 [', axes[1], '%]'), ylab=paste0('PCo 2 [', axes[2], '%]'), zlab=paste0('PCo 3 [', axes[3], '%]'))
+
+htmlwidgets::saveWidget(rglwidget(width = 720, height = 720), 
+                        file = "~/Documents/PCoA_Groups_3D_Spheres.html",
+                        libdir = "libs",
+                        selfcontained = FALSE
+)
+
+# Plot
+par(mar=c(0,0,0,0))
+p<-plot3d( 
+    x=data$V1, y=data$V2, z=data$V3, 
+    col = data$color, size = 20,
+    type = 'p',
+    xlab=paste0('PCo 1 [', axes[1], '%]'), ylab=paste0('PCo 2 [', axes[2], '%]'), zlab=paste0('PCo 3 [', axes[3], '%]'))
+
+htmlwidgets::saveWidget(rglwidget(width = 720, height = 720), 
+                        file = "~/Documents/PCoA_Groups_3D_Points.html",
+                        libdir = "libs",
+                        selfcontained = FALSE
+)
+
+```

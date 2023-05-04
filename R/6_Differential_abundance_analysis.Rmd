@@ -45,8 +45,7 @@ ordination<- ordinate(ps_0,
 vegan::adonis2(BC_dist~ Group + Batch , permutations = 999, data = metadata, na.action = F)
 ```
 
-##Using transformed data
-###Wilcoxon & Welch test
+#Wilcoxon & Welch test using transformed data
 Wilcoxon test is a nonparametric test, the data need not be normally distributed.
 Welch t-test asumes normally distributed data.
 ```{r Wilcox }
@@ -81,8 +80,8 @@ pvalue.welch.adjusted <- p.adjust(pvalue.welch)
 write.csv(as.data.frame(pvalue.wilcoxon.adjusted), "Wilcocxon_ccl4+rifvsctr_genus")
 write.csv(as.data.frame(pvalue.welch.adjusted), "Welch_ccl4+rifvsctr_genus")
 
-##Bloking Batch: Using non-transformed data
-###Wilcoxon & kruskal-wallis (>2 group variables) test
+#Coin. Bloking Batch.
+####Wilcoxon & kruskal-wallis (>2 group variables) test. Using non-transformed data.
 ```{r Wilcox }
 library("coin")
 #Wilcoxon
@@ -91,7 +90,7 @@ otu <- abundances(pseq.rel)
 hist(otu, 113)
 
 set.seed(321)
-ps.t<- pseq.rel %>% subset_samples(Group %in% c("ccl4", "ccl4+rif")) %>% tax_glom(taxrank = 'Genus')
+ps.t<- pseq.rel %>% subset_samples(Group %in% c("ccl4+rif", "ccl4")) %>% tax_glom(taxrank = 'Genus')
 test.taxa <- taxa(ps.t)
 pvalue_wilcoxon <- c()
 foldchange <- c()
@@ -102,7 +101,37 @@ for (taxa in test.taxa) {
     
 pvalue_wilcoxon[[taxa]] <- coin::wilcox_test(Abundance ~ Group|Batch, data = df)
 }
+#For getting an object with the pvalues without adjusting
+pvalues_wilcoxcoin <- data.frame()
+for(i in 1:length(pvalue_wilcoxon))
+{
+     Lola<-data.frame()
+     Lola<-as.data.frame(names(pvalue_wilcoxon[i]))
+     Lola[,2]<-p.adjust(pvalue(pvalue_wilcoxon[[i]]))
+     pvalues_wilcoxcoin<-rbind(pvalues_wilcoxcoin, Lola)
+}
 
+rownames(pvalues_wilcoxcoin)<- pvalues_wilcoxcoin$`names(pvalue_wilcoxon[i])`
+write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t))), "Wilcoxcoin_ccl4vsccl4+rif_genus")
+```
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4+rifvsctr_genus")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsctr_genus")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsccl4+rif_genus")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4+rifvsctr")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsctr")
+write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsccl4+rif")
+
+pvalues_wilcoxcoin <- as.data.frame(sapply(pvalue_wilcoxon, pvalue))
+pvalues_kruskalcoin <- as.data.frame(sapply(pvalue_kruskal, pvalue))
+
+pvalues_wilcoxcoin <- data.frame()
+for(i in 1:length(test.taxa)){
+    print(paste(names(pvalue_wilcoxon[i]), p.adjust(pvalue(pvalue_wilcoxon[[i]]))))
+}
+
+####Wilcoxon & kruskal-wallis (>2 group variables) test. Using non-transformed data.
+```{r Wilcox }
+library("coin")
 #Kruskal-wallis
 pseq.rel1 <- microbiome::transform(ps_0, "compositional")
 otu <- abundances(pseq.rel1)
@@ -120,43 +149,47 @@ for (taxa in test.taxa) {
 pvalue_kruskal[[taxa]] <- coin::kruskal_test(Abundance ~ Group|Batch, data = df)
 }
 
-#For getting an object with the pvalues without adjusting
-pvalues_wilcoxcoin <- data.frame()
-for(i in 1:length(pvalue_wilcoxon))
+pvalues_kruskalcoin <- data.frame()
+for(i in 1:length(pvalue_kruskal))
 {
      Lola<-data.frame()
-     Lola<-as.data.frame(names(pvalue_wilcoxon[i]))
-     Lola[,2]<-p.adjust(pvalue(pvalue_wilcoxon[[i]]))
-     pvalues_wilcoxcoin<-rbind(pvalues_wilcoxcoin, Lola)
+     Lola<-as.data.frame(names(pvalue_kruskal[i]))
+     Lola[,2]<-p.adjust(pvalue(pvalue_kruskal[[i]]))
+     pvalues_kruskalcoin<-rbind(pvalues_kruskalcoin, Lola)
+}
+rownames(pvalues_kruskalcoin)<- pvalues_kruskalcoin$`names(pvalue_kruskal[i])`
+write.csv(cbind(as.data.frame(pvalues_kruskalcoin), as.data.frame(tax_table(ps.t))), "Kruskall_allgroups_genus")
+
+#Kruskal-wallis
+pseq.rel1 <- microbiome::transform(ps_0, "compositional")
+otu <- abundances(pseq.rel1)
+hist(otu, 113)
+
+set.seed(321)
+ps.t<- pseq.rel1
+test.taxa <- taxa(ps.t)
+pvalue_kruskal <- c()
+foldchange <- c()
+for (taxa in test.taxa) {
+   # Create a new data frame for each taxonomic group
+    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
+                     Group = as.factor(meta(ps.t)$Group), Batch = as.factor(meta(ps.t)$Batch))
+pvalue_kruskal[[taxa]] <- coin::kruskal_test(Abundance ~ Group|Batch, data = df)
 }
 
 pvalues_kruskalcoin <- data.frame()
-for(i in 1:length(pvalue_wilcoxon))
+for(i in 1:length(pvalue_kruskal))
 {
      Lola<-data.frame()
-     Lola<-as.data.frame(names(pvalue_wilcoxon[i]))
-     Lola[,2]<-p.adjust(pvalue(pvalue_wilcoxon[[i]]))
+     Lola<-as.data.frame(names(pvalue_kruskal[i]))
+     Lola[,2]<-p.adjust(pvalue(pvalue_kruskal[[i]]))
      pvalues_kruskalcoin<-rbind(pvalues_kruskalcoin, Lola)
 }
+rownames(pvalues_kruskalcoin)<- pvalues_kruskalcoin$`names(pvalue_kruskal[i])`
+write.csv(cbind(as.data.frame(pvalues_kruskalcoin), as.data.frame(tax_table(ps.t))), "Kruskall_allgroups_ASVs")
 ```
-write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4+rifvsctr_genus")
-write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsctr_genus")
-write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsccl4+rif_genus")
-write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4+rifvsctr")
-write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsctr")
-write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsccl4+rif")
-write.csv(as.data.frame(pvalues_kruskalcoin), "Kruskalcoin_allgroups_genus")
-write.csv(as.data.frame(pvalues_kruskalcoin), "Kruskalcoin_allgroups")
 
-pvalues_wilcoxcoin <- as.data.frame(sapply(pvalue_wilcoxon, pvalue))
-pvalues_kruskalcoin <- as.data.frame(sapply(pvalue_kruskal, pvalue))
-
-pvalues_wilcoxcoin <- data.frame()
-for(i in 1:length(test.taxa)){
-    print(paste(names(pvalue_wilcoxon[i]), p.adjust(pvalue(pvalue_wilcoxon[[i]]))))
-}
-
-###Graphical representation of the ASVs abundance differences
+###Graphical representation of ASVs abundance differences
 ```{r Wilcox representez}
 set.seed(321)
 ps.t<- (ps)
@@ -176,7 +209,7 @@ p2
 ```
 
 
-###Top factors
+#Top factors
 ```{r top factors}
 # samples x species as input
  ps.taxa.sub <- subset_samples(ps_0, Group %in% c("ccl4", "ccl4+rif"))
