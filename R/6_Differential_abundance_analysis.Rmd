@@ -45,12 +45,12 @@ ordination<- ordinate(ps_0,
 vegan::adonis2(BC_dist~ Group + Batch , permutations = 999, data = metadata, na.action = F)
 ```
 
-#Wilcoxon & Welch test using transformed data
+##Wilcoxon & Welch test using transformed data
 Wilcoxon test is a nonparametric test, the data need not be normally distributed.
 Welch t-test asumes normally distributed data.
 ```{r Wilcox }
 hist((abundances(ps)), 113)
-
+#Wilcoxon
 set.seed(321)
 ps.t<- subset_samples(ps, Group %in% c("ctr", "ccl4+rif")) %>% tax_glom(taxrank = 'Genus')
 test.taxa <- taxa(ps.t)
@@ -63,7 +63,12 @@ for (taxa in test.taxa) {
     # Calculate pvalue and effect size (difference beween log means)       
     pvalue.wilcoxon[[taxa]] <- wilcox.test(Abundance ~ Group, data = df)$p.value
 }
+# Correct p-values for multiple testing
+pvalue.wilcoxon.adjusted <- p.adjust(pvalue.wilcoxon)
+pvalue.wilcoxon.adjusted<- as.data.frame(pvalue.wilcoxon.adjusted)
+rownames(pvalue.wilcoxon.adjusted)<- names(pvalue.wilcoxon)
 
+#Welch
 pvalue.welch <- c()
 foldchange <- c()
 for (taxa in test.taxa) {
@@ -74,14 +79,15 @@ for (taxa in test.taxa) {
     pvalue.welch[[taxa]] <- t.test(Abundance ~ Group, data = df)$p.value
 }
 # Correct p-values for multiple testing
-pvalue.wilcoxon.adjusted <- p.adjust(pvalue.wilcoxon)
 pvalue.welch.adjusted <- p.adjust(pvalue.welch)
+
 ```
+write.csv(cbind(as.data.frame(pvalue.wilcoxon.adjusted), as.data.frame(tax_table(ps.t))), "Wilcocxon_ccl4+rifvsctr_genus_log10ARSyNdata")
 write.csv(as.data.frame(pvalue.wilcoxon.adjusted), "Wilcocxon_ccl4+rifvsctr_genus")
 write.csv(as.data.frame(pvalue.welch.adjusted), "Welch_ccl4+rifvsctr_genus")
 
 #Coin. Bloking Batch.
-####Wilcoxon & kruskal-wallis (>2 group variables) test. Using non-transformed data.
+####Wilcoxon test. Using non-transformed data(relative abundances).
 ```{r Wilcox }
 library("coin")
 #Wilcoxon
@@ -129,7 +135,7 @@ for(i in 1:length(test.taxa)){
     print(paste(names(pvalue_wilcoxon[i]), p.adjust(pvalue(pvalue_wilcoxon[[i]]))))
 }
 
-####Wilcoxon & kruskal-wallis (>2 group variables) test. Using non-transformed data.
+####Kuskal-wallis (>2 group variables) test. Using non-transformed data.
 ```{r Wilcox }
 library("coin")
 #Kruskal-wallis
@@ -189,6 +195,40 @@ rownames(pvalues_kruskalcoin)<- pvalues_kruskalcoin$`names(pvalue_kruskal[i])`
 write.csv(cbind(as.data.frame(pvalues_kruskalcoin), as.data.frame(tax_table(ps.t))), "Kruskall_allgroups_ASVs")
 ```
 
+####Wilcoxon test. Using clr-transformed data.
+```{r Wilcox }
+library("coin")
+#Wilcoxon
+pseq.rel <- microbiome::transform(ps_0, "Z")
+otu <- abundances(pseq.rel)
+hist(otu, 113)
+
+set.seed(321)
+ps.t<- pseq.rel %>% subset_samples(Group %in% c("ccl4+rif", "ccl4")) %>% tax_glom(taxrank = 'Genus')
+test.taxa <- taxa(ps.t)
+pvalue_wilcoxon <- c()
+foldchange <- c()
+for (taxa in test.taxa) {
+   # Create a new data frame for each taxonomic group
+    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
+                     Group = as.factor(meta(ps.t)$Group), Batch = as.factor(meta(ps.t)$Batch))
+    
+pvalue_wilcoxon[[taxa]] <- coin::wilcox_test(Abundance ~ Group|Batch, data = df)
+}
+#For getting an object with the pvalues without adjusting
+pvalues_wilcoxcoin <- data.frame()
+for(i in 1:length(pvalue_wilcoxon))
+{
+     Lola<-data.frame()
+     Lola<-as.data.frame(names(pvalue_wilcoxon[i]))
+     Lola[,2]<-p.adjust(pvalue(pvalue_wilcoxon[[i]]))
+     pvalues_wilcoxcoin<-rbind(pvalues_wilcoxcoin, Lola)
+}
+
+rownames(pvalues_wilcoxcoin)<- pvalues_wilcoxcoin$`names(pvalue_wilcoxon[i])`
+write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t))), "Wilcoxcoin_ccl4vsccl4+rif_genus_Ztransform")
+```
+
 ###Graphical representation of ASVs abundance differences
 ```{r Wilcox representez}
 set.seed(321)
@@ -236,3 +276,30 @@ top.coef <- coef[rev(order(abs(coef)))[1:30]]
 par(mar = c(3, 14, 2, 1))
 barplot(sort(top.coef), horiz = T, las = 1, main = "Top taxa")
 ```
+
+#Glm using mvabund
+```{r mvabund}
+library(mvabund)
+ps.t<- tax_glom(ps_0, taxrank = 'Genus')
+obj <- as.data.frame(t(otu_table(ps_0)))
+obj <- mvabund( obj, row.names=rownames(obj), check.rows=FALSE, check.names=TRUE,
+         var.names=NULL, neg=FALSE, na.rm=FALSE )
+metadata1$Group[metadata$Group == 'ctr'] <- '1ccctr'
+metadata1$Group[metadata$Group == 'ctr+rif'] <- '2ccctr+rif'
+metadata1$Group[metadata$Group == 'ccl4'] <- '3ccl4'
+metadata1$Group[metadata$Group == 'ccl4+rif'] <- '4ccl4+rif'
+metadata1<-metadata1 %>%
+    arrange((SampleID))
+
+is.mvabund(obj)
+plot.mvabund(obj)
+boxplot.mvabund(obj)
+meanvar.plot(obj)
+glm <-manyglm(obj~(metadata$Treated_CCL) + (metadata$Antibiotic) + metadata$Batch)
+sumglm <- summary.manyglm(glm, resamp = "montecarlo", p.uni = "adjusted")
+glm2 <-manyglm(obj~(metadata1$Group)+ metadata$Batch)
+sumglm2 <- summary.manyglm(glm2, resamp = "montecarlo", p.uni = "adjusted")
+View(sumglm2[["uni.p"]])
+write.csv(cbind(as.data.frame(sumglm2[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_binomialmodel_mvabund_notransforms_genus")
+```
+
