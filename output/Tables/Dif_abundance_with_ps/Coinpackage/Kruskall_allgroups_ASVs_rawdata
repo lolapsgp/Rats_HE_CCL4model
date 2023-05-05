@@ -1,0 +1,519 @@
+"","names(pvalue_kruskal[i])","V2","Kingdom","Phylum","Class","Order","Family","Genus","Species"
+"ASV1","ASV1",0.303980864428231,"Bacteria","Verrucomicrobiota","Verrucomicrobiae","Verrucomicrobiales","Akkermansiaceae","Akkermansia","muciniphila"
+"ASV2","ASV2",0.563881455767129,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV3","ASV3",0.0328089803112365,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV4","ASV4",0.56121014450307,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV5","ASV5",0.527444501466098,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","[Eubacterium] xylanophilum group",NA
+"ASV6","ASV6",0.559374440020235,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV7","ASV7",0.153434221539861,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV8","ASV8",0.374713105762672,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV9","ASV9",0.00380973785433747,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV10","ASV10",0.000144108699883017,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV11","ASV11",0.000519818852699028,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV12","ASV12",0.0923764614865384,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Peptostreptococcaceae","Romboutsia","ilealis"
+"ASV13","ASV13",0.0160586037288475,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV14","ASV14",0.0302665667747862,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Peptostreptococcaceae","Romboutsia","ilealis"
+"ASV15","ASV15",0.0286617832092193,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV16","ASV16",0.37688091586208,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV17","ASV17",0.000362031029594534,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV18","ASV18",0.0686748679677449,"Bacteria","Firmicutes","Clostridia","Clostridiales","Clostridiaceae","Clostridium sensu stricto 1",NA
+"ASV19","ASV19",0.00659001188078223,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","NK4A214 group",NA
+"ASV20","ASV20",0.0147215463874086,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV21","ASV21",0.0270074302466211,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","[Eubacterium] xylanophilum group",NA
+"ASV22","ASV22",0.0667192577275499,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV23","ASV23",0.522605841814657,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","[Eubacterium] xylanophilum group",NA
+"ASV24","ASV24",0.000198486285771238,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV25","ASV25",0.00063424000142287,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV26","ASV26",0.560850119104126,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV27","ASV27",0.841822382130573,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus","bromii"
+"ASV28","ASV28",0.000216243939698546,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV29","ASV29",0.808969966353614,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV30","ASV30",0.136888310042082,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Eisenbergiella",NA
+"ASV31","ASV31",0.43284749393205,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV32","ASV32",0.934548136252031,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV33","ASV33",0.424653874909447,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV34","ASV34",0.0347665638102765,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV35","ASV35",0.408609681505949,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV36","ASV36",0.000605697377812686,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV37","ASV37",0.018961371572962,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","[Eubacterium] ruminantium group",NA
+"ASV38","ASV38",0.00538543907995559,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV39","ASV39",0.00656128726856631,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV40","ASV40",0.013432090846754,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Anaerostipes",NA
+"ASV41","ASV41",0.00108951079903175,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV42","ASV42",0.244011214569847,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","[Eubacterium] siraeum group",NA
+"ASV43","ASV43",0.547121872625438,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","[Eubacterium] xylanophilum group",NA
+"ASV44","ASV44",0.00753974630139553,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV45","ASV45",0.360997861708672,"Bacteria","Actinobacteriota","Actinobacteria","Micrococcales","Micrococcaceae","Rothia",NA
+"ASV47","ASV47",0.791816274328041,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV48","ASV48",0.0890265807143028,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Eisenbergiella",NA
+"ASV49","ASV49",0.16064637953599,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV50","ASV50",0.186901336724196,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV51","ASV51",0.657344189644111,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV52","ASV52",0.128699502000488,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV53","ASV53",0.416192754575881,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV54","ASV54",0.0268200764943778,"Bacteria","Firmicutes","Clostridia","Monoglobales","Monoglobaceae","Monoglobus",NA
+"ASV55","ASV55",0.0459257698733342,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV56","ASV56",0.671675002966531,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV57","ASV57",0.041802864049052,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Eisenbergiella",NA
+"ASV58","ASV58",0.00570920810477238,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Oscillibacter",NA
+"ASV59","ASV59",0.0114766843719527,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV60","ASV60",0.933914780848343,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV61","ASV61",0.582539588826763,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV62","ASV62",0.416303673610321,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV64","ASV64",0.111930880972862,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV66","ASV66",0.0238245030103527,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV67","ASV67",0.186646895238828,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV68","ASV68",0.54917912739688,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV69","ASV69",0.0393078723213001,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV70","ASV70",0.199911224764189,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV72","ASV72",0.738217940902451,"Bacteria","Firmicutes","Clostridia","Monoglobales","Monoglobaceae","Monoglobus",NA
+"ASV73","ASV73",0.730236138590562,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV74","ASV74",0.518673399374301,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV75","ASV75",0.256062860399709,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV76","ASV76",0.0255897846402684,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV77","ASV77",0.119145831281706,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Papillibacter",NA
+"ASV78","ASV78",0.0125535645279977,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV79","ASV79",0.00577964980864565,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV80","ASV80",0.00732648418903059,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV81","ASV81",0.16058526583626,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","[Eubacterium] siraeum group",NA
+"ASV82","ASV82",0.392546388547235,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-003",NA
+"ASV83","ASV83",0.02103773081063,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV84","ASV84",0.00955245398280846,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV85","ASV85",0.904908450708869,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV86","ASV86",0.0776354534937942,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV87","ASV87",0.0776693637598378,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV88","ASV88",0.000278710551402161,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV89","ASV89",0.134342024384736,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV90","ASV90",0.0018160189135723,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV92","ASV92",0.0100960160127448,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV93","ASV93",0.252465915186503,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV94","ASV94",0.00989793858724708,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV95","ASV95",0.0705825607178305,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV96","ASV96",0.97774477755181,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV97","ASV97",0.513494196904026,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV98","ASV98",0.560976326384725,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Butyricicoccaceae","UCG-009",NA
+"ASV99","ASV99",0.104401747383849,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV100","ASV100",0.544818763368919,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV101","ASV101",0.0117860752942553,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV102","ASV102",0.426840287669301,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV103","ASV103",0.00106928314910548,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV104","ASV104",0.539319479109094,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV105","ASV105",0.0143383062055956,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV106","ASV106",0.987966738845269,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV107","ASV107",0.00372294312150412,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV108","ASV108",0.00332165579320476,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV109","ASV109",0.00156183696467194,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV110","ASV110",0.282298288594683,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV111","ASV111",0.0597995872819299,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV112","ASV112",0.228128128865656,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV113","ASV113",0.485032335103015,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV114","ASV114",0.102250721874874,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","GCA-900066575",NA
+"ASV115","ASV115",0.0111788064524334,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","UBA1819",NA
+"ASV116","ASV116",0.089308427773754,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV117","ASV117",0.0373759284994066,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV118","ASV118",0.423236633524196,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV119","ASV119",0.0241893404564171,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV120","ASV120",0.198218327207068,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV121","ASV121",0.198002066695491,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV122","ASV122",0.00889134872076514,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV123","ASV123",0.433408836718413,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV124","ASV124",0.0275798094430959,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV125","ASV125",0.0327101662293177,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV126","ASV126",0.333152865314418,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV127","ASV127",0.00131382484504905,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Frisingicoccus","caecimuris"
+"ASV128","ASV128",0.0173166685478927,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV129","ASV129",0.596006736956715,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV130","ASV130",0.00433359268992017,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV131","ASV131",0.000990658950922318,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV132","ASV132",0.0217973141950988,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV133","ASV133",0.322726555078995,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV134","ASV134",0.000208884746905502,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Dorea",NA
+"ASV135","ASV135",0.0727491967329241,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV136","ASV136",0.12993387624879,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV137","ASV137",0.668086479809692,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV138","ASV138",0.131996142577598,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Peptostreptococcaceae","Romboutsia","ilealis"
+"ASV139","ASV139",0.0601208666564785,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV140","ASV140",0.00804010100435293,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","UBA1819",NA
+"ASV141","ASV141",0.705755452972599,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV142","ASV142",0.729939325548576,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV143","ASV143",0.158195477858786,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV144","ASV144",0.467117388822957,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV145","ASV145",0.0612234314052498,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV146","ASV146",0.00739128810803402,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV147","ASV147",0.0335792503756809,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV148","ASV148",0.010906208984924,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV149","ASV149",0.0158741466663209,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV150","ASV150",0.789685647286663,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV151","ASV151",0.47588250698995,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV153","ASV153",0.0206962310838747,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV156","ASV156",0.19113354524754,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV158","ASV158",0.877706186966873,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV159","ASV159",0.0494855691258435,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV160","ASV160",0.0137284183233871,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV162","ASV162",0.00480713807332223,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV163","ASV163",0.260645667434761,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV164","ASV164",0.0139295208345628,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV165","ASV165",0.0494257734442507,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV166","ASV166",0.0442791327858463,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV167","ASV167",0.919364880894291,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV168","ASV168",0.00508878694805281,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV170","ASV170",0.269450848232856,"Bacteria","Firmicutes","Clostridia","Clostridiales","Clostridiaceae","Clostridium sensu stricto 1",NA
+"ASV171","ASV171",0.0172541790777581,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV172","ASV172",0.0197105146812002,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV173","ASV173",0.134255998836259,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV174","ASV174",0.51680256527744,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV175","ASV175",0.0031559490988029,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV176","ASV176",0.0110436361687125,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","[Eubacterium] siraeum group",NA
+"ASV177","ASV177",0.0117367894752571,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV178","ASV178",0.664886734110866,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV179","ASV179",0.218496321064209,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV180","ASV180",0.0439295620134549,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV181","ASV181",0.351763381153269,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","NK4A214 group",NA
+"ASV182","ASV182",0.0386074124241645,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","GCA-900066575",NA
+"ASV183","ASV183",0.0225405631400584,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV184","ASV184",0.0252219944136221,"Bacteria","Proteobacteria","Alphaproteobacteria","Rhodospirillales",NA,NA,NA
+"ASV185","ASV185",0.123644684198611,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV186","ASV186",0.77436627995437,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV187","ASV187",0.0359782606506339,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV189","ASV189",0.0609258174316216,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV190","ASV190",0.0278748648503996,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV191","ASV191",0.694406845133002,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV192","ASV192",0.35796677576253,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV193","ASV193",0.0133970936454131,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV194","ASV194",0.454621856395292,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV195","ASV195",0.0769188919231323,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV196","ASV196",0.421948448050546,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV197","ASV197",0.0211964130668179,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales",NA,NA,NA
+"ASV198","ASV198",0.857769382325199,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV199","ASV199",0.0557667058475814,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV200","ASV200",0.00368447659420335,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV201","ASV201",0.66468393905233,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV202","ASV202",0.296271137107606,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV203","ASV203",0.0400779047212962,"Bacteria","Cyanobacteria","Vampirivibrionia","Gastranaerophilales",NA,NA,NA
+"ASV205","ASV205",0.0206181039330151,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV207","ASV207",0.405560281374324,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV208","ASV208",0.00107897106699406,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Defluviitaleaceae","Defluviitaleaceae UCG-011",NA
+"ASV209","ASV209",0.0169294951818281,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV210","ASV210",0.00591416982890969,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV211","ASV211",0.0481237826559145,"Bacteria","Firmicutes","Clostridia",NA,NA,NA,NA
+"ASV212","ASV212",0.14873541138919,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV213","ASV213",0.166404385159854,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","Anaerovorax",NA
+"ASV214","ASV214",0.00860406324353225,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV215","ASV215",0.210667984211567,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV218","ASV218",0.0222031815310577,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV219","ASV219",0.466350444152548,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV221","ASV221",0.919189609594021,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV224","ASV224",0.0102872145364277,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV225","ASV225",0.146524578498992,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV226","ASV226",0.00171199049853399,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Marvinbryantia",NA
+"ASV228","ASV228",0.49225023764805,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV229","ASV229",0.0325989058271968,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","NK4A214 group",NA
+"ASV230","ASV230",0.292371655687081,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV231","ASV231",0.0286235449736777,"Bacteria","Firmicutes","Clostridia","Christensenellales","Christensenellaceae",NA,NA
+"ASV234","ASV234",0.390712995731412,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV235","ASV235",0.458720282105587,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","NK4A214 group",NA
+"ASV236","ASV236",0.410638903832564,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV237","ASV237",0.330969847482053,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV238","ASV238",0.000653174227456033,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","[Eubacterium] xylanophilum group",NA
+"ASV239","ASV239",0.271385193633835,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV240","ASV240",0.00416844137441541,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Fournierella",NA
+"ASV241","ASV241",0.0983500848359646,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV242","ASV242",0.0571578912591253,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","UBA1819",NA
+"ASV244","ASV244",0.285405028958949,"Bacteria","Cyanobacteria","Vampirivibrionia","Gastranaerophilales",NA,NA,NA
+"ASV245","ASV245",0.830865704178977,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Adlercreutzia",NA
+"ASV246","ASV246",0.059581335042406,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV247","ASV247",0.00179584795235954,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV249","ASV249",0.391452529206416,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV250","ASV250",0.000638000152215823,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Fournierella",NA
+"ASV252","ASV252",0.0143906704077524,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Paludicola",NA
+"ASV253","ASV253",0.00394390866148175,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV254","ASV254",0.691369567465156,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV256","ASV256",0.423236633524196,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV257","ASV257",0.31472884739972,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV258","ASV258",0.00655254121101745,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","GCA-900066575",NA
+"ASV259","ASV259",0.00836168451550068,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV261","ASV261",0.671489957142275,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV262","ASV262",0.902946051419123,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","Family XIII UCG-001",NA
+"ASV263","ASV263",0.0136955324889969,"Bacteria","Firmicutes","Clostridia","Monoglobales","Monoglobaceae","Monoglobus",NA
+"ASV264","ASV264",0.617036700212566,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Oscillibacter",NA
+"ASV265","ASV265",0.0157123175277635,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV268","ASV268",0.00244573644949819,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV269","ASV269",0.816491722226962,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-003",NA
+"ASV270","ASV270",0.336756297039462,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV272","ASV272",0.541965094842197,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV273","ASV273",0.0299374776760625,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV274","ASV274",0.42704036294546,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Pygmaiobacter",NA
+"ASV279","ASV279",0.0052639056873045,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV280","ASV280",0.00994796016150334,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV282","ASV282",0.448188979680896,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV283","ASV283",0.945725573130387,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Tuzzerella",NA
+"ASV285","ASV285",0.226722370443294,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV286","ASV286",0.00606407711686396,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV287","ASV287",0.0309368612330648,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV289","ASV289",0.0302330597406049,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,"bacterium"
+"ASV290","ASV290",0.0205053498207212,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV292","ASV292",0.464120095588162,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV294","ASV294",0.105938529993798,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV295","ASV295",0.939927918841653,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV296","ASV296",0.03485224172687,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV298","ASV298",0.0684588212043563,"Bacteria","Patescibacteria","Saccharimonadia","Saccharimonadales","Saccharimonadaceae","Candidatus Saccharimonas",NA
+"ASV299","ASV299",0.83144387378891,"Bacteria","Firmicutes","Bacilli","Lactobacillales","Lactobacillaceae","Lactobacillus",NA
+"ASV301","ASV301",0.161453156098214,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV303","ASV303",0.189886431740283,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV304","ASV304",0.0371460893821884,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV305","ASV305",0.172409170182626,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV306","ASV306",0.075748010986774,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV307","ASV307",0.324705023321219,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV309","ASV309",0.00137121293745268,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV311","ASV311",0.302950278176088,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV315","ASV315",0.801820650285744,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV317","ASV317",0.110816062961459,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","UBA1819",NA
+"ASV318","ASV318",0.147354696239154,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV320","ASV320",0.0207990300014509,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales",NA,NA,NA
+"ASV321","ASV321",0.0955032776500478,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","NK4A214 group",NA
+"ASV322","ASV322",0.344603403664597,"Bacteria","Firmicutes","Bacilli","Lactobacillales","Lactobacillaceae","Lactobacillus",NA
+"ASV323","ASV323",0.178916022359043,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV324","ASV324",0.194292055578712,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV325","ASV325",0.00603127961351912,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV326","ASV326",0.0147759307745599,"Bacteria","Cyanobacteria","Vampirivibrionia","Gastranaerophilales",NA,NA,NA
+"ASV327","ASV327",0.554081084818669,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV329","ASV329",0.144529522059155,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV330","ASV330",0.67567935494556,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","A2",NA
+"ASV333","ASV333",0.57004395706572,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-007",NA
+"ASV334","ASV334",0.0120990275071625,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV335","ASV335",0.0262557555727641,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV336","ASV336",0.0853965776023607,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV338","ASV338",0.0274474601184569,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV339","ASV339",0.24512596484617,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV340","ASV340",0.0391727411194209,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV341","ASV341",0.138576442469269,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","NK4A214 group",NA
+"ASV343","ASV343",0.133837614799295,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV344","ASV344",0.053331472543457,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV345","ASV345",0.000268066322686389,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Paludicola",NA
+"ASV346","ASV346",0.016363694357604,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV348","ASV348",0.100249829033454,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Papillibacter",NA
+"ASV349","ASV349",0.00341294483369847,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV350","ASV350",0.0837098712928965,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV351","ASV351",0.000361296906199571,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV352","ASV352",0.265386559425017,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV354","ASV354",0.0303670747710354,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV355","ASV355",0.000824150840569637,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV356","ASV356",0.424683505108726,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV357","ASV357",0.0148354412133885,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV358","ASV358",0.419807849843169,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","A2",NA
+"ASV359","ASV359",0.000120797552279339,"Bacteria","Firmicutes","Clostridia","Christensenellales","Christensenellaceae","Christensenellaceae R-7 group",NA
+"ASV363","ASV363",0.422953817012413,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV364","ASV364",0.0626303081857837,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV365","ASV365",0.00382390444326353,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","A2",NA
+"ASV366","ASV366",0.000869141367478843,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-006",NA
+"ASV367","ASV367",0.044571932740436,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","[Eubacterium] nodatum group",NA
+"ASV368","ASV368",0.194807768723663,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV372","ASV372",0.00797081922304044,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV373","ASV373",0.295159308282259,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV374","ASV374",0.0516207087320028,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV378","ASV378",0.00248552236878319,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV379","ASV379",0.0115043037277252,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV380","ASV380",0.0180551537861932,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV381","ASV381",0.223926987428308,"Bacteria","Firmicutes","Bacilli","Lactobacillales","Lactobacillaceae","Lactobacillus",NA
+"ASV382","ASV382",0.00552604855692718,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV384","ASV384",0.187566895467535,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV386","ASV386",0.0261584256164179,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV388","ASV388",0.295921827781345,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV390","ASV390",0.600187257181614,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV391","ASV391",0.0385748037602704,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV392","ASV392",0.760283931997043,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales",NA,NA,NA
+"ASV393","ASV393",0.0745721977630365,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV394","ASV394",0.00459842018541656,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV395","ASV395",0.00918360954486652,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV397","ASV397",0.48615542781664,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group","bacterium"
+"ASV400","ASV400",0.296002475782311,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV402","ASV402",0.00650907649956645,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV403","ASV403",0.531316551465128,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV404","ASV404",0.842506956630199,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus","mucosicola"
+"ASV405","ASV405",0.287350735337971,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Oscillibacter",NA
+"ASV408","ASV408",0.107622618352534,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV410","ASV410",0.0128673027709963,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV412","ASV412",0.0272234543845671,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV413","ASV413",0.0510075607740489,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV414","ASV414",0.0140437022596799,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV415","ASV415",0.054927333034876,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Anaerotruncus","colihominis"
+"ASV416","ASV416",0.0483835629663686,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Oscillibacter",NA
+"ASV417","ASV417",0.00877321821576527,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Pygmaiobacter",NA
+"ASV418","ASV418",0.160540703890823,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV419","ASV419",0.0103353350897925,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV420","ASV420",0.469942630842686,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV422","ASV422",0.0236578993322155,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV423","ASV423",0.819684507310669,"Bacteria","Verrucomicrobiota","Verrucomicrobiae","Verrucomicrobiales","Akkermansiaceae","Akkermansia",NA
+"ASV424","ASV424",0.891236259947047,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Adlercreutzia",NA
+"ASV425","ASV425",0.730236138590562,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV426","ASV426",0.0424988992745802,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV427","ASV427",0.00730834797759716,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV428","ASV428",0.702200778716073,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales","Muribaculaceae",NA,NA
+"ASV429","ASV429",0.000377580707464742,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV432","ASV432",0.00721317488293494,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV433","ASV433",0.784726409034965,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV435","ASV435",0.0569502476414308,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae",NA,NA
+"ASV441","ASV441",0.0353330759000808,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV444","ASV444",0.631836656556165,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV445","ASV445",0.0148728018356373,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Pygmaiobacter",NA
+"ASV446","ASV446",0.57009210664133,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV448","ASV448",0.235485093329013,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV449","ASV449",0.283496525400205,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV450","ASV450",0.10664575402127,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV451","ASV451",0.0848706829355474,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales","Muribaculaceae",NA,NA
+"ASV452","ASV452",0.0205712340512618,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","GCA-900066575",NA
+"ASV456","ASV456",0.180466435506418,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV458","ASV458",0.22070621151302,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales",NA,NA,NA
+"ASV459","ASV459",0.330896140944177,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV460","ASV460",0.25226167080231,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Clostridium] methylpentosum group",NA,NA
+"ASV461","ASV461",0.0383995272438329,"Bacteria","Firmicutes","Bacilli","Lactobacillales","Lactobacillaceae","Lactobacillus",NA
+"ASV462","ASV462",0.0698579550515335,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","[Eubacterium] brachy group",NA
+"ASV464","ASV464",0.198394222744225,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Dorea",NA
+"ASV465","ASV465",0.327801155085942,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV469","ASV469",0.0327975646298111,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV472","ASV472",0.452340646283489,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV473","ASV473",0.0624398713994497,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV475","ASV475",0.362010339002572,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV476","ASV476",0.69909761549681,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV477","ASV477",0.56454349150686,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV479","ASV479",0.00236822497119304,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Anaerotruncus",NA
+"ASV480","ASV480",0.00523760325175315,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV481","ASV481",0.22359730015559,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV483","ASV483",0.00277030998507999,"Bacteria","Firmicutes","Clostridia","Eubacteriales","Anaerofustaceae","Anaerofustis",NA
+"ASV485","ASV485",0.376427987852207,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV486","ASV486",0.00490791393918888,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Papillibacter",NA
+"ASV488","ASV488",0.454621856395292,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV492","ASV492",0.760707473706566,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV494","ASV494",0.00355054516873077,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Anaerotruncus",NA
+"ASV495","ASV495",0.526069274038788,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV497","ASV497",0.017965506604976,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV500","ASV500",0.0857278237520633,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV504","ASV504",0.0713675932050472,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV507","ASV507",0.625231089516091,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV508","ASV508",0.0315024090147173,"Bacteria","Firmicutes","Clostridia","Christensenellales","Christensenellaceae",NA,NA
+"ASV509","ASV509",0.0496787511933031,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV512","ASV512",0.0264335796761085,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV515","ASV515",0.361001536685237,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales","Muribaculaceae","Muribaculum",NA
+"ASV517","ASV517",0.010882218663789,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV522","ASV522",0.0266259433586237,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV524","ASV524",0.986068465703402,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","[Eubacterium] siraeum group",NA
+"ASV525","ASV525",0.41904909180564,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales",NA,NA,NA
+"ASV526","ASV526",0.423236633524196,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Papillibacter",NA
+"ASV530","ASV530",0.28652439603486,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV535","ASV535",0.38754997816178,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales",NA,NA,NA
+"ASV536","ASV536",0.589202390550687,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV537","ASV537",0.0160193044257804,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV538","ASV538",0.0589919924967768,"Bacteria","Firmicutes","Clostridia","Christensenellales","Christensenellaceae","Christensenellaceae R-7 group",NA
+"ASV539","ASV539",0.354975997365326,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales",NA,NA,NA
+"ASV542","ASV542",0.856891172334998,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","UBA1819",NA
+"ASV544","ASV544",0.187289642518194,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV545","ASV545",0.595710318618814,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV547","ASV547",0.177597442454825,"Bacteria","Firmicutes","Clostridia","Christensenellales","Christensenellaceae","Christensenellaceae R-7 group",NA
+"ASV549","ASV549",0.751370981165257,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV551","ASV551",0.0615180291441174,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV553","ASV553",0.467177368519943,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV558","ASV558",0.814091764474244,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV561","ASV561",0.0169960207630361,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","[Eubacterium] brachy group",NA
+"ASV563","ASV563",0.0547566850436149,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV564","ASV564",0.0204783918416562,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV565","ASV565",0.677549880355943,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV566","ASV566",0.15627010003662,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV570","ASV570",0.423236633524196,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV572","ASV572",0.699953840599151,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV573","ASV573",0.00520271446545362,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV579","ASV579",0.146675155894345,"Bacteria","Firmicutes",NA,NA,NA,NA,NA
+"ASV580","ASV580",0.483034685435219,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV583","ASV583",0.000165669872260965,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Butyricicoccaceae","Butyricicoccus",NA
+"ASV586","ASV586",0.862381495517492,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Blautia",NA
+"ASV588","ASV588",0.0133949808365426,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV591","ASV591",0.523236952898159,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV593","ASV593",0.00506840514195372,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","GCA-900066575",NA
+"ASV594","ASV594",0.0195190876039392,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV596","ASV596",0.339692519263054,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV597","ASV597",0.00536455449916284,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV600","ASV600",0.0230015475773397,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Marvinbryantia",NA
+"ASV601","ASV601",0.00556238841867362,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV603","ASV603",0.198013842056226,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Coriobacteriales Incertae Sedis",NA,NA
+"ASV606","ASV606",0.0025440636124564,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV607","ASV607",0.00849422013166723,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV608","ASV608",0.177869271347221,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Roseburia",NA
+"ASV609","ASV609",0.160266417056884,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV611","ASV611",0.634540878412141,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV614","ASV614",0.172409170182626,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV615","ASV615",0.261926569547037,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV616","ASV616",0.599649573961736,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales","Muribaculaceae",NA,NA
+"ASV620","ASV620",0.227005402363525,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Hungateiclostridiaceae","Ruminiclostridium",NA
+"ASV625","ASV625",0.423148435341352,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","GCA-900066575",NA
+"ASV626","ASV626",0.753917468054114,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV627","ASV627",0.530014740733171,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales","Muribaculaceae",NA,NA
+"ASV628","ASV628",0.0110701896859466,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV631","ASV631",0.217925988189509,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV632","ASV632",0.0208858014610522,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales","Muribaculaceae",NA,NA
+"ASV639","ASV639",0.206225757231665,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV640","ASV640",0.423236633524196,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV645","ASV645",0.00716612646640646,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","[Eubacterium] brachy group",NA
+"ASV646","ASV646",0.00504521971573901,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","[Eubacterium] brachy group",NA
+"ASV652","ASV652",0.0933036449453953,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-007",NA
+"ASV656","ASV656",0.165082422013991,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV657","ASV657",0.0722685666502674,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV658","ASV658",0.0150857616943727,"Bacteria","Firmicutes","Bacilli","RF39",NA,NA,NA
+"ASV660","ASV660",0.134515895172612,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Defluviitaleaceae","Defluviitaleaceae UCG-011",NA
+"ASV661","ASV661",0.0470175063308695,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV670","ASV670",0.0455852143639938,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","GCA-900066575",NA
+"ASV671","ASV671",0.372567210440417,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales",NA,NA,NA
+"ASV680","ASV680",0.0176020577758106,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales",NA,NA,NA
+"ASV683","ASV683",0.198431385965813,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV690","ASV690",0.124881171851105,"Bacteria","Firmicutes","Clostridia","Caldicoprobacterales","Caldicoprobacteraceae","Caldicoprobacter",NA
+"ASV691","ASV691",0.164926127954704,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","UBA1819",NA
+"ASV692","ASV692",0.0196612130006329,"Bacteria","Actinobacteriota","Actinobacteria","Micrococcales","Dermabacteraceae","Brachybacterium",NA
+"ASV693","ASV693",0.0455852143639938,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Oscillibacter",NA
+"ASV698","ASV698",0.486265138204523,"Bacteria","Firmicutes","Bacilli","RF39",NA,NA,NA
+"ASV701","ASV701",0.0139357494685286,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV703","ASV703",0.0284398241518983,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV712","ASV712",0.0327154865807192,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV713","ASV713",0.518381892380472,"Bacteria","Firmicutes","Clostridia","Clostridia vadinBB60 group",NA,NA,NA
+"ASV714","ASV714",0.00443880599735558,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae UCG-001",NA
+"ASV717","ASV717",0.02545590739318,"Bacteria","Firmicutes","Clostridia","Clostridia UCG-014",NA,NA,NA
+"ASV718","ASV718",0.809581563950095,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV719","ASV719",0.00294823876460326,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","[Eubacterium] ventriosum group",NA
+"ASV721","ASV721",0.0317958662644307,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV724","ASV724",0.00151340122938703,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Ruminococcus",NA
+"ASV731","ASV731",0.0916448623650994,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV736","ASV736",0.0358140356436315,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV747","ASV747",0.243180772839641,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","Family XIII AD3011 group",NA
+"ASV750","ASV750",0.37868728018821,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV752","ASV752",0.404551930510042,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV753","ASV753",0.248179560272739,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnoclostridium",NA
+"ASV754","ASV754",0.13601342684849,"Bacteria","Firmicutes","Clostridia","Monoglobales","Monoglobaceae","Monoglobus",NA
+"ASV755","ASV755",0.0178780408998807,"Bacteria","Firmicutes","Clostridia","Oscillospirales","UCG-010",NA,NA
+"ASV763","ASV763",0.00181034307786698,"Bacteria","Bacteroidota","Bacteroidia","Bacteroidales","Muribaculaceae",NA,NA
+"ASV782","ASV782",0.0196612130006329,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV784","ASV784",0.0455852143639938,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Colidextribacter",NA
+"ASV792","ASV792",0.00864747131622234,"Bacteria","Firmicutes","Clostridia","Christensenellales","Christensenellaceae",NA,NA
+"ASV798","ASV798",0.00848187641237497,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","A2",NA
+"ASV811","ASV811",0.0274865840138198,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV819","ASV819",0.00351152395792431,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV837","ASV837",0.188050348442905,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV843","ASV843",0.0616854525971486,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Anaerotruncus",NA
+"ASV849","ASV849",0.283322628608806,"Bacteria","Actinobacteriota","Coriobacteriia","Coriobacteriales","Eggerthellaceae","Enterorhabdus",NA
+"ASV851","ASV851",0.640119395583322,"Bacteria","Firmicutes","Clostridia",NA,NA,NA,NA
+"ASV856","ASV856",0.328135696754558,"Bacteria","Firmicutes","Clostridia",NA,NA,NA,NA
+"ASV858","ASV858",0.00948147279583389,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV866","ASV866",0.0010650617407586,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Acetatifactor",NA
+"ASV869","ASV869",0.0214363993197159,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",NA,NA
+"ASV874","ASV874",0.0137773608592868,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Harryflintia",NA
+"ASV876","ASV876",0.63407162085485,"Bacteria","Firmicutes","Bacilli","Erysipelotrichales","Erysipelotrichaceae","Turicibacter",NA
+"ASV887","ASV887",0.374344341816243,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Harryflintia",NA
+"ASV947","ASV947",0.688439027435199,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV955","ASV955",0.683897060555267,"Bacteria","Firmicutes","Clostridia","Peptostreptococcales-Tissierellales","Anaerovoracaceae","Family XIII AD3011 group",NA
+"ASV968","ASV968",0.0333213874891857,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","Intestinimonas",NA
+"ASV1023","ASV1023",0.227549463943939,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
+"ASV1024","ASV1024",0.0358167400043454,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV1063","ASV1063",0.0284660905308133,"Bacteria","Firmicutes","Clostridia","Oscillospirales","[Eubacterium] coprostanoligenes group",NA,NA
+"ASV1136","ASV1136",0.0589919924967768,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV1269","ASV1269",0.0133715079301922,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Tuzzerella",NA
+"ASV1355","ASV1355",0.142763063947603,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae","Incertae Sedis",NA
+"ASV1392","ASV1392",0.336813690840941,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae","UCG-005",NA
+"ASV1420","ASV1420",0.00351152395792431,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",NA,NA
+"ASV1617","ASV1617",0.0531987866527026,"Bacteria","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae","Lachnospiraceae NK4A136 group",NA
+"ASV1620","ASV1620",0.0399470642855214,"Bacteria","Firmicutes","Clostridia","Oscillospirales","Oscillospiraceae",NA,NA
