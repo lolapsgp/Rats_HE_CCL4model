@@ -303,3 +303,100 @@ View(sumglm2[["uni.p"]])
 write.csv(cbind(as.data.frame(sumglm2[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_binomialmodel_mvabund_notransforms_genus")
 ```
 
+#Linear model using ZicoSeq
+```{r ZicoSeq}
+library(GUniFrac)
+#We take the one before removing the zeros because the data is expected to have lots of zeros
+ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+comm <- as.matrix(as.data.frame(t(otu_table(ps_2))))
+metadata <- as.data.frame(metadata)
+rownames(metadata)<-metadata$SampleID
+meta.dat <- metadata
+meta.dat
+ZicoSeq.obj <- ZicoSeq(meta.dat = meta.dat, feature.dat = as.matrix(t(comm)), 
+                       grp.name = 'Group', adj.name = 'Batch', feature.dat.type = "count",
+                       # Filter to remove rare taxa
+                       prev.filter = 0.2, mean.abund.filter = 0,  min.prop = 0, 
+                       # Winsorization to replace outliers. I dont think it is the best practice, ask Victor
+                       is.winsor = FALSE, outlier.pct = 0.03, winsor.end = 'top',
+                       # Posterior sampling 
+                       is.post.sample = TRUE, post.sample.no = 25, 
+                       # Use the square-root transformation
+                       link.func = list(function (x) x^0.5), stats.combine.func = max,
+                       # Permutation-based multiple testing correction
+                       perm.no = 999,  strata = NULL, 
+                       # Reference-based multiple stage normalization
+                       ref.pct = 0.5, stage.no = 6, excl.pct = 0.2,
+                       # Family-wise error rate control
+                       is.fwer = TRUE, verbose = TRUE, return.feature.dat = T)
+ZicoSeq.plot(ZicoSeq.obj, meta.dat, pvalue.type = 'p.adj.fdr', cutoff = 0.1, text.size = 10, out.dir = NULL, width = 10, height = 6)
+
+ZicoSeq.obj[["p.adj.fwer"]]
+write.csv(as.data.frame(ZicoSeq.obj[["p.adj.fwer"]]), "ZicoSeq_ASVs_not_removingZeros")
+```
+
+```{r ZicoSeq without zeros}
+library(GUniFrac)
+#We take the one before removing the zeros because the data is expected to have lots of zeros
+ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
+comm <- as.matrix(as.data.frame(t(otu_table(ps_0))))
+metadata <- as.data.frame(metadata)
+rownames(metadata)<-metadata$SampleID
+meta.dat <- metadata
+meta.dat
+ZicoSeq.obj <- ZicoSeq(meta.dat = meta.dat, feature.dat = as.matrix(t(comm)), 
+                       grp.name = 'Group', adj.name = 'Batch', feature.dat.type = "count",
+                       # Filter to remove rare taxa
+                       prev.filter = 0.2, mean.abund.filter = 0,  min.prop = 0, 
+                       # Winsorization to replace outliers. I dont think it is the best practice, ask Victor
+                       is.winsor = FALSE, outlier.pct = 0.03, winsor.end = 'top',
+                       # Posterior sampling 
+                       is.post.sample = TRUE, post.sample.no = 25, 
+                       # Use the square-root transformation
+                       link.func = list(function (x) x^0.5), stats.combine.func = max,
+                       # Permutation-based multiple testing correction
+                       perm.no = 999,  strata = NULL, 
+                       # Reference-based multiple stage normalization
+                       ref.pct = 0.5, stage.no = 6, excl.pct = 0.2,
+                       # Family-wise error rate control
+                       is.fwer = TRUE, verbose = TRUE, return.feature.dat = T)
+#This one is better, I do not get the warning about rarefaction
+ZicoSeq.plot(ZicoSeq.obj, meta.dat, pvalue.type = 'p.adj.fdr', cutoff = 0.1, text.size = 10, out.dir = NULL, width = 10, height = 6)
+
+ZicoSeq.obj[["p.adj.fwer"]]
+write.csv(cbind(as.data.frame(ZicoSeq.obj[["p.adj.fwer"]]), as.data.frame(tax_table(ps_0))), "ZicoSeq_ASVs_removingZeros")
+```
+
+#Linear modelling using LOCOM
+```{r LOCOM}
+install.packages(c("Rcpp", "RcppArmadillo", "metap", "utils", "psych", "permute", "parallel", "devtools", "BiocManager"))
+BiocManager::install("BiocParallel")
+devtools::install_github("yijuanhu/LOCOM")
+library(LOCOM)
+
+# loading data
+data("metadata")
+tax_tab<-as.data.frame(tax_table(ps_0))
+otu.table <- as.matrix(as.data.frame(t(otu_table(ps_0))))
+Y <- ifelse(metadata$Antibiotic == "Yes", 0, 1)
+C <- data.matrix(model.matrix(Y ~ metadata$Batch + metadata$Treated_CCL - 1))[, -1]
+
+# running locom
+res <- locom(otu.table = otu.table, Y = Y, C = C[, 1], fdr.nominal = 0.1, seed = 1, adjustment = "Sandev", n.cores = 4)
+
+# summarizing results
+# ordering the detected OTUs by their p-values. If no OTU is detected, we can still provide a summary table for
+# the top (e.g., 10) OTUs by re-defining o = order(res$p.otu)[1:10]
+w <- match(res$detected.otu, colnames(res$p.otu))
+o <- w[order(res$p.otu[w])]
+
+summary.table <- data.frame(otu.name = colnames(res$p.otu)[o],
+                            mean.freq = colMeans(otu.table/rowSums(otu.table))[o],
+                            prop.presence = prop.presence[o],
+                            p.value = signif(res$p.otu[o], 3),
+                            q.value = signif(res$q.otu[o], 3),
+                            effect.size = signif(res$effect.size[o], 3),
+                            otu.tax = tax_tab[as.numeric(colnames(res$p.otu)[o]) + 1],
+                            row.names = NULL)
+summary.table
+```
