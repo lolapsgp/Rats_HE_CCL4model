@@ -42,7 +42,7 @@ BC_dist<- phyloseq::distance(ps_0, method="bray", weighted=T)
 ordination<- ordinate(ps_0,
                       method="PCoA", distance= BC_dist)
 #Adonis2
-vegan::adonis2(BC_dist~ Group + Batch , permutations = 999, data = metadata, na.action = F)
+vegan::adonis(BC_dist~ Group + Batch , permutations = 999, data = metadata, na.action = F)
 ```
 
 ##Wilcoxon & Welch test using transformed data
@@ -87,7 +87,7 @@ write.csv(as.data.frame(pvalue.wilcoxon.adjusted), "Wilcocxon_ccl4+rifvsctr_genu
 write.csv(as.data.frame(pvalue.welch.adjusted), "Welch_ccl4+rifvsctr_genus")
 
 #Coin. Bloking Batch.
-####Wilcoxon test. Using non-transformed data(relative abundances).
+####Wilcoxon test. Using relative abundances.
 ```{r Wilcox }
 library("coin")
 #Wilcoxon
@@ -96,7 +96,7 @@ otu <- abundances(pseq.rel)
 hist(otu, 113)
 
 set.seed(321)
-ps.t<- pseq.rel %>% subset_samples(Group %in% c("ccl4+rif", "ccl4")) %>% tax_glom(taxrank = 'Genus')
+ps.t<- pseq.rel %>% subset_samples(Group %in% c("ctr", "ccl4")) %>% tax_glom(taxrank = 'Genus')
 test.taxa <- taxa(ps.t)
 pvalue_wilcoxon <- c()
 foldchange <- c()
@@ -118,7 +118,7 @@ for(i in 1:length(pvalue_wilcoxon))
 }
 
 rownames(pvalues_wilcoxcoin)<- pvalues_wilcoxcoin$`names(pvalue_wilcoxon[i])`
-write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t))), "Wilcoxcoin_ccl4vsccl4+rif_genus")
+write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t))), "Wilcoxcoin_ctrvsccl4_genus")
 ```
 write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4+rifvsctr_genus")
 write.csv(as.data.frame(pvalues_wilcoxcoin), "Wilcoxcoin_ccl4vsctr_genus")
@@ -199,7 +199,7 @@ write.csv(cbind(as.data.frame(pvalues_kruskalcoin), as.data.frame(tax_table(ps.t
 ```{r Wilcox }
 library("coin")
 #Wilcoxon
-pseq.rel <- microbiome::transform(ps_0, "Z")
+pseq.rel <- microbiome::transform(ps_0, "clr")
 otu <- abundances(pseq.rel)
 hist(otu, 113)
 
@@ -232,11 +232,12 @@ write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t)
 ###Graphical representation of ASVs abundance differences
 ```{r Wilcox representez}
 set.seed(321)
-ps.t<- (ps)
+ps.t<- (ps_0)
 df <- data.frame(Abundance = t(abundances(ps.t)),
                  Group = meta(ps.t)$Group)
 
 ##Reorder variables
+data_new<-factor()
 data_new$Group <- factor(df$Group,                 
                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))
 p2 <- df %>%
@@ -284,6 +285,7 @@ ps.t<- tax_glom(ps_0, taxrank = 'Genus')
 obj <- as.data.frame(t(otu_table(ps_0)))
 obj <- mvabund( obj, row.names=rownames(obj), check.rows=FALSE, check.names=TRUE,
          var.names=NULL, neg=FALSE, na.rm=FALSE )
+metadata1<-as.data.frame(metadata)
 metadata1$Group[metadata$Group == 'ctr'] <- '1ccctr'
 metadata1$Group[metadata$Group == 'ctr+rif'] <- '2ccctr+rif'
 metadata1$Group[metadata$Group == 'ccl4'] <- '3ccl4'
@@ -295,9 +297,11 @@ is.mvabund(obj)
 plot.mvabund(obj)
 boxplot.mvabund(obj)
 meanvar.plot(obj)
-glm <-manyglm(obj~(metadata$Treated_CCL) + (metadata$Antibiotic) + metadata$Batch)
+glm <-manyglm(obj~(metadata$Group) + metadata$Batch, family="negative.binomial")
 sumglm <- summary.manyglm(glm, resamp = "montecarlo", p.uni = "adjusted")
-glm2 <-manyglm(obj~(metadata1$Group)+ metadata$Batch)
+View(sumglm[["uni.p"]])
+write.csv(cbind(as.data.frame(sumglm[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_binomialmodel_mvabund_notransforms_genus_vsccl4")
+glm2 <-manyglm(obj~(metadata1$Group)+ metadata1$Batch)
 sumglm2 <- summary.manyglm(glm2, resamp = "montecarlo", p.uni = "adjusted")
 View(sumglm2[["uni.p"]])
 write.csv(cbind(as.data.frame(sumglm2[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_binomialmodel_mvabund_notransforms_genus")

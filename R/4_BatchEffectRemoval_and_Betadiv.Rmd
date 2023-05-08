@@ -61,7 +61,7 @@ text(my_bar, bp+10 , paste("n: ", bp, sep="") ,cex=1) }
 
 ###Filtering: removing zeros
 ```{r Filter}
-logic_z <- data.frame(zeros <= 5)
+logic_z <- data.frame(zeros <= 4)
 logic_z$sum <- rowSums(logic_z)
 rawDada2_Species_f = rawDada2_Species[logic_z$sum >= 1,]
 
@@ -89,7 +89,7 @@ NewTAX <- semi_join(tax_table_0, OTU_data_0, by = join_by(names))
 NewTAX <- subset(NewTAX, select = -c(names))
 OTU_data_0 <- rawDada2_Species[logic_z$sum >= 1,]
 
-OTU = otu_table(OTU_data_0, taxa_are_rows = TRUE)
+OTU = otu_table((OTU_data_0-1), taxa_are_rows = TRUE)
 TAX = tax_table(as.matrix(NewTAX))
 SAMPLE <- sample_data(metadata)
 phylo_tree <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/phylo_tree.rds")
