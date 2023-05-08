@@ -15,12 +15,75 @@ metadata <- read_excel("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4mo
 View(metadata)
 ```
 
+```{r Changing names ASVs}
+library(tidyr)
+library(tibble)
+library(purrr)
+require(phyloseq)
+require(tidyverse)
+require(magrittr)
+
+
+get_latest_annotation <- function(phyloseq_obj) {
+  tax_table <- phyloseq_obj@tax_table %>%
+    as.data.frame() %>%
+    rownames_to_column('ASV') %>%
+    as_tibble() %>%
+    tidyr::gather('Rank', 'Value', -ASV) %>%
+    nest(data = -ASV) %>%
+    mutate(TaxaID = map_chr(data, function(x) {
+      x %>%
+        dplyr::filter(!is.na(Value)) %>%
+        magrittr::use_series(Value) %>%
+        tail(1)
+    })) %>%
+    mutate(TaxaUp = map_chr(data, function(x) {
+      x %>%
+        dplyr::filter(!is.na(Value)) %>%
+        magrittr::use_series(Value) %>%
+        tail(2) %>% head(1)
+    })) %>%
+    mutate(TaxaID = paste(ASV, TaxaID)) %>%
+    dplyr::select(-c(data, TaxaUp))
+  
+  return(tax_table)
+}
+
+##Usage latest_annotations <- get_latest_annotation(phyloseq_obj)
+latest_annotations <- get_latest_annotation(ps_0)
+latest_annotations<-as.data.frame(latest_annotations)
+short_names<-as.data.frame(otu_table(ps_0))
+rownames(short_names)<-latest_annotations$TaxaID
+```
+
+```{r Changing names ASVs long}
+# generate a vector containing the full taxonomy path for all OTUs
+wholetax <- do.call(paste, c(as.data.frame(tax_table(ps_0))
+                             [c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")], 
+                             sep = "__"))  # to distinguish from "_" within tax ranks
+
+# turn the otu_table into a data.frame
+otu_export <- as.data.frame(t(otu_table(ps_0)))
+tmp <- names(otu_export)
+
+# paste wholetax and OTU_ids together
+for(i in 1:length(tmp)){
+    names(tmp)[i] = paste(wholetax[i], tmp[i], sep = "__")
+}
+
+# overwrite old names
+names(otu_export) <- names(tmp)
+otu_export<-t(otu_export)
+
+head(otu_export)[5]
+```
+
 ##MetadeconfoundR
 ```{r MetadeconfoundR heatmaps}
 library(metadeconfoundR)
 library(dplyr)
 
-Meta_Species <- t(as.data.frame(otu_table(ps_0)))
+Meta_Species <- t(as.data.frame(otu_table(ps_0))) #Change otu table by otu_export or short_names to get the names (long or short) in the figure
 
 metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
