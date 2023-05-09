@@ -399,6 +399,31 @@ plot_ordination(ps, ordination, shape= "Group")+
     ylab(paste0("PCo 2 [", round(ordination$values[2,2]*100, digits = 2), "%]"))
 ```
 
+#PCoAs changing aesthetic
+
+```{r Centroid estimation}
+##Bray curtis estimation
+bray_matrix<- ps@otu_table %>%
+  t() %>%
+  as.data.frame() %>%
+  # bray-curtis dissimilarity
+  vegan::vegdist(method = 'bray',
+                 diag = TRUE, upper = TRUE)
+metadata<-as.data.frame(metadata)
+rownames(metadata)<-metadata$SampleID
+Group<-merge(as.data.frame(as.matrix(bray_matrix)), metadata, by="row.names")
+Group<-as.vector(rownames(as.data.frame(as.matrix(bray_matrix))))
+
+df <- metadata
+df<-df[match(Group, df$SampleID),]
+
+## Calculate multivariate dispersion or distance to the centroid
+permdisp <- vegan::betadisper(bray_matrix, df$Group, "centroid")
+
+##Plot
+plot(permdisp, main="PCoA")
+boxplot(permdisp, main="Distance to centroids")
+```
 
 #3D PCoAs
 ```{r PCoA representation after batch effect removal 2}
