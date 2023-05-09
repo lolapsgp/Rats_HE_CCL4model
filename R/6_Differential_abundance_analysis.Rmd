@@ -204,7 +204,7 @@ otu <- abundances(pseq.rel)
 hist(otu, 113)
 
 set.seed(321)
-ps.t<- pseq.rel %>% subset_samples(Group %in% c("ccl4+rif", "ccl4")) %>% tax_glom(taxrank = 'Genus')
+ps.t<- pseq.rel %>% subset_samples(Group %in% c("ctr", "ccl4")) %>% tax_glom(taxrank = 'Genus')
 test.taxa <- taxa(ps.t)
 pvalue_wilcoxon <- c()
 foldchange <- c()
@@ -226,7 +226,7 @@ for(i in 1:length(pvalue_wilcoxon))
 }
 
 rownames(pvalues_wilcoxcoin)<- pvalues_wilcoxcoin$`names(pvalue_wilcoxon[i])`
-write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t))), "Wilcoxcoin_ccl4vsccl4+rif_genus_Ztransform")
+write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t))), "Wilcoxcoin_ctrvsccl4_genus_clrtransform")
 ```
 
 ###Graphical representation of ASVs abundance differences
