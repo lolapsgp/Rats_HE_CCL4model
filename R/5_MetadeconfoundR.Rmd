@@ -82,10 +82,14 @@ head(otu_export)[5]
 ```{r MetadeconfoundR heatmaps}
 library(metadeconfoundR)
 library(dplyr)
+ps.rel<-microbiome::transform(ps_0, "compositional")
+latest_annotations <- get_latest_annotation(ps.rel)
+latest_annotations<-as.data.frame(latest_annotations)
+short_names<-as.data.frame(otu_table(ps.rel))
+rownames(short_names)<-latest_annotations$TaxaID
+Meta_Species <- t(short_names) 
 
-Meta_Species <- t(as.data.frame(otu_table(ps_0))) #Change otu table by otu_export or short_names to get the names (long or short) in the figure
-
-metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5))
+metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
 metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
