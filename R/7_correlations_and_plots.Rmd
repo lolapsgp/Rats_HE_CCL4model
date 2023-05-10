@@ -298,95 +298,100 @@ metadata %>%
     xlab("")  
 ```
 
-#HeatMaps of significant taxa
-###Coin
-Dif abundance coin genus
-```{r Heatmap 1}
-library("RColorBrewer")
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ccl4+rif", "ccl4"))
-matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))
-matrix_2 <- subset(t(matrix_1), select = c("ASV483", "ASV114", "ASV208", "ASV115", "ASV134", "ASV583", "ASV127", "ASV226", "ASV19", "ASV252", "ASV274", "ASV866", "ASV367", "ASV719", "ASV6", "ASV462", "ASV109", "ASV359", "ASV298", "ASV690"))
-
-metadata_sub <- data.frame(sample_data(ps_0))
-matrix <- t(matrix_2)
-
-
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Set1")[my_group])
-colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ccl4+rif vs ccl4")
-
-
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row", xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ccl4+rif vs ccl4")
+#Boxplots metadata 
+```{r Boxplots metadata}
+sample_data(ps_0)$Read_depth <- sample_sums(ps_0)
+ps.t<- microbiome::transform(ps_0, "identity")
+#Sequencing Depth
+as.data.frame(meta(ps.t)) %>%
+    arrange() %>%
+    mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+    ggplot( aes(x=Group, y=Read_depth)) + geom_boxplot() +
+    theme(axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+    xlab("")
 ```
 
-Dif abundance coin genus
-```{r Heatmap 2}
-library("RColorBrewer")
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ctr", "ccl4"))
-matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))
-matrix_2 <- subset(t(matrix_1), select = c("ASV358", "ASV583", "ASV18", "ASV127", "ASV58", "ASV213"))
+#Abundance Barplots
+###Phylum
+```{r Barplots Phylum}
+ps.rel = transform_sample_counts(ps_0, function(x) x/sum(x)*100)
+# agglomerate taxa
+glom <- tax_glom(ps.rel, taxrank = 'Phylum', NArm = FALSE)
+ps.melt <- psmelt(glom)
+# change to character for easy-adjusted level
+ps.melt$Phylum <- as.character(ps.melt$Phylum)
+ps.melt <- ps.melt %>%
+    group_by(Group, Phylum) %>%
+    mutate(median=median(Abundance))
 
- metadata_sub <- data.frame(sample_data(ps_0))
- matrix <- t(matrix_2)
- 
+#to get the same rows together
+ps.melt_sum <- ps.melt %>%
+    group_by(Sample,Group,Phylum) %>%
+    summarise(Abundance=sum(Abundance))%>%
+    arrange(Group) %>%
+    mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")))
 
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Blues")[my_group])
-colMain <- colorRampPalette(brewer.pal(2, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ctr vs ccl4")
- 
- 
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row", xlab="SampleID", ylab="ASV", main="
-        Dif abundance coin genus ctr vs ccl4")
+ggplot(ps.melt_sum, aes(x = Sample, y = Abundance, fill = Phylum)) + 
+    geom_bar(stat = "identity", aes(fill=Phylum)) + 
+    labs(x="", y="%") +
+    facet_wrap(~Group, scales= "free_x", nrow=1) +
+    theme_classic() + 
+    theme(strip.background = element_blank(), 
+          axis.text.x.bottom = element_text(angle = -90))
 ```
 
+###Order
+```{r Barplots Order}
+ps.rel = transform_sample_counts(ps_0, function(x) x/sum(x)*100)
+# agglomerate taxa
+glom <- tax_glom(ps.rel, taxrank = 'Order', NArm = FALSE)
+ps.melt <- psmelt(glom)
+# change to character for easy-adjusted level
+ps.melt$Order <- as.character(ps.melt$Order)
+ps.melt <- ps.melt %>%
+    group_by(Group, Order) %>%
+    mutate(median=median(Abundance))
 
-###mvabund
-Dif abundance mvabund ASVs
-```{r Heatmap 3}
-library(readxl)
-DAA_binomialmodel_mvabund_notransforms_ASVs <- read_excel("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dif_abundance_with_ps/mvabund/DAA_binomialmodel_mvabund_notransforms_ASVs.xlsx", 
-    sheet = "ctrvsccl4")
-View(DAA_binomialmodel_mvabund_notransforms_ASVs)  
+#to get the same rows together
+ps.melt_sum <- ps.melt %>%
+    group_by(Sample,Group,Order) %>%
+    summarise(Abundance=sum(Abundance))%>%
+    arrange(Group) %>%
+    mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")))
 
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ctr", "ccl4"))
-DAA_binomialmodel_mvabund_notransforms_ASVs<-DAA_binomialmodel_mvabund_notransforms_ASVs %>% as.data.frame() 
-
-rownames(DAA_binomialmodel_mvabund_notransforms_ASVs)<-DAA_binomialmodel_mvabund_notransforms_ASVs$Compared_to_ctr
-matrix_1 <- as.data.frame(cbind(data.frame(otu_table(ps.t)), DAA_binomialmodel_mvabund_notransforms_ASVs))
-matrix_2 <- subset(matrix_1, matrix_1$`metadata1$Group3ccl4`<0.05)
-matrix_3 <- as.matrix(subset(matrix_2, select = -c(`metadata1$Group3ccl4`, `metadata$BatchT7`, Species, Genus, Family, Order, Class, Phylum, Kingdom)))
-
-matrix <- matrix_3
- 
-library("RColorBrewer")
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Set1")[my_group])
-colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = my_group, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance mvabund ASV ctr vs ccl4")
+ggplot(ps.melt_sum, aes(x = Sample, y = Abundance, fill = Order)) + 
+    geom_bar(stat = "identity", aes(fill=Order)) + 
+    labs(x="", y="%") +
+    facet_wrap(~Group, scales= "free_x", nrow=1) +
+    theme_classic() + 
+    theme(strip.background = element_blank(), 
+          axis.text.x.bottom = element_text(angle = -90))
 ```
 
-Dif abundance mvabund ASVs
-```{r Heatmap 4}
-library(readxl)
-DAA_binomialmodel_mvabund_notransforms_ASVs <- read_excel("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dif_abundance_with_ps/mvabund/DAA_binomialmodel_mvabund_notransforms_ASVs.xlsx", 
-    sheet = "ccl4vsccl4+rif")
-View(DAA_binomialmodel_mvabund_notransforms_ASVs) 
+###Family
+```{r Barplots Family}
+ps.rel = transform_sample_counts(ps_0, function(x) x/sum(x)*100)
+# agglomerate taxa
+glom <- tax_glom(ps.rel, taxrank = 'Family', NArm = FALSE)
+ps.melt <- psmelt(glom)
+# change to character for easy-adjusted level
+ps.melt$Family <- as.character(ps.melt$Family)
+ps.melt <- ps.melt %>%
+    group_by(Group, Family) %>%
+    mutate(median=median(Abundance))
 
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ccl4+rif", "ccl4"))
-DAA_binomialmodel_mvabund_notransforms_ASVs<-DAA_binomialmodel_mvabund_notransforms_ASVs %>% as.data.frame() 
+#to get the same rows together
+ps.melt_sum <- ps.melt %>%
+    group_by(Sample,Group,Family) %>%
+    summarise(Abundance=sum(Abundance))%>%
+    arrange(Group) %>%
+    mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")))
 
-rownames(DAA_binomialmodel_mvabund_notransforms_ASVs)<-DAA_binomialmodel_mvabund_notransforms_ASVs$Compared_to_ctr
-matrix_1 <- as.data.frame(cbind(data.frame(otu_table(ps.t)), DAA_binomialmodel_mvabund_notransforms_ASVs))
-matrix_2 <- subset(matrix_1, matrix_1$`metadata$Groupccl4+rif`<0.05)
-matrix_3 <- as.matrix(subset(matrix_2, select = -c(`metadata$Groupccl4+rif`, `metadata$BatchT7`, Species, Genus, Family, Order, Class, Phylum, Kingdom, `Compared_to_ccl4`)))
-
-matrix <- matrix_3
- 
-library("RColorBrewer")
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Set1")[my_group])
-colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = my_group, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance mvabund ASV ccl4+rif vs ccl4")
+ggplot(ps.melt_sum, aes(x = Sample, y = Abundance, fill = Family)) + 
+    geom_bar(stat = "identity", aes(fill=Family)) + 
+    labs(x="", y="%") +
+    facet_wrap(~Group, scales= "free_x", nrow=1) +
+    theme_classic() + 
+    theme(strip.background = element_blank(), 
+          axis.text.x.bottom = element_text(angle = -90))
 ```

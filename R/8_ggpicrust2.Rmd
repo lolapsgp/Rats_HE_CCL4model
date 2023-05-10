@@ -1,0 +1,10 @@
+---
+title: "8_ggpicrust2"
+output: html_document
+date: "2023-05-10"
+---
+
+```{r setup, include=FALSE}
+devtools::install_github('cafferychen777/ggpicrust2')
+```
+

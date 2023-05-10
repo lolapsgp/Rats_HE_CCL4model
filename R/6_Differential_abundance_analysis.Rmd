@@ -87,10 +87,11 @@ write.csv(as.data.frame(pvalue.wilcoxon.adjusted), "Wilcocxon_ccl4+rifvsctr_genu
 write.csv(as.data.frame(pvalue.welch.adjusted), "Welch_ccl4+rifvsctr_genus")
 
 #Coin. Bloking Batch.
-####Wilcoxon test. Using relative abundances.
+####Wilcoxon test. Using row data.
 ```{r Wilcox }
 library("coin")
 #Wilcoxon
+sample_data(ps_0)$Read_depth <- sample_sums(ps_0)
 pseq.rel <- microbiome::transform(ps_0, "identity")
 otu <- abundances(pseq.rel)
 hist(otu, 113)
@@ -107,7 +108,7 @@ for (taxa in test.taxa) {
     
 pvalue_wilcoxon[[taxa]] <- coin::wilcox_test(Abundance ~ Group|Batch, data = df)
 }
-#For getting an object with the pvalues without adjusting
+#For getting an object with the adjusted pvalues 
 pvalues_wilcoxcoin <- data.frame()
 for(i in 1:length(pvalue_wilcoxon))
 {
@@ -229,63 +230,15 @@ rownames(pvalues_wilcoxcoin)<- pvalues_wilcoxcoin$`names(pvalue_wilcoxon[i])`
 write.csv(cbind(as.data.frame(pvalues_wilcoxcoin), as.data.frame(tax_table(ps.t))), "Wilcoxcoin_ctrvsccl4_genus_clrtransform")
 ```
 
-###Graphical representation of ASVs abundance differences
-```{r Wilcox representez}
-set.seed(321)
-ps.t<- (ps_0)
-df <- data.frame(Abundance = t(abundances(ps.t)),
-                 Group = meta(ps.t)$Group)
-
-##Reorder variables
-data_new<-factor()
-data_new$Group <- factor(df$Group,                 
-                         levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))
-p2 <- df %>%
-  mutate(Group = fct_relevel(Group, 
-            "ctr", "ctr+rif", "ccl4", "ccl4+rif")) %>% ggplot(aes(x = Group, y = df$Abundance.ASV1)) +
-    geom_boxplot() +
-    labs(title = "Absolute abundances", subtitle = "ASV1", y = "Abundance")+ theme(plot.title = element_text(size=18), axis.text.x = element_text(size = 14), axis.title = element_text(size = 16))
-
-p2
-```
-
-
-#Top factors
-```{r top factors}
-# samples x species as input
- ps.taxa.sub <- subset_samples(ps_0, Group %in% c("ccl4", "ccl4+rif"))
-pseq.rel <- microbiome::transform(ps.taxa.sub, "identity")
-otu <- abundances(pseq.rel)
-rownames(otu) <- as.character(tax_table(pseq.rel)[, "Genus"])
-rownames(otu) <- gsub("g__", "", rownames(otu))
-meta <- meta(pseq.rel)
-
-library(vegan)
-permanova <- adonis(t(otu) ~ Group,
-               data = meta, permutations=99, method = "horn")
-
-# P-value
-print(as.data.frame(permanova$aov.tab)["Group", "Pr(>F)"])
-
-# Analysis of Variance Table
-dist <- vegdist(t(otu))
-anova(betadisper(dist, meta$Group))
-
-
-coef <- coefficients(permanova)["Group1",]
-top.coef <- coef[rev(order(abs(coef)))[1:30]]
-par(mar = c(3, 14, 2, 1))
-barplot(sort(top.coef), horiz = T, las = 1, main = "Top taxa")
-```
-
 #Glm using mvabund
 ```{r mvabund}
 library(mvabund)
-ps.t<- tax_glom(ps_0, taxrank = 'Genus')
-obj <- as.data.frame(t(otu_table(ps_0)))
+sample_data(ps_0)$Read_depth <- sample_sums(ps_0)
+ps.t<- ps_0 %>% microbiome::transform("identity") %>% tax_glom(taxrank = 'Genus')
+obj <- as.data.frame(t(otu_table(ps.t)))
 obj <- mvabund( obj, row.names=rownames(obj), check.rows=FALSE, check.names=TRUE,
          var.names=NULL, neg=FALSE, na.rm=FALSE )
-metadata1<-as.data.frame(metadata)
+metadata1<-as.data.frame(meta(ps.t))
 metadata1$Group[metadata$Group == 'ctr'] <- '1ccctr'
 metadata1$Group[metadata$Group == 'ctr+rif'] <- '2ccctr+rif'
 metadata1$Group[metadata$Group == 'ccl4'] <- '3ccl4'
@@ -293,21 +246,26 @@ metadata1$Group[metadata$Group == 'ccl4+rif'] <- '4ccl4+rif'
 metadata1<-metadata1 %>%
     arrange((SampleID))
 
-metadata1<-subset(metadata, select = c(SampleID, Group, Batch))
+metadata0<-subset(as.data.frame(meta(ps_0)), select = c(SampleID, Group, Batch, Read_depth))
+metadata0 <-mutate(metadata0, Batch = ifelse(Batch=="T5",1,0))
+
+metadata1<-subset(metadata1, select = c(SampleID, Group, Batch, Read_depth))
 metadata1 <-mutate(metadata1, Batch = ifelse(Batch=="T5",1,0))
 
 is.mvabund(obj)
 plot.mvabund(obj)
 boxplot.mvabund(obj)
 meanvar.plot(obj)
-glm <-manyglm(obj~(metadata$Group)|Batch, family="negative.binomial")
+set.seed(321)
+glm <-manyglm(obj~(metadata0$Group) + (metadata0$Read_depth) + (1|metadata0$Batch), family="negative.binomial")
 sumglm <- summary.manyglm(glm, resamp = "montecarlo", p.uni = "adjusted")
 View(sumglm[["uni.p"]])
-write.csv(cbind(as.data.frame(sumglm[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_binomialmodel_mvabund_notransforms_genus_vsccl4")
-glm2 <-manyglm(obj~(metadata1$Group)|metadata1$Batch, family="negative.binomial")
+glm2 <-manyglm(obj~(metadata1$Group) + (metadata1$Read_depth) + (1|metadata1$Batch), family="negative.binomial")
 sumglm2 <- summary.manyglm(glm2, resamp = "montecarlo", p.uni = "adjusted")
 View(sumglm2[["uni.p"]])
-write.csv(cbind(as.data.frame(sumglm2[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_binomialmodel_mvabund_notransforms_genus")
+
+write.csv(cbind(as.data.frame(sumglm[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_mvabund_notransforms_genus_vsccl4_BlockBatckandAddSeqDepth")
+write.csv(cbind(as.data.frame(sumglm2[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_mvabund_notransforms_genus_BlockBatckandAddSeqDepth")
 ```
 
 #Linear model using ZicoSeq
@@ -406,4 +364,148 @@ summary.table <- data.frame(otu.name = colnames(res$p.otu)[o],
                             otu.tax = tax_tab[as.numeric(colnames(res$p.otu)[o]) + 1],
                             row.names = NULL)
 summary.table
+```
+
+#Top factors
+```{r top factors}
+# samples x species as input
+ ps.taxa.sub <- subset_samples(ps_0, Group %in% c("ccl4", "ccl4+rif"))
+pseq.rel <- microbiome::transform(ps.taxa.sub, "identity")
+otu <- abundances(pseq.rel)
+rownames(otu) <- as.character(tax_table(pseq.rel)[, "Genus"])
+rownames(otu) <- gsub("g__", "", rownames(otu))
+meta <- meta(pseq.rel)
+
+library(vegan)
+permanova <- adonis(t(otu) ~ Group,
+               data = meta, permutations=99, method = "horn")
+
+# P-value
+print(as.data.frame(permanova$aov.tab)["Group", "Pr(>F)"])
+
+# Analysis of Variance Table
+dist <- vegdist(t(otu))
+anova(betadisper(dist, meta$Group))
+
+
+coef <- coefficients(permanova)["Group1",]
+top.coef <- coef[rev(order(abs(coef)))[1:30]]
+par(mar = c(3, 14, 2, 1))
+barplot(sort(top.coef), horiz = T, las = 1, main = "Top taxa")
+```
+
+#Graphical representation of ASVs abundance differences
+```{r Wilcox representez}
+library(tibble)
+library(forcats)
+set.seed(321)
+ps.t<- (ps_0)
+df <- data.frame(Abundance = t(abundances(ps.t)),
+                 Group = meta(ps.t)$Group)
+
+##Reorder variables
+data_new<-factor()
+data_new$Group <- factor(df$Group,                 
+                         levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))
+p2 <- df %>%
+  mutate(Group = fct_relevel(Group, 
+            "ctr", "ctr+rif", "ccl4", "ccl4+rif")) %>% ggplot(aes(x = Group, y = df$Abundance.ASV1)) +
+    geom_boxplot() +
+    labs(title = "Absolute abundances", subtitle = "ASV1", y = "Abundance")+ theme(plot.title = element_text(size=18), axis.text.x = element_text(size = 14), axis.title = element_text(size = 16))
+
+p2
+```
+
+
+#HeatMaps of significant taxa
+###Coin
+Dif abundance coin genus
+```{r Heatmap 1}
+library("RColorBrewer")
+ps.t<- ps_0 %>% subset_samples(Group %in% c("ccl4+rif", "ccl4"))
+matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))
+matrix_2 <- subset(t(matrix_1), select = c("ASV483", "ASV114", "ASV208", "ASV115", "ASV134", "ASV583", "ASV127", "ASV226", "ASV19", "ASV252", "ASV274", "ASV866", "ASV367", "ASV719", "ASV6", "ASV462", "ASV109", "ASV359", "ASV298", "ASV690"))
+
+metadata_sub <- data.frame(sample_data(ps_0))
+matrix <- t(matrix_2)
+
+
+my_group <- as.numeric(as.factor(meta(ps.t)$Group))
+colSide <- t(brewer.pal(8, "Set1")[my_group])
+colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
+heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ccl4+rif vs ccl4")
+
+
+heatmap(matrix, Colv = NA, Rowv = NA, scale="row", xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ccl4+rif vs ccl4")
+```
+
+Dif abundance coin genus
+```{r Heatmap 2}
+library("RColorBrewer")
+ps.t<- ps_0 %>% subset_samples(Group %in% c("ctr", "ccl4"))
+matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))
+matrix_2 <- subset(t(matrix_1), select = c("ASV358", "ASV583", "ASV18", "ASV127", "ASV58", "ASV213"))
+
+ metadata_sub <- data.frame(sample_data(ps_0))
+ matrix <- t(matrix_2)
+ 
+
+my_group <- as.numeric(as.factor(meta(ps.t)$Group))
+colSide <- t(brewer.pal(8, "Blues")[my_group])
+colMain <- colorRampPalette(brewer.pal(2, "Blues"))(16)
+heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ctr vs ccl4")
+ 
+ 
+heatmap(matrix, Colv = NA, Rowv = NA, scale="row", xlab="SampleID", ylab="ASV", main="
+        Dif abundance coin genus ctr vs ccl4")
+```
+
+
+###mvabund
+Dif abundance mvabund ASVs
+```{r Heatmap 3}
+library(readxl)
+DAA_binomialmodel_mvabund_notransforms_ASVs <- read_excel("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dif_abundance_with_ps/mvabund/DAA_binomialmodel_mvabund_notransforms_ASVs.xlsx", 
+    sheet = "ctrvsccl4")
+View(DAA_binomialmodel_mvabund_notransforms_ASVs)  
+
+ps.t<- ps_0 %>% subset_samples(Group %in% c("ctr", "ccl4"))
+DAA_binomialmodel_mvabund_notransforms_ASVs<-DAA_binomialmodel_mvabund_notransforms_ASVs %>% as.data.frame() 
+
+rownames(DAA_binomialmodel_mvabund_notransforms_ASVs)<-DAA_binomialmodel_mvabund_notransforms_ASVs$Compared_to_ctr
+matrix_1 <- as.data.frame(cbind(data.frame(otu_table(ps.t)), DAA_binomialmodel_mvabund_notransforms_ASVs))
+matrix_2 <- subset(matrix_1, matrix_1$`metadata1$Group3ccl4`<0.05)
+matrix_3 <- as.matrix(subset(matrix_2, select = -c(`metadata1$Group3ccl4`, `metadata$BatchT7`, Species, Genus, Family, Order, Class, Phylum, Kingdom)))
+
+matrix <- matrix_3
+ 
+library("RColorBrewer")
+my_group <- as.numeric(as.factor(meta(ps.t)$Group))
+colSide <- t(brewer.pal(8, "Set1")[my_group])
+colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
+heatmap(matrix, Colv = NA, Rowv = my_group, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance mvabund ASV ctr vs ccl4")
+```
+
+Dif abundance mvabund ASVs
+```{r Heatmap 4}
+library(readxl)
+DAA_binomialmodel_mvabund_notransforms_ASVs <- read_excel("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dif_abundance_with_ps/mvabund/DAA_binomialmodel_mvabund_notransforms_ASVs.xlsx", 
+    sheet = "ccl4vsccl4+rif")
+View(DAA_binomialmodel_mvabund_notransforms_ASVs) 
+
+ps.t<- ps_0 %>% subset_samples(Group %in% c("ccl4+rif", "ccl4"))
+DAA_binomialmodel_mvabund_notransforms_ASVs<-DAA_binomialmodel_mvabund_notransforms_ASVs %>% as.data.frame() 
+
+rownames(DAA_binomialmodel_mvabund_notransforms_ASVs)<-DAA_binomialmodel_mvabund_notransforms_ASVs$Compared_to_ctr
+matrix_1 <- as.data.frame(cbind(data.frame(otu_table(ps.t)), DAA_binomialmodel_mvabund_notransforms_ASVs))
+matrix_2 <- subset(matrix_1, matrix_1$`metadata$Groupccl4+rif`<0.05)
+matrix_3 <- as.matrix(subset(matrix_2, select = -c(`metadata$Groupccl4+rif`, `metadata$BatchT7`, Species, Genus, Family, Order, Class, Phylum, Kingdom, `Compared_to_ccl4`)))
+
+matrix <- matrix_3
+ 
+library("RColorBrewer")
+my_group <- as.numeric(as.factor(meta(ps.t)$Group))
+colSide <- t(brewer.pal(8, "Set1")[my_group])
+colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
+heatmap(matrix, Colv = NA, Rowv = my_group, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance mvabund ASV ccl4+rif vs ccl4")
 ```
