@@ -293,11 +293,14 @@ metadata1$Group[metadata$Group == 'ccl4+rif'] <- '4ccl4+rif'
 metadata1<-metadata1 %>%
     arrange((SampleID))
 
+metadata1<-subset(metadata, select = c(SampleID, Group, Batch))
+metadata1 <-mutate(metadata1, Batch = ifelse(Batch=="T5",1,0))
+
 is.mvabund(obj)
 plot.mvabund(obj)
 boxplot.mvabund(obj)
 meanvar.plot(obj)
-glm <-manyglm(obj~(metadata$Group)|metadata$Batch, family="negative.binomial")
+glm <-manyglm(obj~(metadata$Group)|Batch, family="negative.binomial")
 sumglm <- summary.manyglm(glm, resamp = "montecarlo", p.uni = "adjusted")
 View(sumglm[["uni.p"]])
 write.csv(cbind(as.data.frame(sumglm[["uni.p"]]), as.data.frame(tax_table(ps_0))), "DAA_binomialmodel_mvabund_notransforms_genus_vsccl4")
