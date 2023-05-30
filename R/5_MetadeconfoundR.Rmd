@@ -116,8 +116,45 @@ right <- BuildHeatmap(Output2_batch)
 plot(left)
 plot(right)
 saveRDS(Output1, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output1_metadec.Rds")
-saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output2_batch_asRandVar.Rds")
+saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output2_batch_all.Rds")
 
+```
+
+##MetadeconfoundR genus
+```{r MetadeconfoundR heatmaps}
+ps_0_genus <- tax_glom(ps_0, taxrank = 'Genus', NArm = FALSE)
+ps.rel<-microbiome::transform(ps_0_genus, "compositional")
+latest_annotations <- get_latest_annotation(ps.rel)
+latest_annotations<-as.data.frame(latest_annotations)
+short_names<-as.data.frame(otu_table(ps.rel))
+rownames(short_names)<-latest_annotations$TaxaID
+Meta_Species <- t(short_names) 
+
+metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b))
+metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
+metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
+metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
+metadata_R <- as.data.frame(metadata_R)
+rownames(metadata_R) <- (metadata$SampleID)
+
+# check correct ordering
+all(rownames(metadata_R) == rownames(Meta_Species))
+## [1] TRUE
+all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
+## [1] TRUE
+Meta_Species<- as.data.frame(Meta_Species)
+                                 
+Output2_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
+                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                                                                        c("Batch")))
+
+View(Output2_batch)
+
+
+right <- BuildHeatmap(Output2_batch)
+
+plot(right)
+saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output2_batch_allgenus.Rds")
 ```
 
 ##MetadeconfoundR ctr vs ctr+rif
