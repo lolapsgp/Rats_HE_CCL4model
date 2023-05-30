@@ -14,6 +14,7 @@ Check that variance homogeneity assumptions hold (to ensure the reliability of t
 
 Note the assumption of similar multivariate spread among the groups ie. analogous to variance homogeneity
 ```{r homogeneity}
+ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
 pseq.rel <- microbiome::transform(ps_0, "compositional")
 otu <- abundances(pseq.rel)
 dist <- vegdist(t(otu))

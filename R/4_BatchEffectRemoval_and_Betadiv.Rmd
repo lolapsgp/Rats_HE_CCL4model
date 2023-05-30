@@ -226,11 +226,11 @@ plot(pca$loadings$X[,1], pca$loadings$X[,2], xlab = "Comp1", ylab = "Comp2",
 
 ###Limma package- function: removebatcheffect
 ```{r Batch Correction}
-library(limma)
-y <- removeBatchEffect((log10(rawDada2_Species_f)), batch = metadata$Batch)
-pca = pca(t(y), ncomp = 2, center = T, scale = F)
-plotIndiv(pca, group = metadata$Group, legend = T, title = "log10 + removelima") 
-plotIndiv(pca, group = metadata$Batch, legend = T, title = "log10 + removelima") 
+#library(limma)
+#y <- removeBatchEffect((log10(rawDada2_Species_f)), batch = metadata$Batch)
+#pca = pca(t(y), ncomp = 2, center = T, scale = F)
+#plotIndiv(pca, group = metadata$Group, legend = T, title = "log10 + removelima") 
+#plotIndiv(pca, group = metadata$Batch, legend = T, title = "log10 + removelima") 
 ```
 
 ###ARSyN: MultiBaC package
@@ -399,7 +399,7 @@ plot_ordination(ps, ordination, shape= "Group")+
     ylab(paste0("PCo 2 [", round(ordination$values[2,2]*100, digits = 2), "%]"))
 ```
 
-#PCoAs changing aesthetic
+#PCoAs Centroid estimation
 
 ```{r Centroid estimation}
 ##Bray curtis estimation

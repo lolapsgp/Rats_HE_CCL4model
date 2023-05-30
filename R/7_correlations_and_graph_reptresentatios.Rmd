@@ -3,7 +3,7 @@ title: "7_correlations_with_metadata"
 output: html_document
 date: "2023-05-03"
 ---
-
+Shapiro-test first ti check that the metadata variables have a normal distribution.
 #T-tests
 ```{r Check if there are actual differences}
 newmetadata <- metadata %>%
@@ -53,16 +53,6 @@ t.test(metadata$GLAST~metadata$Antibiotic)
 t.test(metadata$OLM~metadata$Antibiotic)
 t.test(metadata$Learning_index_Rmaze~metadata$Antibiotic)
 t.test(metadata$Ymaze_trialstolearn~metadata$Antibiotic)
-
-kruskal.test(metadata$Average_velocity~metadata$Group)
-kruskal.test(metadata$Stereotipic_Counts~metadata$Group)
-kruskal.test(metadata$Vertcal_Counts~metadata$Group)
-kruskal.test(metadata$Ambulatory_Counts~metadata$Group)
-kruskal.test(metadata$GLT1~metadata$Group)
-kruskal.test(metadata$GLAST~metadata$Group)
-kruskal.test(metadata$OLM~metadata$Group)
-kruskal.test(metadata$Learning_index_Rmaze~metadata$Group)
-kruskal.test(metadata$Ymaze_trialstolearn~metadata$Group)
 
 ```
 
@@ -275,6 +265,7 @@ dev.off()
 
 # Barplots metadata 
 ```{r Barplots metadata }
+library(ggpubr)
 ggplot(metadata, aes(x=Group, y=SCFA_AA)) + 
     geom_bar(stat = "identity")
 
@@ -285,7 +276,7 @@ metadata %>%
     mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
     ggplot( aes(x=Group, y=SCFA_AA)) + geom_bar(stat = "identity") +
     theme() +
-    xlab("")
+    xlab("") 
 
 
 #Cambiando los tamaños

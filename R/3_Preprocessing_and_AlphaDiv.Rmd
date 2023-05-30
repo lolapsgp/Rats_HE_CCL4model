@@ -146,12 +146,70 @@ pFisher
 
 ```{r Alpha Diversity violin shaped}
 library(ggsignif)
- #Fisher
-p <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher")) +
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+
+#Observed 
+pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed")) +
     geom_violin(aes(color = Group), trim = FALSE) +  
-  geom_boxplot(width = 0.2) +
-    geom_point(aes(color = Group)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
+   geom_boxplot(width = 0.2) +
+    geom_point(aes(color = Group, shape = Batch)) +
+theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+      geom_signif(stat="identity",
+               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
+                               y=c(78, 80, 82), annotation=c("NS", " NS ", "*")),
+               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
+   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
+               y_position = 84, tip_length = 0, vjust=0.4) +
+   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
+               y_position = 86, tip_length = 0, vjust=0.4) 
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved 
+
+
+
+ #Shannon
+pShannon <- plot_richness(ps_2_genus, x="Group", measures=c("Shannon")) +
+    geom_violin(aes(color = Group), trim = FALSE) +  
+   geom_boxplot(width = 0.2) +
+    geom_point(aes(color = Group, shape = Batch)) +
+theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+   geom_signif(stat="identity",
+               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
+                               y=c(3.05, 3.13, 3.21), annotation=c("  NS  ", "NS", " NS ")),
+               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation))
+ #Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon 
+ 
+ 
+ #Chao1
+pChao <- plot_richness(ps_2_genus, x="Group", measures=c("Chao1")) +
+    geom_violin(aes(color = Group), trim = FALSE) +  
+   geom_boxplot(width = 0.2) +
+    geom_point(aes(color = Group, shape = Batch)) +
+theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+      geom_signif(stat="identity",
+               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
+                               y=c(78, 80, 82), annotation=c("NS", " NS ", " * ")),
+               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
+   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
+               y_position = 84, tip_length = 0, vjust=0.4) +
+   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
+               y_position = 86, tip_length = 0, vjust=0.4) 
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao  
+
+ #Fisher
+pFisher <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher")) +
+    geom_violin(aes(color = Group), trim = FALSE) +  
+   geom_boxplot(width = 0.2) +
+    geom_point(aes(color = Group, shape = Batch)) +
+theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
     geom_signif(stat="identity",
                 data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
                                 y=c(9.0, 9.20, 9.40), annotation=c("NS", " NS ", "**")),
@@ -163,9 +221,9 @@ theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom =
         axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))
 
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
-p$data$Group <- as.character(p$data$Group)
-p$data$Group <- factor(p$data$Group, levels=newSTorder)
-p
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher
 
 ```
 
