@@ -26,15 +26,15 @@ anova(betadisper(dist, meta$Group))
 ```{r PERMANOVA/ADONIS}
 library(vegan)
 #PERMANOVA/ADONIS
-pseq.rel <- microbiome::transform(ps_0, "compositional")
+ps <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps.Rds")
+pseq.rel <- microbiome::transform(ps, "compositional")
 otu <- abundances(pseq.rel)
 meta <- meta(pseq.rel)
-library(vegan)
-permanova <- adonis(t(otu) ~ Antibiotic + Treated_CCL + Batch,
-                    data = meta, permutations=99, method = "bray")
+permanova <- adonis(t(otu) ~ Batch + Antibiotic + Treated_CCL,
+                    data = meta, permutations=999, method = "bray", by = NULL)
 
 # P-value
-print(as.data.frame(permanova$aov.tab)["Antibiotic", "Pr(>F)"])
+permanova$aov.tab
 
 ```
 
