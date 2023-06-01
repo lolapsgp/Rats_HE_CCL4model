@@ -20,11 +20,8 @@ library(readxl)
 metadata <- read_excel("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/metadata.xlsx")
 metadata<-as.data.frame(metadata)
 rownames(metadata)<-metadata$SampleID
-metadata<-t(metadata)
 metadata<-as.data.frame(metadata)
 View(metadata)
-
-pred_metagenome_unstrat <- read_tsv("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/input/pred_metagenome_unstrat.tsv")
 
 group <- "Group"
 
@@ -41,7 +38,7 @@ daa_results_df_LinDA <-
     group = group,
     daa_method = "LinDA",
     select = NULL,
-    reference = "Control"
+    reference = "ctr"
   )
 
 daa_sub_method_results_df_LinDA <-
@@ -84,3 +81,120 @@ print(pca_plot)
 
 #Using ALDEx2
 ```{r ALDEx2}
+#If you want to analyze kegg pathway abundance instead of ko within the pathway. You should turn ko_to_kegg to TRUE.
+#The kegg pathway typically have the more explainable description.
+#metadata should be tibble.
+library(readr)
+library(ggpicrust2)
+library(tibble)
+library(tidyverse)
+library(ggprism)
+library(patchwork)
+library(readxl)
+metadata <- read_excel("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/metadata.xlsx")
+metadata<-as.data.frame(metadata)
+rownames(metadata)<-metadata$SampleID
+metadata<-as.data.frame(metadata)
+View(metadata)
+
+group <- "Group"
+
+kegg_abundance <-
+  ko2kegg_abundance(
+    "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/input/pred_metagenome_unstrat.tsv")
+
+daa_results_df_ALDEx2 <-
+  pathway_daa(
+    abundance = kegg_abundance,
+    metadata = metadata,
+    group = group,
+    daa_method = "ALDEx2",
+    select = NULL,
+    reference = NULL
+  )
+
+daa_sub_method_results_df_ALDEx2 <-
+  daa_results_df_ALDEx2[daa_results_df_ALDEx2$method == "ALDEx2_Kruskal-Wallace test", ]
+
+daa_annotated_sub_method_results_df_ALDEx2 <-
+  pathway_annotation(pathway = "KO",
+                     daa_results_df = daa_sub_method_results_df_ALDEx2,
+                     ko_to_kegg = TRUE)
+
+saveRDS(daa_results_df_ALDEx2, "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ggpicrust2/daa_results_df_ALDEx2.Rds")
+saveRDS(daa_sub_method_results_df_ALDEx2, "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ggpicrust2/daa_sub_method_results_df_ALDEx2.Rds")
+saveRDS(daa_annotated_sub_method_results_df_ALDEx2, "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ggpicrust2/daa_annotated_sub_method_results_df_ALDEx2.Rds")
+
+
+Group <-
+  metadata$Type # column which you are interested in metadata
+
+daa_results_list_ALDEx2 <-
+  pathway_errorbar(
+    abundance = kegg_abundance,
+    daa_results_df = daa_annotated_sub_method_results_df_LinDA,
+    Group = Group,
+    p_values_threshold = 0.05,
+    order = "pathway_class",
+    select = NULL,
+    ko_to_kegg = TRUE,
+    p_value_bar = TRUE,
+    colors = NULL,
+    x_lab = "pathway_name"
+  )
+```
+
+#Using limma voom
+```{r limma voom}
+#If you want to analyze kegg pathway abundance instead of ko within the pathway. You should turn ko_to_kegg to TRUE.
+#The kegg pathway typically have the more explainable description.
+#metadata should be tibble.
+library(readr)
+library(ggpicrust2)
+library(tibble)
+library(tidyverse)
+library(ggprism)
+library(patchwork)
+library(readxl)
+metadata <- read_excel("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/metadata.xlsx")
+metadata<-as.data.frame(metadata)
+rownames(metadata)<-metadata$SampleID
+metadata<-as.data.frame(metadata)
+View(metadata)
+
+group <- "Group"
+
+kegg_abundance <-
+  ko2kegg_abundance(
+    "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/input/pred_metagenome_unstrat.tsv")
+
+daa_results_df_limma <-
+  pathway_daa(
+    abundance = kegg_abundance,
+    metadata = metadata,
+    group = group,
+    daa_method = "limma voom",
+    select = NULL,
+    reference = "ctr"
+  )
+
+daa_annotated_sub_method_results_df_LinDA <-
+  pathway_annotation(pathway = "KO",
+                     daa_results_df = daa_results_df_limma,
+                     ko_to_kegg = TRUE)
+```
+
+daa_results_df_DESeq2<-
+    pathway_daa(
+        abundance = kegg_abundance,
+        metadata = metadata,
+        group = group,
+        daa_method = "DESeq2",
+        select = NULL,
+        reference = "ctr"
+    )
+
+daa_annotated_sub_method_results_df_DESeq2 <-
+    pathway_annotation(pathway = "KO",
+                       daa_results_df = daa_results_df_DESeq2,
+                       ko_to_kegg = TRUE)
