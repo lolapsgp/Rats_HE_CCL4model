@@ -5,7 +5,8 @@ date: "2023-05-10"
 ---
 
 Differential abundance(DA) analysis plays a major role in PICRUSt2 downstream analysis. pathway_daa() integrates almost all DA methods applicable to the predicted functional profile which there excludes ANCOM and ANCOMBC. It includes ALDEx2(Fernandes et al., 2013), DEseq2(Love et al., 2014), Maaslin2(Mallick et al., 2021), LinDA(Zhou et al., 2022), edgeR(Robinson et al., 2010) , limma voom(Ritchie et al., 2015), metagenomeSeq(Paulson et al., 2013), lefser(Segata et al., 2011).
-#Using LinDA
+#Pathways differential abundance
+###Using LinDA
 ```{r setup, include=FALSE}
 #If you want to analyze kegg pathway abundance instead of ko within the pathway. You should turn ko_to_kegg to TRUE.
 #The kegg pathway typically have the more explainable description.
@@ -79,7 +80,7 @@ pca_plot <- ggpicrust2::pathway_pca((kegg_abundance), metadata, "Type")
 print(pca_plot)
 ```
 
-#Using ALDEx2
+###Using ALDEx2
 ```{r ALDEx2}
 #If you want to analyze kegg pathway abundance instead of ko within the pathway. You should turn ko_to_kegg to TRUE.
 #The kegg pathway typically have the more explainable description.
@@ -144,7 +145,7 @@ daa_results_list_ALDEx2 <-
   )
 ```
 
-#Using limma voom
+###Using limma voom
 ```{r limma voom}
 #If you want to analyze kegg pathway abundance instead of ko within the pathway. You should turn ko_to_kegg to TRUE.
 #The kegg pathway typically have the more explainable description.
@@ -184,17 +185,47 @@ daa_annotated_sub_method_results_df_LinDA <-
                      ko_to_kegg = TRUE)
 ```
 
-daa_results_df_DESeq2<-
-    pathway_daa(
-        abundance = kegg_abundance,
-        metadata = metadata,
-        group = group,
-        daa_method = "DESeq2",
-        select = NULL,
-        reference = "ctr"
-    )
 
-daa_annotated_sub_method_results_df_DESeq2 <-
-    pathway_annotation(pathway = "KO",
-                       daa_results_df = daa_results_df_DESeq2,
-                       ko_to_kegg = TRUE)
+#KO differential abundance
+```{r KO abundance}
+ko_abundance <-
+  read_tsv(
+    "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/input/pred_metagenome_unstrat.tsv")
+
+ko_abundance<-data.frame(ko_abundance)
+rownames(ko_abundance)<- ko_abundance$function.
+ko_abundance<-subset(ko_abundance, select = -c(function.))
+ko_abundance<-ko_abundance[!rowSums(ko_abundance == 0) >= 3, , drop = FALSE]
+
+metadata <- read_excel("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/metadata.xlsx")
+metadata<-as.data.frame(metadata)
+rownames(metadata)<-metadata$SampleID
+metadata<-as.data.frame(metadata)
+View(metadata)
+
+methods <- c("ALDEx2", "DESeq2", "LinDA")
+daa_results_list <- lapply(methods, function(method) {
+  pathway_daa(abundance = ko_abundance, metadata = metadata, group = "Group", daa_method = method, p.adjust = "BH", reference = "ccl4")
+})
+saveRDS(daa_results_list, file = "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/daa_results_list_ko_abundance_Al_DES_Lin")
+
+method_names <- c("ALDEx2_Welch's t test","ALDEx2_Wilcoxon rank test","DESeq2", "LinDA")
+# Compare results across different methods
+comparison_results <- compare_daa_results(daa_results_list = daa_results_list, method_names = method_names)
+
+```
+
+
+#EC differential abundance
+```{r EC abundance}
+metacyc_abundance <-
+  read_tsv(
+    "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/input/EC_metagenome_out/pred_metagenome_unstrat.tsv")
+methods <- c("ALDEx2", "DESeq2", "LinDA")
+daa_results_list <- lapply(methods, function(method) {
+  pathway_daa(abundance = metacyc_abundance %>% column_to_rownames("pathway"), metadata = metadata, group = "Group", daa_method = method, p.adjust = "BH", reference = "ccl4")
+})
+
+method_names <- c("ALDEx2_Welch's t test","ALDEx2_Wilcoxon rank test","DESeq2", "LinDA")
+# Compare results across different methods
+comparison_results <- compare_daa_results(daa_results_list = daa_results_list, method_names = method_names)
