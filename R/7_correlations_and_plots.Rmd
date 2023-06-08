@@ -318,6 +318,21 @@ ggcorr(newmetadata, label = TRUE, label_alpha = TRUE, label_size = 3, angle = 31
 #all metadata
 ggcorr(metadata, label = TRUE, label_alpha = TRUE, label_size = 3, angle = 310, hjust = 0.97)
 
+#correlograms with other function
+newmetadata <- metadata %>%
+    subset(select=-c(SampleID, Group, Week, Batch, Antibiotic, FisabioID, Treated_CCL)) 
+library(corrplot)
+library("Hmisc")
+cor_5 <- rcorr(as.matrix(newmetadata))
+M <- cor_5$r
+p_mat <- cor_5$P
+corrplot(M, type = "upper", tl.col = "darkblue", tl.srt = 45)
+#Crossing the non-significant ones
+corrplot(M, type = "upper", order = "hclust",  tl.col = "darkblue",
+         p.mat = p_mat, sig.level = 0.01)
+
+
+#Boxplots all metadata
 analysisSummary <- metadata %>% 
     mutate(Group = factor(Group, 
                           levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
