@@ -315,6 +315,8 @@ newmetadata <- metadata %>%
     subset(select=c(GAT1, GAT3, OLM, IL_6, IL1_b, TNF_a, IFN_gamma, IL_15, IL_17, IL_10, IL_4, TGF_b, CCL2, CCL5, CCL20, CX3CL1, CCR2, CCR5, CX3CR1, Occludine, Learning_index_Rmaze)) %>% data.frame()
 ggcorr(newmetadata, label = TRUE, label_alpha = TRUE, label_size = 3, angle = 310, hjust = 0.97, low = 'navy', high = 'orange')
 ggcorr(newmetadata, label = TRUE, label_alpha = TRUE, label_size = 3, angle = 310, hjust = 0.97)
+#all metadata
+ggcorr(metadata, label = TRUE, label_alpha = TRUE, label_size = 3, angle = 310, hjust = 0.97)
 
 analysisSummary <- metadata %>% 
     mutate(Group = factor(Group, 
