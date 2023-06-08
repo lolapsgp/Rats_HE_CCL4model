@@ -5,67 +5,175 @@ date: "2023-05-03"
 ---
 
 #T-tests
-```{r Check if there are actual differences}
-newmetadata <- metadata %>%
-    group_by(Antibiotic) %>%
-    filter(!any(Antibiotic == "Yes"))
-    
-t.test(newmetadata$Average_velocity~newmetadata$Treated_CCL)
-t.test(newmetadata$Stereotipic_Counts~newmetadata$Treated_CCL)
-t.test(newmetadata$Vertcal_Counts~newmetadata$Treated_CCL)
-t.test(newmetadata$Ambulatory_Counts~newmetadata$Treated_CCL)
-t.test(newmetadata$GLT1~newmetadata$Treated_CCL)
-t.test(newmetadata$GLAST~newmetadata$Treated_CCL)
-t.test(newmetadata$OLM~newmetadata$Treated_CCL)
-t.test(newmetadata$Learning_index_Rmaze~newmetadata$Treated_CCL)
-t.test(newmetadata$Ymaze_trialstolearn~newmetadata$Treated_CCL)
+```{r Check if there are actual differences Antibiotic all}
+library(repmod)
+library(tidyverse)
+library(readxl)
+metadata <- read_excel("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
+View(metadata)
 
-t.test(metadata$Average_velocity~metadata$Treated_CCL)
-t.test(metadata$Stereotipic_Counts~metadata$Treated_CCL)
-t.test(metadata$Vertcal_Counts~metadata$Treated_CCL)
-t.test(metadata$Ambulatory_Counts~metadata$Treated_CCL)
-t.test(metadata$GLT1~metadata$Treated_CCL)
-t.test(metadata$GLAST~metadata$Treated_CCL)
-t.test(metadata$OLM~metadata$Treated_CCL)
-t.test(metadata$Learning_index_Rmaze~metadata$Treated_CCL)
-t.test(metadata$Ymaze_trialstolearn~metadata$Treated_CCL)
+metadata<-data.frame(metadata)
 
+isVariableParametric <- function(data, variable) {
+  # Perform Shapiro-Wilk test for normality
+  normality_test <- shapiro.test(data[[variable]])
+  
+  # Perform Levene's test for homoscedasticity
+  homoscedasticity_test <- car::leveneTest(data[[variable]], data$Antibiotic)
+  
+  # Check the p-values of both tests
+  normality_p_value <- normality_test$p.value
+  homoscedasticity_p_value <- homoscedasticity_test$Pr[1]
+  
+  # Check if the variable is parametric based on the test results
+  is_parametric <- normality_p_value > 0.05 && homoscedasticity_p_value > 0.05
+  
+  return(is_parametric)
+}
+
+analysisSummary <- metadata %>%
+    subset(select=-c(SampleID, Group, Week, Batch, Treated_CCL, FisabioID)) %>% 
+    gather(key = variable, value = value, -Antibiotic) %>%
+    group_by(variable, Antibiotic) %>% na.omit() %>%
+    summarise(value=list(value)) %>%
+    spread(Antibiotic, value) %>% 
+    group_by(variable)
+
+analysisSummary <- analysisSummary %>%
+    mutate(parametric = isVariableParametric(metadata, variable))
+
+analysisSummary <-analysisSummary %>% mutate(
+    # Save the name of the test for convenient reference later
+    test = case_when(
+        parametric ~ "Welch's t test", TRUE ~ "Wilcoxon test"
+    ),
+    # Run the t-test for parametric variables and Wilcoxon signed rank test for non-parametric ones, save the p-value
+    p_value = case_when(
+        parametric ~ t.test(unlist(Yes), unlist(No))$p.value,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$p.value
+    ),
+    # Run the test again, but now save the effect size
+    statistic = case_when(
+        parametric~ t.test(unlist(Yes), unlist(No))$statistic,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$statistic
+    ),
+)
+
+analysisSummary_ok<-analysisSummary %>% data.frame() %>%
+    subset(select=-c(Yes, No))
+  
+make_csv_table(analysisSummary_ok, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/comparisons_antibiotic", info = "comparisons_antibiotic")
+```
+
+```{r Check if there are actual differences Treated_CCL all}
+analysisSummary_T <- metadata %>%
+    subset(select=-c(SampleID, Group, Week, Batch, Antibiotic, FisabioID)) %>% 
+    gather(key = variable, value = value, -Treated_CCL) %>%
+    group_by(variable, Treated_CCL) %>% na.omit() %>%
+    summarise(value=list(value)) %>%
+    spread(Treated_CCL, value) %>% 
+    group_by(variable)
+
+analysisSummary_T <- analysisSummary_T %>%
+    mutate(parametric = isVariableParametric(metadata, variable))
+
+analysisSummary_T <-analysisSummary_T %>% mutate(
+    # Save the name of the test for convenient reference later
+    test = case_when(
+        parametric ~ "Welch's t test", TRUE ~ "Wilcoxon test"
+    ),
+    # Run the t-test for parametric variables and Wilcoxon signed rank test for non-parametric ones, save the p-value
+    p_value = case_when(
+        parametric ~ t.test(unlist(Yes), unlist(No))$p.value,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$p.value
+    ),
+    # Run the test again, but now save the effect size
+    statistic = case_when(
+        parametric~ t.test(unlist(Yes), unlist(No))$statistic,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$statistic
+    ),
+)
+
+analysisSummary_Tok<-analysisSummary_T %>% data.frame() %>%
+    subset(select=-c(Yes, No))
+make_csv_table(analysisSummary_Tok, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/comparisons_Treated_CCL", info = "comparisons_antibiotic")
+```
+
+```{r Check if there are actual differences treated ccl vs ccl4+rif}
 newmetadata2 <- metadata %>%
     group_by(Treated_CCL) %>%
     filter(!any(Treated_CCL == "No"))
 
-t.test(newmetadata2$Average_velocity~newmetadata2$Antibiotic)
-t.test(newmetadata2$Stereotipic_Counts~newmetadata2$Antibiotic)
-t.test(newmetadata2$Vertcal_Counts~newmetadata2$Antibiotic)
-t.test(newmetadata2$Ambulatory_Counts~newmetadata2$Antibiotic)
-t.test(newmetadata2$GLT1~newmetadata2$Antibiotic)
-t.test(newmetadata2$GLAST~newmetadata2$Antibiotic)
-t.test(newmetadata2$OLM~newmetadata2$Antibiotic)
-t.test(newmetadata2$Learning_index_Rmaze~newmetadata2$Antibiotic)
-t.test(newmetadata2$Ymaze_trialstolearn~newmetadata2$Antibiotic)
+analysisSummary_A_noccl <- newmetadata2 %>% 
+    subset(select=-c(SampleID, Group, Week, Batch, Treated_CCL, FisabioID, GABAa5)) %>%
+    gather(key = variable, value = value, -Antibiotic) %>%
+    group_by(variable, Antibiotic) %>% na.omit() %>%
+    summarise(value=list(value)) %>%
+    spread(Antibiotic, value) %>% 
+    group_by(variable)
 
-t.test(metadata$Average_velocity~metadata$Antibiotic)
-t.test(metadata$Stereotipic_Counts~metadata$Antibiotic)
-t.test(metadata$Vertcal_Counts~metadata$Antibiotic)
-t.test(metadata$Ambulatory_Counts~metadata$Antibiotic)
-t.test(metadata$GLT1~metadata$Antibiotic)
-t.test(metadata$GLAST~metadata$Antibiotic)
-t.test(metadata$OLM~metadata$Antibiotic)
-t.test(metadata$Learning_index_Rmaze~metadata$Antibiotic)
-t.test(metadata$Ymaze_trialstolearn~metadata$Antibiotic)
+analysisSummary_A_noccl <- analysisSummary_A_noccl %>%
+    mutate(parametric = isVariableParametric(metadata, variable))
 
-kruskal.test(metadata$Average_velocity~metadata$Group)
-kruskal.test(metadata$Stereotipic_Counts~metadata$Group)
-kruskal.test(metadata$Vertcal_Counts~metadata$Group)
-kruskal.test(metadata$Ambulatory_Counts~metadata$Group)
-kruskal.test(metadata$GLT1~metadata$Group)
-kruskal.test(metadata$GLAST~metadata$Group)
-kruskal.test(metadata$OLM~metadata$Group)
-kruskal.test(metadata$Learning_index_Rmaze~metadata$Group)
-kruskal.test(metadata$Ymaze_trialstolearn~metadata$Group)
+analysisSummary_A_noccl <-analysisSummary_A_noccl %>% mutate(
+    # Save the name of the test for convenient reference later
+    test = case_when(
+        parametric ~ "Welch's t test", TRUE ~ "Wilcoxon test"
+    ),
+    # Run the t-test for parametric variables and Wilcoxon signed rank test for non-parametric ones, save the p-value
+    p_value = case_when(
+        parametric ~ t.test(unlist(Yes), unlist(No))$p.value,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$p.value
+    ),
+    # Run the test again, but now save the effect size
+    statistic = case_when(
+        parametric~ t.test(unlist(Yes), unlist(No))$statistic,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$statistic
+    ),
+)
 
+analysisSummary_A_noccl_ok<-analysisSummary_A_noccl %>% data.frame() %>%
+    subset(select=-c(Yes, No))
+make_csv_table(analysisSummary_A_noccl_ok, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/analysisSummary_A_noccl_ok", info = "analysisSummary_A_noccl_ok")
 ```
 
+```{r Check if there are actual differences ctr vs treated ccl}
+newmetadata <- metadata %>%
+    group_by(Antibiotic) %>%
+    filter(!any(Antibiotic == "Yes"))%>%
+    subset(select=-c(SampleID, Group, Week, Batch, Antibiotic, FisabioID, CCL5)) 
+
+analysisSummary_T_norif <- newmetadata %>% 
+    gather(key = variable, value = value, -Treated_CCL) %>%
+    group_by(variable, Treated_CCL) %>% na.omit() %>%
+    summarise(value=list(value)) %>%
+    spread(Treated_CCL, value) %>% 
+    group_by(variable)
+
+analysisSummary_T_norif <- analysisSummary_T_norif %>%
+    mutate(parametric = isVariableParametric(metadata, variable))
+
+analysisSummary_T_norif <-analysisSummary_T_norif %>% mutate(
+    # Save the name of the test for convenient reference later
+    test = case_when(
+        parametric ~ "Welch's t test", TRUE ~ "Wilcoxon test"
+    ),
+    # Run the t-test for parametric variables and Wilcoxon signed rank test for non-parametric ones, save the p-value
+    p_value = case_when(
+        parametric ~ t.test(unlist(Yes), unlist(No))$p.value,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$p.value
+    ),
+    # Run the test again, but now save the effect size
+    statistic = case_when(
+        parametric~ t.test(unlist(Yes), unlist(No))$statistic,
+            TRUE ~ wilcox.test(unlist(Yes), unlist(No), paired=FALSE, exact=FALSE)$statistic
+    ),
+)
+
+analysisSummary_T_norif_ok<-analysisSummary_T_norif %>% data.frame() %>%
+    subset(select=-c(Yes, No))
+make_csv_table(analysisSummary_T_norif_ok, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/comparisons_Treatment_norif", info = "comparisons_Treatment_norif")
+```
 
 #Correlations
 ```{r Heatmap 1}
@@ -154,66 +262,69 @@ p <- p + geom_text(data = subset(correlation.table, p.adj < 0.1),
 print(p)
 ```
 
-```{r correlation plot 2}
-library(GGally)
-ps_3 <- tax_glom(ps_0, taxrank = 'Genus', NArm = FALSE) 
-otu <- as.matrix(otu_table(ps_3))
-taxa <- as.data.frame(as.matrix(tax_table(ps_3)))
-
-
-y <- as.data.frame(cbind(taxa, otu)) 
-x <- log10(t(otu_table(ps_3)))
-colnames(x) <- as.character(tax_table(ps_3)[, "Genus"])
-
-y <- as.matrix(metadata1)
-
-z <- cbind(x, y)
-ggcorr(z)
-ggcorr(z, label_size = 3, angle = 270, hjust = 0.97)
+###Correlations SCFAs
+```{r correlation plot 1}
+newmetadata <- metadata %>%
+    subset(select=c(SCFA_AA, SCFA_BA, SCFA_PA, SCFA_CA, SCFA_VA, Group)) %>% data.frame()
+newmetadata %>% 
+    mutate(Group = factor(Group, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>% ggpairs(.,
+                    title = "SCFAs per group", 
+                    mapping = ggplot2::aes(colour=Group), 
+                    lower = list(continuous = wrap("smooth", alpha = 0.3, size=0.1), discrete = "points"), 
+                    diag = list(discrete="barDiag", continuous = wrap("densityDiag", alpha=0.5 )), 
+                    upper = list(combo = wrap("box_no_facet", alpha=0.5),continuous = wrap("cor", size=4))) + 
+    theme(panel.grid.major = element_blank())
 ```
 
-corrplot(cor(z), method = "square",
-         title = "method = 'circle'",
-         tl.pos = "n", mar = c(2, 1, 3, 1)) 
+###Correlations some receptors
+```{r correlation plot 2}
+library(GGally)
+newmetadata <- metadata %>%
+    subset(select=c(GLAST, GLT1, TNFR1, NR2B, NR2A, NR1, GLUA1, GLUA2, Group)) %>% data.frame()
+newmetadata %>% 
+    mutate(Group = factor(Group, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>% ggpairs(.,
+           title = "Receptor correlations per group", 
+           mapping = ggplot2::aes(colour=Group), 
+           lower = list(continuous = wrap("smooth", alpha = 0.3, size=0.1), discrete = "points", combo = "blank"), 
+           diag = list(discrete="barDiag", continuous = wrap("densityDiag", alpha=0.5 )), 
+           upper = list(combo = wrap("box_no_facet", alpha=0.5), continuous = wrap("cor", size=4))) + 
+    theme(panel.grid.major = element_blank())    # remove gridlines  
+```
 
-corrgram(z,
-         order = TRUE,              
-         upper.panel = panel.pie,   
-         lower.panel = panel.shade, 
-         text.panel = panel.txt,    
-         main = "Correlogram")
+###Correlations cognition tests
+```{r correlation plot 2}
+library(GGally)
+newmetadata <- metadata %>%
+    subset(select=c(Ammonia, Vertcal_Counts, Stereotipic_Counts, Average_velocity, Ymaze_trialstolearn, Group)) %>% data.frame()
+newmetadata %>% 
+    mutate(Group = factor(Group, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>% 
+  ggpairs(., title = "Cognitive tests",
+          lower = list(continuous = wrap("smooth", alpha = 0.3, size=0.1), discrete = "points", combo = "blank"), 
+          diag = list(discrete="barDiag", continuous = wrap("densityDiag", alpha=0.5 )), 
+          upper = list(combo = wrap("box_no_facet", alpha=0.5), continuous = wrap("cor", size=4))) + 
+    theme(panel.grid.major = element_blank())    # remove gridlines  
+```
 
-metadata2 <- subset(metadata, select = -c(SampleID, Group, Antibiotic, Treated_CCL, FisabioID, Week, Batch, OLM,	GLAST,	GLT1,	GAT1,	GAT3,	TNFR1,	NR2B,	NR2A,	NR1,	GLUA1,	GLUA2,	GABAa1,	GABAa5,	Ambulatory_Counts,	Vertcal_Counts,	Stereotipic_Counts,	Average_velocity,	CCL2,	CCL5,	CCL20,	CX3CL1,	CCR2,	CCR5,	CX3CR1,	Occludine, Ammonia))
-Not removed:"IL-6",	"IL1-b",	"TNF-a",	"IFN-gamma",	"IL-15",	"IL-17",	"IL-10",	#"IL-4",	"TGF-b"
+###Correlations other metabolites and all boxplots
+```{r correlation plot 2}
+library(GGally)
+newmetadata <- metadata %>%
+    subset(select=c(GAT1, GAT3, OLM, IL_6, IL1_b, TNF_a, IFN_gamma, IL_15, IL_17, IL_10, IL_4, TGF_b, CCL2, CCL5, CCL20, CX3CL1, CCR2, CCR5, CX3CR1, Occludine, Learning_index_Rmaze)) %>% data.frame()
+ggcorr(newmetadata, label = TRUE, label_alpha = TRUE, label_size = 3, angle = 310, hjust = 0.97, low = 'navy', high = 'orange')
+ggcorr(newmetadata, label = TRUE, label_alpha = TRUE, label_size = 3, angle = 310, hjust = 0.97)
 
-#Correlations using coin package
-Blocking the group
-We need to change the variable that we want to do the correlation... still figuring out how to make a loop so that we don't need to change manually the variable that we want to look at.
-```{r Coin spearman}
-coin::spearman_test(y$SCFA_AA~x$ASV1|as.factor(metadata$Group))
-ps.t <- ps_0
-test.taxa <- taxa(ps.t)
-spearman_data <- c()
-for (taxa in test.taxa) {
-   # Create a new data frame for each taxonomic group
-    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
-                     Group = as.factor(meta(ps.t)$Group),
-                     SCFA_AA = as.matrix(meta(ps.t)$SCFA_AA))
-    
-spearman_data[[taxa]] <- coin::spearman_test(Abundance ~ SCFA_AA|Group, data = df)
-}
-#For getting an object with the pvalues without adjusting
-spearman_ok <- data.frame()
-for(i in 1:length(spearman_data))
-{
-     Lola<-data.frame()
-     Lola<-as.data.frame(names(spearman_data[i]))
-     Lola[,2]<-p.adjust(pvalue(spearman_data[[i]]))
-     Lola[,3]<-(statistic(spearman_data[[i]]))
-     colnames(Lola)<- c("Names","pvalue", "zvalue")
-     spearman_ok<-rbind(spearman_ok, Lola)
-}
-View(spearman_ok)
+analysisSummary <- metadata %>% 
+    mutate(Group = factor(Group, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+    subset(select=-c(SampleID, Week, Batch, Treated_CCL, FisabioID, Antibiotic)) %>%
+    gather(key = variable, value = value, -Group) %>%
+    group_by(variable, Group) %>% na.omit() 
+p <- ggplot(data = analysisSummary, aes(x=Group, y=value)) + 
+    geom_boxplot(aes(fill=Group)) + facet_wrap( ~ variable, scales="free")  +
+    theme(axis.text.x = element_text(size = 13), axis.title.y = element_text(size = 13), legend.text = element_text(size = 15))
 ```
 
 #Shared core with venn diagram
@@ -396,84 +507,4 @@ ggplot(ps.melt_sum, aes(x = Sample, y = Abundance, fill = Family)) +
           axis.text.x.bottom = element_text(angle = -90))
 ```
 
-#HeatMaps of significant taxa
-###Coin
-Dif abundance coin genus
-```{r Heatmap 1}
-library("RColorBrewer")
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ccl4+rif", "ccl4"))
-matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))
-matrix_2 <- subset(t(matrix_1), select = c("ASV483", "ASV114", "ASV208", "ASV115", "ASV134", "ASV583", "ASV127", "ASV226", "ASV19", "ASV252", "ASV274", "ASV866", "ASV367", "ASV719", "ASV6", "ASV462", "ASV109", "ASV359", "ASV298", "ASV690"))
 
-metadata_sub <- data.frame(sample_data(ps_0))
-matrix <- t(matrix_2)
-
-
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Set1")[my_group])
-colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ccl4+rif vs ccl4")
-
-
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row", xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ccl4+rif vs ccl4")
-```
-
-Dif abundance coin genus
-```{r Heatmap 2}
-library("RColorBrewer")
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ctr", "ccl4"))
-matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))
-matrix_2 <- subset(t(matrix_1), select = c("ASV358", "ASV583", "ASV18", "ASV127", "ASV58", "ASV213"))
-
- metadata_sub <- data.frame(sample_data(ps_0))
- matrix <- t(matrix_2)
- 
-
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Blues")[my_group])
-colMain <- colorRampPalette(brewer.pal(2, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance coin genus ctr vs ccl4")
- 
- 
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row", xlab="SampleID", ylab="ASV", main="
-        Dif abundance coin genus ctr vs ccl4")
-```
-
-
-###mvabund
-Dif abundance mvabund ASVs
-```{r Heatmap 3}
-library("RColorBrewer")
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ctr", "ccl4"))
-matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))
-matrix_2 <- subset(t(matrix_1), select = c("ASV36", "ASV88", "ASV103", "ASV394", "ASV412", "ASV512", "ASV205", "ASV17", "ASV45", "ASV74", "ASV118", "ASV123", "ASV228", "ASV256", "ASV400", "ASV286", "ASV379", "ASV358", "ASV99", "ASV172", "ASV290", "ASV11", "ASV530", "ASV143", "ASV547", "ASV570", "ASV461", "ASV349", "ASV306", "ASV124", "ASV296", "ASV330", "ASV341", "ASV441", "ASV683", "ASV717", "ASV538", "ASV70", "ASV625", "ASV526", "ASV254", "ASV346", "ASV736", "ASV607", "ASV201", "ASV712", "ASV698", "ASV721", "ASV64", "ASV414"))
-
-metadata_sub <- data.frame(sample_data(ps_0))
-matrix <- t(matrix_2)
-
-
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Set1")[my_group])
-colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance mvabund ASVs ctr vs ccl4" )
-
-
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row", ColSideColors=(colSide), xlab="SampleID", ylab="ASV", main="Dif abundance mvabund ASVs ctr vs ccl4")
-```
-
-Dif abundance mvabund ASVs
-```{r Heatmap 4}
-library("RColorBrewer")
-ps.t<- ps_0 %>% subset_samples(Group %in% c("ctr", "ccl4"))
-matrix_1 <- as.matrix(data.frame(otu_table(ps.t)))%>% microbiome::transform("compositional")
-matrix_2 <- subset(t(matrix_1), select = c("ASV36","ASV88","ASV103","ASV394","ASV412","ASV512","ASV205","ASV17","ASV45","ASV74","ASV118","ASV123","ASV228","ASV256","ASV400","ASV286","ASV379","ASV358","ASV99","ASV172","ASV290","ASV11","ASV530","ASV143","ASV547","ASV570","ASV461","ASV349","ASV306","ASV124","ASV296","ASV330","ASV341","ASV441","ASV683","ASV717","ASV538","ASV70","ASV625","ASV526","ASV254", "ASV346","ASV736","ASV607", "ASV201", "ASV712", "ASV698", "ASV721", "ASV64", "ASV414"))
-
- metadata_sub <- data.frame(sample_data(ps_0))
- matrix <- t(matrix_2)
- 
-
-my_group <- as.numeric(as.factor(meta(ps.t)$Group))
-colSide <- t(brewer.pal(8, "Set1")[my_group])
-colMain <- colorRampPalette(brewer.pal(8, "Blues"))(16)
-heatmap(matrix, Colv = NA, Rowv = NA, scale="row" , ColSideColors=(colSide), col=colMain, xlab="SampleID", ylab="ASV", main="Dif abundance mvabund ASV ccl4+rif vs ccl4")
-```
