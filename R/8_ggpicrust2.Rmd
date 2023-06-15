@@ -207,11 +207,48 @@ methods <- c("ALDEx2", "DESeq2", "LinDA")
 daa_results_list <- lapply(methods, function(method) {
   pathway_daa(abundance = ko_abundance, metadata = metadata, group = "Group", daa_method = method, p.adjust = "BH", reference = "ccl4")
 })
+methods <- c( "LinDA", "limma voom", "metagenomeSeq")
+daa_results_list2 <- lapply(methods, function(method) {
+    pathway_daa(abundance = ko_abundance, metadata = metadata, group = "Group", daa_method = method, p.adjust = "BH", reference = "ccl4")
+})
 saveRDS(daa_results_list, file = "~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/daa_results_list_ko_abundance_Al_DES_Lin")
 
-method_names <- c("ALDEx2_Welch's t test","ALDEx2_Wilcoxon rank test","DESeq2", "LinDA")
 # Compare results across different methods
-comparison_results <- compare_daa_results(daa_results_list = daa_results_list, method_names = method_names)
+comparison_results <- ggpicrust2::compare_daa_results(daa_results_list = daa_results_list, method_names = c("	
+ALDEx2_glm test", "ALDEx2_Kruskal-Wallace test", "DESeq2", "LinDA"))
+comparison_results2 <- ggpicrust2::compare_daa_results(daa_results_list = daa_results_list, method_names = c( "LinDA", "limma voom", "metagenomeSeq"))
+
+results_ALDEx2<- daa_results_list[[1]] %>% data.frame()  %>% filter(p_adjust< 0.05) %>% subset(select = c(feature, method, group1, group2, group3, group4, p_values, p_adjust)) %>% unite("features_comparisons", c(feature, group1, group2, group3, group4)) %>% rename(p_adjust_ALDEx2 =p_adjust, p_value_ALDEx2 =p_values)
+
+results_DESeq2<- daa_results_list[[2]] %>% data.frame()  %>% filter(p_adjust< 0.05)%>% subset(select = c(feature, method, group1, group2, p_values, p_adjust))%>% 
+    mutate(group1 = factor(group1, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")), 
+           group2 = factor(group2, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>% unite("features_comparisons", c(feature, group1, group2))  %>% rename(p_adjust_DESeq2 =p_adjust, p_value_DESeq2 =p_values)
+
+results_LinDA<- daa_results_list2[[1]]%>% data.frame()  %>% filter(p_adjust< 0.05)%>% subset(select = c(feature, method, group1, group2, p_values, p_adjust))%>% 
+    mutate(group1 = factor(group1, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")), 
+           group2 = factor(group2, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")))%>% unite("features_comparisons", c(feature, group2, group1)) %>% rename(p_adjust_LinDA =p_adjust, p_value_LinDA =p_values)
+
+results_limma_voom<- daa_results_list2[[2]]%>% data.frame()  %>% filter(p_adjust< 0.05)%>% subset(select = c(feature, method, group1, group2, p_values, p_adjust))%>% 
+    mutate(group1 = factor(group1, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")), 
+           group2 = factor(group2, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")))%>% unite("features_comparisons", c(feature, group1, group2))%>% rename(p_adjust_limma_voom =p_adjust, p_value_limma_voom =p_values)
+
+results_metagenomeSeq<- daa_results_list2[[3]]%>% data.frame() %>% filter(p_values< 0.05)%>% subset(select = c(feature, method, group1, group2, p_values, p_adjust))%>% 
+    mutate(group1 = factor(group1, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")), 
+           group2 = factor(group2, 
+                          levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif")))%>% unite("features_comparisons", c(feature, group1, group2)) %>% rename(p_adjust_metagenomeSeq =p_adjust, p_value_metagenomeSeq =p_values)
+
+comparison_results <- results_metagenomeSeq%>%
+    full_join(results_ALDEx2, by="features_comparisons")%>%
+    full_join(results_DESeq2, by="features_comparisons")%>%
+    full_join(results_LinDA, by="features_comparisons")%>%
+    full_join(results_limma_voom, by="features_comparisons")%>% unite("methods", c(method,method.x, method.y, method.x.x, method.y.y)) 
 
 ```
 
