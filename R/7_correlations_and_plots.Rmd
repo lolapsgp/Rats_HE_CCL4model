@@ -327,6 +327,12 @@ cor_5 <- rcorr(as.matrix(newmetadata))
 M <- cor_5$r
 p_mat <- cor_5$P
 corrplot(M, type = "upper", tl.col = "darkblue", tl.srt = 45)
+
+# use "colorRampPallete" to obtain contionus color scales
+library(grDevices)
+col <- colorRampPalette(c("turquoise4", "white", "chocolate2"))(20)
+corrplot(M,  type = "upper", tl.col = "black", tl.srt = 45, col = col)
+
 #Crossing the non-significant ones
 corrplot(M, type = "upper", order = "hclust",  tl.col = "darkblue",
          p.mat = p_mat, sig.level = 0.01)
