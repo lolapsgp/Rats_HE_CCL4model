@@ -245,7 +245,7 @@ effect_table_sig_long%>%
           legend.position = "right",axis.text.y = element_text(face = "italic")) + scale_y_discrete(position = "left") + ylab("Functional modules")
 
 #Heatmap
-ggplot(effect_table_sig_long, aes(x = SCFA, y = rowname)) +
+ggplot(effect_table_sig_long, aes(x = SCFA, y = reorder(rowname, effectSize))) +
     # do the heatmap tile coloring based on effect sizes
     geom_tile(aes(fill = effectSize)) +
     scale_fill_gradient2 (low = "blue", high = "red", mid = "white", midpoint = 0) +
