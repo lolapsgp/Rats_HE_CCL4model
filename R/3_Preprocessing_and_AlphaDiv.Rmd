@@ -33,7 +33,7 @@ reads_per_sample_after_raref <- as.matrix(rowSums(t(as.matrix(otu_table(ps.raref
 
 ```{r Clean}
  # Remove samples with less than MINREADS from phyloseq object
-ps_2 <- prune_taxa(taxa_sums(ps_1) > 1, ps_1)
+ps_2 <- prune_taxa(taxa_sums(ps_1) > 0, ps_1)
 # merge all taxa that are detected rare
 total_samples <- phyloseq::nsamples(ps_2)
 ps_2
@@ -73,6 +73,7 @@ dev.off()
 Para guardar los plots en pdf.
 
 ```{r Alpha Diversity}
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 library(ggsignif)
 #Observed 
 pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed")) +
@@ -153,7 +154,7 @@ pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed")) +
     geom_violin(aes(color = Group), trim = FALSE) +  
    geom_boxplot(width = 0.2) +
     geom_point(aes(color = Group, shape = Batch)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18)) +
       geom_signif(stat="identity",
                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
                                y=c(78, 80, 82), annotation=c("NS", " NS ", "*")),
@@ -174,7 +175,7 @@ pShannon <- plot_richness(ps_2_genus, x="Group", measures=c("Shannon")) +
     geom_violin(aes(color = Group), trim = FALSE) +  
    geom_boxplot(width = 0.2) +
     geom_point(aes(color = Group, shape = Batch)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18)) +
    geom_signif(stat="identity",
                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
                                y=c(3.05, 3.13, 3.21), annotation=c("  NS  ", "NS", " NS ")),
@@ -190,7 +191,7 @@ pChao <- plot_richness(ps_2_genus, x="Group", measures=c("Chao1")) +
     geom_violin(aes(color = Group), trim = FALSE) +  
    geom_boxplot(width = 0.2) +
     geom_point(aes(color = Group, shape = Batch)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18)) +
       geom_signif(stat="identity",
                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
                                y=c(78, 80, 82), annotation=c("NS", " NS ", " * ")),
@@ -218,13 +219,13 @@ theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom =
                 y_position = 9.60, tip_length = 0, vjust=0.4) +
     geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="**",
                 y_position = 9.80, tip_length = 0, vjust=0.4) + theme(
-        axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))
+        axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18))
 
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
 pFisher
-
+ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
 ```
 
 ##Test Wilcoxon y Shannon
@@ -283,6 +284,7 @@ pFisher
 
 ##Alpha div plots with raref and using genus.
 ```{r Alpha Diversity with raref}
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 library(ggsignif)
 #Observed 
 pObserved <- plot_richness(ps_raref_genus, x="Group", measures=c("Observed")) +
@@ -345,8 +347,6 @@ theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom =
     geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
                 y_position = 9.80, tip_length = 0, vjust=0.4) + theme(
         axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))
-
-newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
 pFisher
@@ -453,4 +453,69 @@ plot_richness(ps.rarefied.clean, x="Group", measures=c("Observed", "Chao1", "Sha
 +     geom_boxplot() +
 +     theme_classic() +
 +     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+```
+
+#Number of taxa per group
+```{r descriptive analysis}
+ps_1 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_1.Rds")
+ps_1
+ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+ps_2
+ps.ctr<-ps_2 %>% subset_samples(Group %in% c("ctr"))
+ps.ctr<-prune_taxa(taxa_sums(ps.ctr) > 0, ps.ctr)
+ps.ctr
+ps.ctrrif<-ps_2 %>% subset_samples(Group %in% c("ctr+rif"))
+ps.ctrrif<-prune_taxa(taxa_sums(ps.ctrrif) > 0, ps.ctrrif)
+ps.ctrrif
+ps.ccl4<-ps_2 %>% subset_samples(Group %in% c("ccl4"))
+ps.ccl4<-prune_taxa(taxa_sums(ps.ccl4) > 0, ps.ccl4)
+ps.ccl4
+ps.ccl4rif<-ps_2 %>% subset_samples(Group %in% c("ccl4+rif"))
+ps.ccl4rif<-prune_taxa(taxa_sums(ps.ccl4rif) > 0, ps.ccl4rif)
+ps.ccl4rif
+```
+
+#Dominant taxa
+```{r descriptive analysis 2}
+#Phylum level
+ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+ps.rel<-ps_2 %>% microbiome::transform("compositional") %>% tax_glom(taxrank = 'Phylum', NArm = FALSE) 
+# generate a vector containing the full taxonomy path for all OTUs
+wholetax <- do.call(paste, c(as.data.frame(tax_table(ps.rel))
+                             [c("Kingdom", "Phylum")], 
+                             sep = "__"))  # to distinguish from "_" within tax ranks
+
+# turn the otu_table into a data.frame
+otu_export <- as.data.frame(t(otu_table(ps.rel)))
+tmp <- names(otu_export)
+
+# paste wholetax and OTU_ids together
+for(i in 1:length(tmp)){
+    names(tmp)[i] = paste(wholetax[i], tmp[i], sep = "__")
+}
+# overwrite old names
+names(otu_export) <- names(tmp)
+otu_export<-t(otu_export)
+View(as.data.frame(rowSums(otu_export)))
+
+#Family level
+ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+ps.rel2<-ps_2 %>% microbiome::transform("compositional") %>% tax_glom(taxrank = 'Family', NArm = FALSE)
+# generate a vector containing the full taxonomy path for all OTUs
+wholetax <- do.call(paste, c(as.data.frame(tax_table(ps.rel2))
+                             [c("Kingdom", "Phylum", "Class", "Order", "Family")], 
+                             sep = "__"))  # to distinguish from "_" within tax ranks
+
+# turn the otu_table into a data.frame
+otu_export <- as.data.frame(t(otu_table(ps.rel2)))
+tmp <- names(otu_export)
+
+# paste wholetax and OTU_ids together
+for(i in 1:length(tmp)){
+    names(tmp)[i] = paste(wholetax[i], tmp[i], sep = "__")
+}
+# overwrite old names
+names(otu_export) <- names(tmp)
+otu_export<-t(otu_export)
+View(as.data.frame(rowSums(otu_export)))
 ```
