@@ -538,6 +538,7 @@ devtools::install_github('microsud/microbiomeutilities')
 ```{r paquetes para diagrama core}
 library(eulerr)
 library(microbiome)
+library(tidyverse)
 library(microbiomeutilities)
 ```
 
@@ -581,7 +582,7 @@ latest_annotations <- get_latest_annotation(pseq.rel5)
 ```
 
 Write a for loop to go through each of the disease_states one by one and combine identified core taxa into a list.
-```{r Imagen Core taxa}
+```{r Core taxa list}
  Groups5 <- unique(as.character(meta(pseq.rel5 )$Group))
 
 list_core <- c() # an empty object to store information
@@ -630,4 +631,49 @@ cat("\nElements Specific to Each List:\n")
 print(specific_elements)
 
 
+```
+
+
+```{r plots}
+#Make the plot
+venn.diagram(
+    x = list(ctr=list_core$ctr, `ctr+rif` = list_core$`ctr+rif`, ccl4=list_core$ccl4, `ccl4+rif` = list_core$`ccl4+rif`),
+    category.names = c("Control" , "Control+rifaximin" , "CCL4", "CCL4+rifaximin"),
+    filename = '~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/venn.png',
+    # Output features
+    output = TRUE ,
+    imagetype="png" ,
+    height = 9800 , 
+    width = 9800 , 
+    resolution = 5000,
+    compression = "lzw",
+    
+    # Circles
+    lwd = 1,
+    lty = 'blank',
+    col=c("#440154ff", '#21908dff', '#fde725ff', 'orange'),
+    fill = c(("#440154ff"), ('#21908dff'), ('#fde725ff'), ('orange')),
+    
+     # Numbers
+    cex = 0.5,
+    fontface = "bold",
+    fontfamily = "sans",
+    
+    # Set names
+    cat.cex = 0.3,
+     cat.fontface = "bold",
+    cat.default.pos = "outer",
+    cat.pos = c(0, 0, 0, 0),
+    cat.dist = c(0.055, 0.055, 0.085, 0.085),
+    cat.fontfamily = "sans",
+    cat.col = c("#440154ff", 'turquoise4', 'gold4', 'orange4')
+)
+
+#Plot with names
+library(ggvenn)
+library(RColorBrewer)
+
+x <- list(Control=list_core$ctr, `Control+rifaximin` = list_core$`ctr+rif`, CCL4=list_core$ccl4, `CCL4+rifaximin` = list_core$`ccl4+rif`)
+
+ggvenn(x, show_elements = T, digits = 5, label_sep = "\n", fill_color =  c(("#440154ff"), ('#fde725ff'), ('orange'), ('#21908dff')), fill_alpha = 0.65, set_name_color = c("#440154ff", 'gold4', 'orange4', 'turquoise4'), set_name_size = 8, text_size = 3, stroke_linetype = 1, stroke_size = 0.009) + theme(plot.tag = element_text(face = "bold"))
 ```
