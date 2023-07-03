@@ -363,12 +363,12 @@ library(microbiomeutilities)
 ```
 
 ```{r Datos y modificaciones}
-pseq5 <- microbiome::transform(ps_0, "identity")
+ps_0 <- microbiome::transform(ps_0, "identity")
 # simple way to count number of samples in each group
-table(meta(pseq5)$Group, useNA = "always")
+table(meta(ps_0)$Group, useNA = "always")
 
 # convert to relative abundances
- pseq.rel5 <- pseq5 %>%
+ pseq.rel5 <- ps_0 %>%
    microbiome::transform(transform = "compositional") %>% tax_glom(taxrank = "Genus")
  Groups5 <- unique(as.character(meta(pseq.rel5 )$Group))
 
@@ -530,4 +530,150 @@ ggplot(ps.melt_sum, aes(x = Sample, y = Abundance, fill = Family)) +
           axis.text.x.bottom = element_text(angle = -90))
 ```
 
+#Venn diagram
+Sudarshan Shetty, Leo Lahti, et al.
 
+devtools::install_github('microsud/microbiomeutilities')
+
+```{r paquetes para diagrama core}
+library(eulerr)
+library(microbiome)
+library(tidyverse)
+library(microbiomeutilities)
+```
+
+
+```{r Datos y modificaciones}
+ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
+# convert to relative abundances
+ pseq.rel5 <- ps_0 %>%
+   microbiome::transform(transform = "compositional") %>% tax_glom(taxrank = "Genus")
+
+ Groups5 <- unique(as.character(meta(pseq.rel5 )$Group))
+
+print(Groups5)
+get_latest_annotation <- function(phyloseq_obj) {
+  tax_table <- phyloseq_obj@tax_table %>%
+    as.data.frame() %>%
+    rownames_to_column('ASV') %>%
+    as_tibble() %>%
+    tidyr::gather('Rank', 'Value', -ASV) %>%
+    nest(data = -ASV) %>%
+    mutate(TaxaID = map_chr(data, function(x) {
+      x %>%
+        dplyr::filter(!is.na(Value)) %>%
+        magrittr::use_series(Value) %>%
+        tail(1)
+    })) %>%
+    mutate(TaxaUp = map_chr(data, function(x) {
+      x %>%
+        dplyr::filter(!is.na(Value)) %>%
+        magrittr::use_series(Value) %>%
+        tail(2) %>% head(1)
+    })) %>%
+    mutate(TaxaID = paste(ASV, TaxaID)) %>%
+    dplyr::select(-c(data, TaxaUp))
+  
+  return(tax_table)
+}
+
+##Usage latest_annotations <- get_latest_annotation(phyloseq_obj)
+latest_annotations <- get_latest_annotation(pseq.rel5)
+```
+
+Write a for loop to go through each of the disease_states one by one and combine identified core taxa into a list.
+```{r Core taxa list}
+ Groups5 <- unique(as.character(meta(pseq.rel5 )$Group))
+
+list_core <- c() # an empty object to store information
+
+for (n in Groups5){ # for each variable n in Group
+    #print(paste0("Identifying Core Taxa for ", n))
+    
+    ps.sub5 <- subset_samples(pseq.rel5, Groups5 == n) 
+    
+    core_m <- core_members(ps.sub5, # ps.sub is phyloseq selected with only samples from g 
+                           detection = 0.0001, # 0.0001 in at least 95% samples 
+                           prevalence = 0.95)
+    print(paste0("No. of core taxa in ", n, " : ", length(core_m))) 
+    # print core taxa identified in each Group.
+    list_core[[n]] <- core_m # add to a list core taxa for each group.
+ }
+
+
+# Specify colors and plot venn
+# supplying colors in the order they appear in list_core
+mycols <- c(ctr="#d6e2e9", `ctr+rif` ="#cbf3f0", ccl4="#fcf5c7", `ccl4+rif` = "rosybrown1") 
+
+plot(venn(list_core),
+     fills = mycols)
+# Create a named vector of ASV names from the latest_annotations tibble
+asv_names <- setNames(latest_annotations$TaxaID, latest_annotations$ASV)
+
+# Replace ASV names in the list_core with the corresponding names from asv_names
+list_core <- lapply(list_core, function(x) asv_names[x])
+
+# Print the updated list_core
+list_core
+
+# Find common elements
+common_elements <- Reduce(intersect, list_core)
+
+# Find specific elements for each list
+specific_elements <- lapply(list_core, setdiff, common_elements)
+
+# Print the common elements
+cat("Common Elements:\n")
+print(common_elements)
+
+# Print the elements specific to each list
+cat("\nElements Specific to Each List:\n")
+print(specific_elements)
+
+
+```
+
+
+```{r plots}
+#Make the plot
+venn.diagram(
+    x = list(ctr=list_core$ctr, `ctr+rif` = list_core$`ctr+rif`, ccl4=list_core$ccl4, `ccl4+rif` = list_core$`ccl4+rif`),
+    category.names = c("Control" , "Control+rifaximin" , "CCL4", "CCL4+rifaximin"),
+    filename = '~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/venn.png',
+    # Output features
+    output = TRUE ,
+    imagetype="png" ,
+    height = 9800 , 
+    width = 9800 , 
+    resolution = 5000,
+    compression = "lzw",
+    
+    # Circles
+    lwd = 1,
+    lty = 'blank',
+    col=c("#440154ff", '#21908dff', '#fde725ff', 'orange'),
+    fill = c(("#440154ff"), ('#21908dff'), ('#fde725ff'), ('orange')),
+    
+     # Numbers
+    cex = 0.5,
+    fontface = "bold",
+    fontfamily = "sans",
+    
+    # Set names
+    cat.cex = 0.3,
+     cat.fontface = "bold",
+    cat.default.pos = "outer",
+    cat.pos = c(0, 0, 0, 0),
+    cat.dist = c(0.055, 0.055, 0.085, 0.085),
+    cat.fontfamily = "sans",
+    cat.col = c("#440154ff", 'turquoise4', 'gold4', 'orange4')
+)
+
+#Plot with names
+library(ggvenn)
+library(RColorBrewer)
+
+x <- list(Control=list_core$ctr, `Control+rifaximin` = list_core$`ctr+rif`, CCL4=list_core$ccl4, `CCL4+rifaximin` = list_core$`ccl4+rif`)
+
+ggvenn(x, show_elements = T, digits = 5, label_sep = "\n", fill_color =  c(("#440154ff"), ('#fde725ff'), ('orange'), ('#21908dff')), fill_alpha = 0.65, set_name_color = c("#440154ff", 'gold4', 'orange4', 'turquoise4'), set_name_size = 8, text_size = 3, stroke_linetype = 1, stroke_size = 0.009) + theme(plot.tag = element_text(face = "bold"))
+```
