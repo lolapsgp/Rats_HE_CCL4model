@@ -14,6 +14,7 @@ BiocManager::install("dada2")
 
 ```{r Dada2 run}
 library(dada2); packageVersion("dada2")
+library(repmod)
 path <- "/fast/AG_Forslund/Lola/CIPF_2018/wetransfer_muestras-rungen22_2023-03-21_1356" 
 list.files(path)
 
@@ -73,6 +74,7 @@ seqtab2 <- seqtab[,nchar(colnames(seqtab)) %in% seq(397,424)]
 seqtab.nochim <- removeBimeraDenovo(seqtab2, method="consensus", multithread=TRUE, verbose=TRUE)
 dim(seqtab.nochim)
 sum(seqtab.nochim)/sum(seqtab2)
+make_csv_table(seqtab.nochim, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/otu_table_with_seq", info = "otu_table_with_seq")
 
 getN <- function(x) sum(getUniques(x))
 track <- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim))
@@ -141,6 +143,7 @@ rownames(taxa_asvs) <- NULL
 rownames(taxa_asvs) <- paste0("ASV", 1:nrow(asv.names))
 head(taxa_asvs)
 make_csv_table(taxa_asvs, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table", info = "tax_table")
+make_csv_table(asv.names, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/tax_table", info = "asv_table_names")
 
 
 ##Transform seqtab.nochim to fasta file 
