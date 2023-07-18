@@ -166,6 +166,7 @@ make_csv_table(asv.names, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL
   fitGTR16S <- optim.pml(fitGTR16S, model="GTR", optInv=TRUE, optGamma=TRUE,
                          rearrangement = "stochastic", control = pml.control(trace = 0))
   plot(fitGTR16S, type= "unrooted", use.edge.length= FALSE, no.margin= TRUE, show.tip.label= FALSE)
+  plot(fitGTR16S, type= "fan", use.edge.length= FALSE, no.margin= TRUE, show.tip.label= FALSE)
   
   tree<- fitGTR16S$tree
 
