@@ -75,157 +75,115 @@ Para guardar los plots en pdf.
 ```{r Alpha Diversity}
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 library(ggsignif)
-#Observed 
-pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed")) +
-   geom_boxplot() + 
-   theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(78, 80, 82), annotation=c("NS", " NS ", "*")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 84, tip_length = 0, vjust=0.4) +
-   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
-               y_position = 86, tip_length = 0, vjust=0.4) 
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
 #Re-arranging the order of the figure, controls first
 pObserved$data$Group <- as.character(pObserved$data$Group)
 pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
-pObserved 
+pObserved
 
 
-
- #Shannon
-pShannon <- plot_richness(ps_2_genus, x="Group", measures=c("Shannon")) +
-   geom_boxplot() +
-   theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16)) +
-   geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(3.05, 3.13, 3.21), annotation=c("  NS  ", "NS", " NS ")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation))
- #Re-arranging the order of the figure, controls first
+#Shannon
+pShannon <-  plot_richness(ps_2_genus, x="Group", measures=c("Shannon"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
 pShannon$data$Group <- as.character(pShannon$data$Group)
 pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
-pShannon 
- 
- 
- #Chao1
-pChao <- plot_richness(ps_2_genus, x="Group", measures=c("Chao1")) +
-   geom_boxplot() +
-   theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16)) +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(78, 80, 82), annotation=c("NS", " NS ", " * ")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 84, tip_length = 0, vjust=0.4) +
-   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
-               y_position = 86, tip_length = 0, vjust=0.4) 
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_2_genus, x="Group", measures=c("Chao1"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
 #Re-arranging the order of the figure, controls first
 pChao$data$Group <- as.character(pChao$data$Group)
 pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
-pChao  
+pChao
 
- #Fisher
-pFisher <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher")) +
-   geom_boxplot() +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
-    geom_signif(stat="identity",
-                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                                y=c(9.0, 9.20, 9.40), annotation=c("NS", " NS ", "**")),
-                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",
-                y_position = 9.60, tip_length = 0, vjust=0.4) +
-    geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="**",
-                y_position = 9.80, tip_length = 0, vjust=0.4) + theme(
-        axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))
-
-newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+#Fisher
+pFisher <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
 pFisher
+
+
+# Create the updated plot with the modified legend order
+all_genus_boxplots <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+# Modify the legend order in the updated plot
+all_genus_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_genus_boxplots.pdf", width = 12, height = 8)
+
 ```
 
 ```{r Alpha Diversity violin shaped}
 library(ggsignif)
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
-
-#Observed 
-pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed")) +
-    geom_violin(aes(color = Group), trim = FALSE) +  
-   geom_boxplot(width = 0.2) +
-    geom_point(aes(color = Group, shape = Batch)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18)) +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(78, 80, 82), annotation=c("NS", " NS ", "*")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 84, tip_length = 0, vjust=0.4) +
-   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
-               y_position = 86, tip_length = 0, vjust=0.4) 
+library(ggsignif)
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
 #Re-arranging the order of the figure, controls first
 pObserved$data$Group <- as.character(pObserved$data$Group)
 pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
-pObserved 
+pObserved
 
 
-
- #Shannon
-pShannon <- plot_richness(ps_2_genus, x="Group", measures=c("Shannon")) +
-    geom_violin(aes(color = Group), trim = FALSE) +  
-   geom_boxplot(width = 0.2) +
-    geom_point(aes(color = Group, shape = Batch)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18)) +
-   geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(3.05, 3.13, 3.21), annotation=c("  NS  ", "NS", " NS ")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation))
- #Re-arranging the order of the figure, controls first
+#Shannon
+pShannon <-  plot_richness(ps_2_genus, x="Group", measures=c("Shannon"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
 pShannon$data$Group <- as.character(pShannon$data$Group)
 pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
-pShannon 
- 
- 
- #Chao1
-pChao <- plot_richness(ps_2_genus, x="Group", measures=c("Chao1")) +
-    geom_violin(aes(color = Group), trim = FALSE) +  
-   geom_boxplot(width = 0.2) +
-    geom_point(aes(color = Group, shape = Batch)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18)) +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(78, 80, 82), annotation=c("NS", " NS ", " * ")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 84, tip_length = 0, vjust=0.4) +
-   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
-               y_position = 86, tip_length = 0, vjust=0.4) 
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_2_genus, x="Group", measures=c("Chao1"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
 #Re-arranging the order of the figure, controls first
 pChao$data$Group <- as.character(pChao$data$Group)
 pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
-pChao  
+pChao
 
- #Fisher
-pFisher <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher")) +
-    geom_violin(aes(color = Group), trim = FALSE) +  
-   geom_boxplot(width = 0.2) +
-    geom_point(aes(color = Group, shape = Batch)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
-    geom_signif(stat="identity",
-                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                                y=c(9.0, 9.20, 9.40), annotation=c("NS", " NS ", "**")),
-                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",
-                y_position = 9.60, tip_length = 0, vjust=0.4) +
-    geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="**",
-                y_position = 9.80, tip_length = 0, vjust=0.4) + theme(
-        axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.position = "none", text = element_text(size = 18))
-
-newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+#Fisher
+pFisher <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
 pFisher
-ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+
+# Create the updated plot with the modified legend order
+all_genus_violin <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+all_genus_violin
+# Modify the legend order in the updated plot
+all_genus_violin <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_genus_violin.pdf", width = 12, height = 8)
 ```
 
 ##Test Wilcoxon y Shannon
@@ -286,94 +244,113 @@ ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bott
 ```{r Alpha Diversity with raref}
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 library(ggsignif)
-#Observed 
-pObserved <- plot_richness(ps_raref_genus, x="Group", measures=c("Observed")) +
-   geom_boxplot() + 
-   theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(78, 80, 82), annotation=c("NS", " NS ", "*")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 84, tip_length = 0, vjust=0.4) +
-   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
-               y_position = 86, tip_length = 0, vjust=0.4) 
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"), c("ctr", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_raref_genus, x="Group", measures=c("Observed"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
 #Re-arranging the order of the figure, controls first
 pObserved$data$Group <- as.character(pObserved$data$Group)
 pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
-pObserved 
+pObserved
 
 
-
- #Shannon
-pShannon <- plot_richness(ps_raref_genus, x="Group", measures=c("Shannon")) +
-   geom_boxplot() +
-   theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16)) +
-   geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(3.05, 3.13, 3.21), annotation=c("  NS  ", "NS", " NS ")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation))
- #Re-arranging the order of the figure, controls first
+#Shannon
+pShannon <-  plot_richness(ps_raref_genus, x="Group", measures=c("Shannon"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
 pShannon$data$Group <- as.character(pShannon$data$Group)
 pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
-pShannon 
- 
- 
- #Chao1
-pChao <- plot_richness(ps_raref_genus, x="Group", measures=c("Chao1")) +
-   geom_boxplot() +
-   theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16)) +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                               y=c(78, 80, 82), annotation=c("NS", " NS ", " * ")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="**",
-               y_position = 84, tip_length = 0, vjust=0.4) 
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_raref_genus, x="Group", measures=c("Chao1"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
 #Re-arranging the order of the figure, controls first
 pChao$data$Group <- as.character(pChao$data$Group)
 pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
-pChao  
+pChao
 
- #Fisher
-pFisher <- plot_richness(ps_raref_genus, x="Group", measures=c("Fisher")) +
-   geom_boxplot() +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
-    geom_signif(stat="identity",
-                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                                y=c(9.0, 9.20, 9.40), annotation=c("NS", " NS ", "*")),
-                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",
-                y_position = 9.60, tip_length = 0, vjust=0.4) +
-    geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
-                y_position = 9.80, tip_length = 0, vjust=0.4) + theme(
-        axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))
+#Fisher
+pFisher <- plot_richness(ps_raref_genus, x="Group", measures=c("Fisher"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
 pFisher
+
+
+# Create the updated plot with the modified legend order
+all_raref_genus_boxplots <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+# Modify the legend order in the updated plot
+all_raref_genus_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_raref_genus_boxplots.pdf", width = 12, height = 8)
 ```
 
 ```{r Alpha Diversity violin shaped}
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 library(ggsignif)
- #Fisher
-p <- plot_richness(ps_raref_genus, x="Group", measures=c("Fisher")) +
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"), c("ctr", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_raref_genus, x="Group", measures=c("Observed"))+
     geom_violin(aes(color = Group), trim = FALSE) +  
   geom_boxplot(width = 0.2) +
-    geom_point(aes(color = Group)) +
-theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90)) +
-    geom_signif(stat="identity",
-                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4),
-                                y=c(9.0, 9.20, 9.40), annotation=c("NS", " NS ", "*")),
-                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",
-                y_position = 9.60, tip_length = 0, vjust=0.4) +
-    geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="*",
-                y_position = 9.80, tip_length = 0, vjust=0.4) + theme(
-        axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved
 
-newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
-p$data$Group <- as.character(p$data$Group)
-p$data$Group <- factor(p$data$Group, levels=newSTorder)
-p
+
+#Shannon
+pShannon <-  plot_richness(ps_raref_genus, x="Group", measures=c("Shannon"))+
+    geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_raref_genus, x="Group", measures=c("Chao1"))+
+    geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao
+
+#Fisher
+pFisher <- plot_richness(ps_raref_genus, x="Group", measures=c("Fisher"))+
+    geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher
+
+
+# Create the updated plot with the modified legend order
+all_raref_genus_violin <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+# Modify the legend order in the updated plot
+all_raref_genus_violin <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_raref_genus_violin.pdf", width = 12, height = 8) 
 
 ```
 
@@ -435,24 +412,24 @@ p
 ```{r Comparisons}
 #Glom to genus not rarefied
 plot_richness(ps_2_genus, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
-+     geom_boxplot() +
-+     theme_classic() +
-+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+     geom_boxplot() +
+    theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
 #Glom to genus rarefied
 plot_richness(ps_raref_genus, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
-+     geom_boxplot() +
-+     theme_classic() +
-+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+    geom_boxplot() +
+     theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
 #ASVs (not glom) not rarefied
  plot_richness(ps_2, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
-+     geom_boxplot() +
-+     theme_classic() +
-+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+     geom_boxplot() +
+     theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
 #ASVs (not glom) rarefied
 plot_richness(ps.rarefied.clean, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
-+     geom_boxplot() +
-+     theme_classic() +
-+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+     geom_boxplot() +
+     theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
 ```
 
 #Number of taxa per group
@@ -477,6 +454,7 @@ ps.ccl4rif
 
 #Dominant taxa
 ```{r descriptive analysis 2}
+library(repmod)
 #Phylum level
 ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
 ps.rel<-ps_2 %>% microbiome::transform("compositional") %>% tax_glom(taxrank = 'Phylum', NArm = FALSE) 
@@ -497,6 +475,8 @@ for(i in 1:length(tmp)){
 names(otu_export) <- names(tmp)
 otu_export<-t(otu_export)
 View(as.data.frame(rowSums(otu_export)))
+otu_export1<-as.data.frame(rowSums(otu_export))
+make_csv_table(otu_export1, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dominant_phyla", info = "Dominant_phyla")
 
 #Family level
 ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
@@ -507,15 +487,17 @@ wholetax <- do.call(paste, c(as.data.frame(tax_table(ps.rel2))
                              sep = "__"))  # to distinguish from "_" within tax ranks
 
 # turn the otu_table into a data.frame
-otu_export <- as.data.frame(t(otu_table(ps.rel2)))
-tmp <- names(otu_export)
+otu_export.fam <- as.data.frame(t(otu_table(ps.rel2)))
+tmp <- names(otu_export.fam)
 
 # paste wholetax and OTU_ids together
 for(i in 1:length(tmp)){
     names(tmp)[i] = paste(wholetax[i], tmp[i], sep = "__")
 }
 # overwrite old names
-names(otu_export) <- names(tmp)
-otu_export<-t(otu_export)
-View(as.data.frame(rowSums(otu_export)))
+names(otu_export.fam) <- names(tmp)
+otu_export.fam<-t(otu_export.fam)
+View(as.data.frame(rowSums(otu_export.fam)))
+otu_export2<-as.data.frame(rowSums(otu_export.fam))
+make_csv_table(otu_export2, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dominant_families", info = "Dominant_fam")
 ```
