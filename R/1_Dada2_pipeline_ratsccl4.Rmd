@@ -32,8 +32,8 @@ filtFs <- file.path(path, "filtered", paste0(sample.names, "_F_filt.fastq.gz"))
 filtRs <- file.path(path, "filtered", paste0(sample.names, "_R_filt.fastq.gz"))
 
 
-out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(250,210),
-              maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, trimLeft = c(30, 30),
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(290,265),
+              maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, trimLeft = c(21, 21),
               compress=TRUE, multithread=TRUE) # On Windows set multithread=FALSE
 head(out)
 
@@ -61,8 +61,14 @@ seqtab <- makeSequenceTable(mergers)
 dim(seqtab)
 # Inspect distribution of sequence lengths
 table(nchar(getSequences(seqtab)))
+#269  270  272  273  281  285  289  298  299  300  311  313  315  324  327  329  336  337  339  340  342  355  361  362 
+#   9    1    1    1    2    1    1    1    2    1    1    1    1    1    1    2    1    2    1    1    1    2    1    3 
+# 369  376  378  379  381  383  392  394  395  397  398  399  400  401  402  403  404  405  406  407  408  409  410  414 
+#   1    1    1    1    2    1    1    3    3  466 3832 1398  898 1514   41   89  223    4    1    5    2    1    3    3 
+# 415  416  417  418  419  420  421  422  423  424  425  427  429  440  453  477  489  492  495  497 
+#  91  839  927 1545  462   10    4  256 1868  169    3    1    1    2    1    1    1    2    1    1 
 #Reduce noise
-seqtab2 <- seqtab[,nchar(colnames(seqtab)) %in% seq(379,386)]
+seqtab2 <- seqtab[,nchar(colnames(seqtab)) %in% seq(397,424)]
 
 seqtab.nochim <- removeBimeraDenovo(seqtab2, method="consensus", multithread=TRUE, verbose=TRUE)
 dim(seqtab.nochim)
@@ -103,7 +109,7 @@ asv.sample<- as.matrix(test)
 colnames(asv.sample)<- "ASVs_dada2"
 rm(test,asv, i)
 #Important not to loose the connection between the seq and the ASVs
-write.csv(asv.names, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/output/Tables/asv_table.csv", row.names = F, col.names = F)
+write.csv(asv.names, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Tables/asv_table.csv", row.names = F, col.names = F)
 
 ###Track reads through the pipeline 
 getN <- function(x) sum(getUniques(x))
@@ -162,10 +168,6 @@ make_csv_table(taxa_asvs, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL
 
 saveRDS(fitGTR16S, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/phylo_tree.rds")  
   
-library(phyloseq); packageVersion("phyloseq")
-library(ggplot2); packageVersion("ggplot2")
-theme_set(theme_bw())
-samples.out <- rownames(seqtab.nochim)
 
 
 ```
