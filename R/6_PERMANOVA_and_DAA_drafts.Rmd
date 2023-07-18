@@ -30,7 +30,7 @@ ps <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps.Rds")
 pseq.rel <- microbiome::transform(ps, "compositional")
 otu <- abundances(pseq.rel)
 meta <- meta(pseq.rel)
-permanova <- adonis(t(otu) ~ Batch + Antibiotic + Treated_CCL,
+permanova <- adonis(t(otu) ~  Batch+ Antibiotic + Treated_CCL,
                     data = meta, permutations=999, method = "bray", by = NULL)
 
 # P-value
@@ -39,11 +39,12 @@ permanova$aov.tab
 ```
 
 ```{r Adonis}
+metadata <- meta(ps_0)
 BC_dist<- phyloseq::distance(ps_0, method="bray", weighted=T)
 ordination<- ordinate(ps_0,
                       method="PCoA", distance= BC_dist)
 #Adonis2
-vegan::adonis(BC_dist~ Group + Batch , permutations = 999, data = metadata, na.action = F)
+vegan::adonis(BC_dist~ Batch+ Antibiotic + Treated_CCL , permutations = 999, data = metadata, na.action = F)
 ```
 
 ##Wilcoxon & Welch test using transformed data
