@@ -72,6 +72,9 @@ View(metadata)
 ##MetadeconfoundR
 ```{r MetadeconfoundR heatmaps}
 picrust_res <- readRDS("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/picrust_res.Rds")
+library(readxl)
+metadata <- read_excel("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/metadata.xlsx")
+View(metadata)
 library(metadeconfoundR)
 library(dplyr)
 ps.rel<-microbiome::transform(picrust_res, "compositional")
@@ -80,7 +83,7 @@ long_names<-as.data.frame(tax_table(picrust_res))
 rownames(Meta_Species)= long_names$V2[match(rownames(Meta_Species),rownames(long_names))]
 Meta_Species<-t(Meta_Species)
 
-metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b))
+metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, Ammonia))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
 metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
@@ -117,13 +120,15 @@ saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4mo
 picrust_res <- readRDS("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/picrust_res.Rds")
 library(metadeconfoundR)
 library(dplyr)
+library(tidyr)
+library(tidyverse)
 ps.rel<-microbiome::transform(picrust_res, "compositional")
 Meta_Species <- as.data.frame((otu_table(ps.rel)))
 long_names<-as.data.frame(tax_table(picrust_res))
 rownames(Meta_Species)= long_names$V2[match(rownames(Meta_Species),rownames(long_names))]
 Meta_Species<-t(Meta_Species)
 
-metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b))
+metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, Ammonia))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
 metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
