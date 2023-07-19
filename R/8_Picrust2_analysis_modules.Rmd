@@ -21,7 +21,7 @@ db <- loadDB("GMMs.v1.08")
 
 # alternatively run the mapping without loading the table into R.
 # Use 1 for KEGG KO annotation only or 2 for taxonomic followed by KO annotation.
-mods <- rpm("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/input/pred_metagenome_unstrat.tsv", minimum.coverage=0.3, annotation = 1, module.db = db)
+mods <- rpm("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/input/KO_metagenome_out_ccl4/pred_metagenome_unstrat.tsv", minimum.coverage=0.3, annotation = 1, module.db = db)
 # get the name of the first predicted module
 getNames(db, mods@annotation[1,]) 
 
@@ -50,7 +50,7 @@ library(microbiome)
 
 ```{r Tax Clean}
 
-metadata <- read_excel("Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
+metadata <- read_excel("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
 View(metadata)
 
  otu <- subset(GMMs, select = -c(names))
