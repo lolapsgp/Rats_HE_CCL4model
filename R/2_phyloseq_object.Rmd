@@ -6,6 +6,7 @@ output: html_document
 ```{r phyloseq}
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
+library(Biostrings)
 library(readr)
 library(readxl)
 library(readr)
@@ -23,6 +24,7 @@ dna<- readDNAStringSet("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ASV.
 otu_table <- as.data.frame(otu_table)
 rownames(otu_table) <- otu_table$...1
 otu_ok <- subset(otu_table, select = -c(CV1_S1, CV16_S2, CR23_S3, CR24_S4, CC34_36_S5, CC37_1_S6, CCR55_S7, CCR56_S8, ...1))
+otu_ok <- otu_ok[-1827, ]
 
 tax_table <- as.data.frame(tax_table)
 rownames(tax_table) <- tax_table$...1
@@ -32,7 +34,7 @@ tax_table_ok <- subset(tax_table, select = -c(Species...8, Species...9, ...1))
  OTU = otu_table(otu_ok, taxa_are_rows = TRUE)
  TAX = tax_table(as.matrix(tax_table_ok))
  SAMPLE = sample_data(metadata)
- TREE = tree<- phylo_tree$tree
+ TREE = tree<- tree$tree
  
 rownames(SAMPLE) <-metadata$SampleID
 

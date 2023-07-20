@@ -75,7 +75,7 @@ for(i in 1:length(tmp)){
 names(otu_export) <- names(tmp)
 otu_export<-t(otu_export)
 
-head(otu_export)[5]
+head(otu_export)
 ```
 
 ##MetadeconfoundR
@@ -103,10 +103,10 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 ## [1] TRUE
 Meta_Species<- as.data.frame(Meta_Species)
 Output1 <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                 metaMat = as.data.frame(metadata_R), nnodes = 4)
+                                 metaMat = as.data.frame(metadata_R), nnodes = 14)
                                  
 Output2_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                     metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                         c("Batch")))
 View(Output1)
 View(Output2_batch)
@@ -115,8 +115,8 @@ left <- BuildHeatmap(Output1)
 right <- BuildHeatmap(Output2_batch)
 plot(left)
 plot(right)
-saveRDS(Output1, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output1_metadec.Rds")
-saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output2_batch_all.Rds")
+saveRDS(Output1, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/MetadeconfoundR/Output1_metadec.Rds")
+saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/MetadeconfoundR/Output2_batch_all.Rds")
 
 ```
 
@@ -145,7 +145,7 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 Meta_Species<- as.data.frame(Meta_Species)
                                  
 Output2_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                     metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                         c("Batch")))
 
 View(Output2_batch)
@@ -154,13 +154,14 @@ View(Output2_batch)
 right <- BuildHeatmap(Output2_batch)
 
 plot(right)
-saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output2_batch_allgenus.Rds")
+saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/MetadeconfoundR/Output2_batch_allgenus.Rds")
 ```
 
 ##MetadeconfoundR ctr vs ctr+rif
 ```{r MetadeconfoundR heatmaps}
 library(metadeconfoundR)
 library(dplyr)
+library(phyloseq)
 ps.rel<-ps_0 %>% microbiome::transform("compositional") %>% subset_samples(Group %in% c("ctr", "ctr+rif"))
 latest_annotations <- get_latest_annotation(ps.rel)
 latest_annotations<-as.data.frame(latest_annotations)
@@ -168,7 +169,7 @@ short_names<-as.data.frame(otu_table(ps.rel))
 rownames(short_names)<-latest_annotations$TaxaID
 Meta_Species <- t(short_names) 
 
-metadata_R <- subset(as.data.frame(meta(ps.rel)), select = -c(Treated_CCL, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, IL_6, TNF_a, IFN_gamma, IL_15, IL_17, IL_10,  IL_4, TGF_b,  CCL2, CCL5, CCL20, CX3CL1,  CCR2,  CCR5, CX3CR1, Occludine, Learning_index_Rmaze))
+metadata_R <- subset(data.frame(sample_data(ps.rel)), select = -c(Treated_CCL, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, IL_6, TNF_a, IFN_gamma, IL_15, IL_17, IL_10,  IL_4, TGF_b,  CCL2, CCL5, CCL20, CX3CL1,  CCR2,  CCR5, CX3CR1, Occludine, Learning_index_Rmaze))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
 metadata_R <- as.data.frame(metadata_R)
@@ -180,10 +181,10 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 ## [1] TRUE
 Meta_Species<- as.data.frame(Meta_Species)
 Output1_ctrvsctrrif <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                 metaMat = as.data.frame(metadata_R), nnodes = 4)
+                                 metaMat = as.data.frame(metadata_R), nnodes = 14)
                                  
 Output2_batch_ctrvsctrrif <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                     metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                         c("Batch")))
 View(Output1_ctrvsctrrif)
 View(Output2_batch_ctrvsctrrif)
@@ -201,6 +202,7 @@ saveRDS(Output2_batch_ctrvsctrrif, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Ra
 ```{r MetadeconfoundR heatmaps}
 library(metadeconfoundR)
 library(dplyr)
+library(phyloseq)
 ps.rel3<-ps_0 %>% microbiome::transform("compositional") %>% subset_samples(Group %in% c("ctr", "ccl4"))
 latest_annotations <- get_latest_annotation(ps.rel3)
 latest_annotations<-as.data.frame(latest_annotations)
@@ -208,7 +210,7 @@ short_names<-as.data.frame(otu_table(ps.rel3))
 rownames(short_names)<-latest_annotations$TaxaID
 Meta_Species <- t(short_names) 
 
-metadata_R <- subset(as.data.frame(meta(ps.rel3)), select = -c(Antibiotic, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, Ammonia))
+metadata_R <- subset(data.frame(sample_data(ps.rel3)), select = -c(Antibiotic, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, Ammonia))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
 metadata_R <- as.data.frame(metadata_R)
@@ -220,10 +222,10 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 ## [1] TRUE
 Meta_Species<- as.data.frame(Meta_Species)
 Output1_ctrvsccl4 <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                 metaMat = as.data.frame(metadata_R), nnodes = 4)
+                                 metaMat = as.data.frame(metadata_R), nnodes = 14)
                                  
 Output2_batch_ctrvsccl4 <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                     metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                         c("Batch")))
 View(Output1_ctrvsccl4)
 View(Output2_batch_ctrvsccl4)
@@ -248,7 +250,7 @@ short_names<-as.data.frame(otu_table(ps.rel4))
 rownames(short_names)<-latest_annotations$TaxaID
 Meta_Species <- t(short_names) 
 
-metadata_R <- subset(as.data.frame(meta(ps.rel4)), select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IFN_gamma, IL_15, IL_17, IL_10,  IL_4, TGF_b,  CCL2, CCL5, CCL20, CX3CL1,  CCR2,  CCR5, CX3CR1, Occludine, Learning_index_Rmaze, IL_6, IL1_b, TNF_a, Ammonia, Ambulatory_Counts, Vertcal_Counts, Stereotipic_Counts, Average_velocity))
+metadata_R <- subset(data.frame(sample_data(ps.rel4)), select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IFN_gamma, IL_15, IL_17, IL_10,  IL_4, TGF_b,  CCL2, CCL5, CCL20, CX3CL1,  CCR2,  CCR5, CX3CR1, Occludine, Learning_index_Rmaze, IL_6, IL1_b, TNF_a, Ammonia, Ambulatory_Counts, Vertcal_Counts, Stereotipic_Counts, Average_velocity))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
 metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
@@ -261,10 +263,10 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 ## [1] TRUE
 Meta_Species<- as.data.frame(Meta_Species)
 Output1_ctrvsccl4rif <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                 metaMat = as.data.frame(metadata_R), nnodes = 4)
+                                 metaMat = as.data.frame(metadata_R), nnodes = 14)
                                  
 Output2_batch_ctrvsccl4rif <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                     metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                         c("Batch")))
 View(Output1_ctrvsccl4rif)
 View(Output2_batch_ctrvsccl4rif)
@@ -289,7 +291,7 @@ short_names<-as.data.frame(otu_table(ps.rel5))
 rownames(short_names)<-latest_annotations$TaxaID
 Meta_Species <- t(short_names) 
 
-metadata_R <- subset(as.data.frame(meta(ps.rel5)), select = -c(Treated_CCL, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, Ammonia))
+metadata_R <- subset(data.frame(sample_data(ps.rel5)), select = -c(Treated_CCL, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, Ammonia))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
 metadata_R <- as.data.frame(metadata_R)
@@ -301,10 +303,10 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 ## [1] TRUE
 Meta_Species<- as.data.frame(Meta_Species)
 Output1_ccl4vsccl4rif <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                 metaMat = as.data.frame(metadata_R), nnodes = 4)
+                                 metaMat = as.data.frame(metadata_R), nnodes = 14)
                                  
 Output2_batch_ccl4vsccl4rif <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                     metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                                     metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                         c("Batch")))
 View(Output1_ccl4vsccl4rif)
 View(Output2_batch_ccl4vsccl4rif)
@@ -329,7 +331,7 @@ short_names<-as.data.frame(otu_table(ps.rel6))
 rownames(short_names)<-latest_annotations$TaxaID
 Meta_Species <- t(short_names) 
 
-metadata_R <- subset(as.data.frame(meta(ps.rel6)), select = -c(Antibiotic, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, Ammonia, Ambulatory_Counts, Vertcal_Counts, Stereotipic_Counts, Average_velocity,  IL_6, TNF_a, IFN_gamma, IL_15, IL_17, IL_10,  IL_4, TGF_b, CCL2,  CCL5, CCL20, CX3CL1,  CCR2,  CCR5, CX3CR1, Occludine, Learning_index_Rmaze))
+metadata_R <- subset(data.frame(sample_data(ps.rel6)), select = -c(Antibiotic, SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b, Ammonia, Ambulatory_Counts, Vertcal_Counts, Stereotipic_Counts, Average_velocity,  IL_6, TNF_a, IFN_gamma, IL_15, IL_17, IL_10,  IL_4, TGF_b, CCL2,  CCL5, CCL20, CX3CL1,  CCR2,  CCR5, CX3CR1, Occludine, Learning_index_Rmaze))
 metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
 metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
 metadata_R <- as.data.frame(metadata_R)

@@ -221,7 +221,7 @@ Metadec_table<-Metadec_table%>%
     metaVariable %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning_index_Rmaze", "Average.velocity") ~ "Cognitive tests",
     metaVariable %in% c("Antibiotic", "Treated_CCL") ~ "Treatments",
     metaVariable %in% c("Ammonia") ~ "Ammonia levels",
-    metaVariable %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL_10", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine",  "TNF_a", "TGF.b") ~ "Cytokines brain",
+    metaVariable %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL_10", "IL_4", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine",  "TNF_a", "TGF.b") ~ "Cytokines brain",
     metaVariable %in% c("GLAST", "GLT1", "GAT1", "GAT3", "TNFR1", "NR2B", "NR2A", "NR1", "GLUA1", "GLUA2") ~ "Memb. receptors",
     metaVariable %in% c("SCFA_AA", "SCFA_BA", "SCFA_CA", "SCFA_PA", "SCFA_VA") ~ "SCFAs"))%>%
   mutate(ordernames1 = case_when(

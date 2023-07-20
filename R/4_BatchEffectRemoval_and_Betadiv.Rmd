@@ -7,7 +7,7 @@ date: "2023-04-27"
 ```{r Data}
 ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
 library(readxl)
-metadata <- read_excel("OneDrive - Universitat de Valencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/metadata.xlsx")
+metadata <- read_excel("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
 View(metadata)
 ```
 
@@ -61,7 +61,7 @@ text(my_bar, bp+10 , paste("n: ", bp, sep="") ,cex=1) }
 
 ###Filtering: removing zeros
 ```{r Filter}
-logic_z <- data.frame(zeros <= 4)
+logic_z <- data.frame(zeros <= 3)
 logic_z$sum <- rowSums(logic_z)
 rawDada2_Species_f = rawDada2_Species[logic_z$sum >= 1,]
 
@@ -251,17 +251,17 @@ my_mbac <- createMbac (inputOmics = list(otu_T5 = otu[,metadata$Batch == "T5"],
 arsyn_1 <- ARSyNbac(my_mbac, modelName = "16S", Variability = 0.95, 
                  batchEstimation = TRUE, Interaction = FALSE, beta=2)     
 
-otu_clr_corrected <- t(cbind(MultiAssayExperiment::assay(arsyn_1$CorrectedData$T5),                    MultiAssayExperiment::assay(arsyn_1$CorrectedData$T7)))
+otu_corrected <- t(cbind(MultiAssayExperiment::assay(arsyn_1$CorrectedData$T5),                    MultiAssayExperiment::assay(arsyn_1$CorrectedData$T7)))
 
+
+```
 pca = pca(otu_clr_corrected, ncomp = 2, center = T, scale = F)
 plotIndiv(pca, group = metadata$Group, legend = T, title = "Log10 + ARSyN")
-```
-
 We keep the transformed data with ARSyN because it transforms the data in a way that the batch effect is removed.
 
 ##New Phyloseq object with transformed data(ARSyN)
 ```{r new phyloseq} 
-OTU_data_t <- as.data.frame(t(otu_clr_corrected)+6)
+OTU_data_t <- as.data.frame(t(otu_corrected)+6)
 #NewTax from ps_0. Needs to be run first
 NewTAX 
 
@@ -301,16 +301,9 @@ pco.data <- phyloseq.obj@otu_table %>%
 cohort.labels <- phyloseq.obj@sam_data %>%
     data.frame() %>%
     as_tibble() %>%
-    # replace below with your own code, e.g. Group and other variables
-    select(SampleID, Group) %>%
-    # change labels, format: desired name = 'existing name'
-    mutate_at(vars(Group), ~ fct_recode(.,
-                                         `ccl4` = 'CCL4',
-                                         `ccl4+rif` = 'CCL4+rif',
-                                        `ctr+rif` = 'Ctr+rif', 
-                                         `ctr` = 'Control')) %>%
     # change order
-    mutate_at(vars(Group), ~ fct_relevel(., 'Control', 'Ctr+rif','CCL4','CCL4+rif'))
+    mutate_at(vars(Group), ~ fct_relevel(., 'ctr', 'ctr+rif','ccl4','ccl4+rif'))
+
 # add cohort labels/metadata for plotting
 plot.points <- pco.data$points %>%
     as.data.frame() %>%
@@ -323,18 +316,26 @@ axes <- sprintf(fmt='%.2f',
                 (pco.data$eig[1:2]/sum(pco.data$eig[pco.data$eig > 0])) * 100) 
 
 # plot 
-plot.points %>%
-    ggplot(aes(x = V1, y = V2), color = Group) + stat_ellipse(aes(color = Group)) +
-    geom_point(aes(color = Group), size=3, shape=21, alpha=0.8) +
-    ggsci::scale_fill_npg() +
+plot<-plot.points %>%
+    ggplot(aes(x = V1, y = V2, color = Group)) +
+    stat_ellipse(aes(color = Group)) +
+    geom_point(size = 3, shape = 21, alpha = 0.8) +
     labs(
-        size = 'Point Type', 
-        x = paste0('PCo 1 [', axes[1], '%]'), 
-        y = paste0('PCo 2 [', axes[2], '%]')) + 
+        size = 'Point Type',
+        x = paste0('PCo 1 [', axes[1], '%]'),
+        y = paste0('PCo 2 [', axes[2], '%]')
+    ) +
     guides(size = FALSE, shape = FALSE) +
-    ggpubr::theme_pubr() +
-    ggpubr::labs_pubr() +
-    theme(legend.position = c(0.59, 0.9))
+    theme_pubr() +
+    labs_pubr() +
+    theme(
+        legend.position = "bottom",  # Legend at the bottom
+        legend.text = element_text(size = 20),  # Set legend text size
+        legend.title = element_blank()  # Remove legend title
+    )
+plot
+plot <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/BetaDiv_PCoA_log10_ARSyN_Group_removing3zeros.pdf", width = 9, height = 8)
+
 ```
 
 ###PCoAs: after removing batch effect per batch 
@@ -368,7 +369,7 @@ axes <- sprintf(fmt='%.2f',
                 (pco.data$eig[1:2]/sum(pco.data$eig[pco.data$eig > 0])) * 100) 
 
 # plot 
-plot.points %>%
+plotbatch<-plot.points %>%
     ggplot(aes(x = V1, y = V2), color = Batch) + stat_ellipse(aes(color = Batch)) +
     geom_point(aes(color = Batch), size=3, shape=21, alpha=0.8) +
     ggsci::scale_fill_npg() +
@@ -380,6 +381,9 @@ plot.points %>%
     ggpubr::theme_pubr() +
     ggpubr::labs_pubr() +
     theme(legend.position = c(0.59, 0.9))
+plotbatch
+
+plotbatch<- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/BetaDiv_PCoA_log10_ARSyN_Batch_removing3zeros.pdf", width = 9, height = 8)
 ```
 
 #PCoAs changing aesthetic

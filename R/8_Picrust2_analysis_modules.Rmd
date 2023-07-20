@@ -1,0 +1,295 @@
+---
+title: "9_Picrust2_analysis_modules"
+output: html_document
+date: "2023-06-15"
+---
+
+```{r libraries and data}
+library(omixerRpm)
+library(readr)
+library(tidyverse)
+## Not run: 
+# read a functional profile matrix into R or create it inside R. Please note that row.names should not be used while reading the matrix. 
+# dat <- read.table("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/input/pred_metagenome_unstrat.tsv", header=T, sep="\t")
+# Run the module mapping on the loaded table.
+# mods <- rpm(dat, minimum.coverage=0.3, annotation = 1)
+
+# Load the mapping database (v.1.08 created by me adding modules from 104 to 109)
+#I could not load it like that so I copied the files in "/home/lginerp/R/x86_64-pc-linux-gnu-library/4.1/omixerRpm/extdata" and then:
+listDB()
+db <- loadDB("GMMs.v1.08")
+
+# alternatively run the mapping without loading the table into R.
+# Use 1 for KEGG KO annotation only or 2 for taxonomic followed by KO annotation.
+mods <- rpm("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/input/KO_metagenome_out_ccl4/pred_metagenome_unstrat.tsv", minimum.coverage=0.3, annotation = 1, module.db = db)
+# get the name of the first predicted module
+getNames(db, mods@annotation[1,]) 
+
+GMMs<-data.frame(mods@abundance) 
+names<-as.data.frame(mods@annotation)
+rownames(GMMs)<-names$Module
+long_names<-as.data.frame(mods@db@module.names)
+GMMs$names = long_names$V2[match(rownames(GMMs),rownames(long_names))]
+
+#Write the file to a csv to save it. 
+write.csv(GMMs, file = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/GMMs.csv")
+```
+
+```{r Librerias phyloseq}
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(readxl)
+library(phyloseq)
+library(vegan)
+library(microbiome)
+
+```
+
+
+
+```{r Tax Clean}
+
+metadata <- read_excel("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
+View(metadata)
+
+ otu <- subset(GMMs, select = -c(names))
+
+ OTU = otu_table(as.matrix(otu), taxa_are_rows = TRUE)
+ TAX = tax_table(as.matrix(long_names))
+ SAMPLE <- sample_data(metadata)
+ 
+ #Como me daba error hetenido que especificar qué datos son qué columnas
+ rownames(SAMPLE) <-metadata$SampleID
+
+ 
+ # merge the data
+ picrust_res <- phyloseq(OTU, TAX, SAMPLE)
+ picrust_res
+ saveRDS(picrust_res, file = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/picrust_res.Rds")
+```
+
+##MetadeconfoundR
+```{r MetadeconfoundR heatmaps}
+picrust_res <- readRDS("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/picrust_res.Rds")
+library(metadeconfoundR)
+library(dplyr)
+ps.rel<-microbiome::transform(picrust_res, "compositional")
+Meta_Species <- as.data.frame((otu_table(ps.rel)))
+long_names<-as.data.frame(tax_table(picrust_res))
+rownames(Meta_Species)= long_names$V2[match(rownames(Meta_Species),rownames(long_names))]
+Meta_Species<-t(Meta_Species)
+
+metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b))
+metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
+metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
+metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
+metadata_R <- as.data.frame(metadata_R)
+rownames(metadata_R) <- (metadata$SampleID)
+metadata_R <- metadata_R[ order(row.names(metadata_R)), ]
+Meta_Species <- Meta_Species[ order(row.names(Meta_Species)), ]
+
+# check correct ordering
+all(rownames(metadata_R) == rownames(Meta_Species))
+## [1] TRUE
+all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
+## [1] TRUE
+Meta_Species<- as.data.frame(Meta_Species)
+Output1 <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
+                                 metaMat = as.data.frame(metadata_R), nnodes = 10)
+                                 
+Output2_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
+                                     metaMat = as.data.frame(metadata_R), nnodes = 10, randomVar = list("+ (1|Batch)",
+                                                                                        c("Batch")))
+View(Output1)
+View(Output2_batch)
+
+left <- BuildHeatmap(Output1)
+right <- BuildHeatmap(Output2_batch)
+plot(left)
+plot(right)
+saveRDS(Output1, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/metadec1_picrust.Rds")
+saveRDS(Output2_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/metadec2_batch_picrust.Rds")
+```
+
+#MetadeconfoundR SCFAs
+```{r MetadeconfoundR cuniplots SCFA}
+picrust_res <- readRDS("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/picrust_res.Rds")
+library(metadeconfoundR)
+library(dplyr)
+ps.rel<-microbiome::transform(picrust_res, "compositional")
+Meta_Species <- as.data.frame((otu_table(ps.rel)))
+long_names<-as.data.frame(tax_table(picrust_res))
+rownames(Meta_Species)= long_names$V2[match(rownames(Meta_Species),rownames(long_names))]
+Meta_Species<-t(Meta_Species)
+
+metadata_R <- subset(metadata, select = -c(SampleID, Week, FisabioID, GABAa1, GABAa5, Ymaze_trialstolearn, OLM, IL1_b))
+metadata_R <- metadata_R %>% mutate(Batch = ifelse(Batch=="T5",1,0))
+metadata_R <- metadata_R %>% mutate(Antibiotic = ifelse(Antibiotic=="Yes",1,0))
+metadata_R <- metadata_R %>% mutate(Treated_CCL = ifelse(Treated_CCL=="Yes",1,0))
+metadata_R <- as.data.frame(metadata_R)
+rownames(metadata_R) <- (metadata$SampleID)
+metadata_R <- metadata_R[ order(row.names(metadata_R)), ]
+Meta_Species <- Meta_Species[ order(row.names(Meta_Species)), ]
+
+# check correct ordering
+all(rownames(metadata_R) == rownames(Meta_Species))
+## [1] TRUE
+all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
+## [1] TRUE
+Meta_Species<- as.data.frame(Meta_Species)
+
+Output_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
+                                     metaMat = as.data.frame(metadata_R), nnodes = 10, randomVar = list("+ (1|Batch)",
+                                                                                        c("Batch")))
+View(Output_batch)
+raw_p <- Output_batch[1]
+corr_p <- Output_batch[2]
+effect_size<- Output_batch[3]
+status<- Output_batch[4]
+
+raw_p_df <- data.frame(raw_p$Ps)
+raw_p_df  <- raw_p_df %>% subset(select = c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA)) %>%
+    rownames_to_column()%>%
+    mutate(p_SCFA_AA=SCFA_AA)%>%
+    mutate(p_SCFA_BA=SCFA_BA)%>%
+    mutate(p_SCFA_CA=SCFA_CA)%>%
+    mutate(p_SCFA_PA=SCFA_PA)%>%
+    mutate(p_SCFA_VA=SCFA_VA)%>%
+    select(!c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA))
+
+corr_p_df <- data.frame(corr_p$Qs)
+corr_p_df  <- corr_p_df %>%subset(select = c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA)) %>%
+    rownames_to_column()%>%
+    mutate(q_SCFA_AA=SCFA_AA)%>%
+    mutate(q_SCFA_BA=SCFA_BA)%>%
+    mutate(q_SCFA_CA=SCFA_CA)%>%
+    mutate(q_SCFA_PA=SCFA_PA)%>%
+    mutate(q_SCFA_VA=SCFA_VA)%>%
+    select(!c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA))
+
+
+effect_size_df <- data.frame(effect_size$Ds)
+effect_size_df  <- effect_size_df %>% subset(select = c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA)) %>%
+rownames_to_column()%>%
+    mutate(d_SCFA_AA=SCFA_AA)%>%
+    mutate(d_SCFA_BA=SCFA_BA)%>%
+    mutate(d_SCFA_CA=SCFA_CA)%>%
+    mutate(d_SCFA_PA=SCFA_PA)%>%
+    mutate(d_SCFA_VA=SCFA_VA)%>%
+    select(!c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA))
+
+
+status_df <- data.frame(status$status)
+status_df  <- status_df %>% subset(select = c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA)) %>%
+    rownames_to_column()%>%
+    mutate(status_SCFA_AA=SCFA_AA)%>%
+    mutate(status_SCFA_BA=SCFA_BA)%>%
+    mutate(status_SCFA_CA=SCFA_CA)%>%
+    mutate(status_SCFA_PA=SCFA_PA)%>%
+    mutate(status_SCFA_VA=SCFA_VA)%>%
+    select(!c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA))
+
+#create two-column-dataframe containing corresponding "human-readable" names to the "machine-readable" feature names used as row.names in metaDeconfOutput.  
+taxtable <- data.frame(tax_table(picrust_res))%>% 
+  rename(
+    rowname = V2)
+
+effect_table <- raw_p_df%>%
+    full_join(corr_p_df, by="rowname")%>%
+    full_join(effect_size_df, by="rowname")%>%
+    full_join(status_df, by="rowname")%>%
+    full_join(taxtable, by="rowname")
+
+# remove the entries which have NS and AD in status
+effect_table_sig <- effect_table%>%
+    filter(!status_SCFA_AA=="NS"|!status_SCFA_BA=="NS"|!status_SCFA_CA =="NS" | !status_SCFA_PA=="NS"| !status_SCFA_VA=="NS")
+
+
+#pivot long format
+
+effect_table_sig_long <- effect_table_sig%>%
+  pivot_longer(cols = starts_with("status"), names_to = "comparison_status", values_to = "status")%>%
+  separate(comparison_status, c("variable" ,"names","SCFA"), "_")%>%
+  mutate(comparison_status=paste(SCFA, sep="_"))%>%
+  select(-c(variable, SCFA))%>%
+  pivot_longer(cols = starts_with("p"), names_to = "comparison_p", values_to = "raw_p")%>%
+  separate(comparison_p, c("variable","names" ,"SCFA"), "_")%>%
+  mutate(comparison_p=paste(SCFA, sep="_"))%>%
+  select(-c(variable, SCFA))%>%
+  filter(comparison_p==comparison_status)%>%
+  pivot_longer(cols = starts_with("d"), names_to = "comparison_effectSize", values_to = "effectSize")%>%
+  separate(comparison_effectSize, c("variable","names","SCFA"), "_")%>%
+  mutate(comparison_effectSize=paste(SCFA, sep="_"))%>%
+  select(-c(variable, SCFA))%>%
+  filter(comparison_p==comparison_effectSize)%>%
+  pivot_longer(cols = starts_with("q"), names_to = "comparison_q", values_to = "corr_p")%>%
+  separate(comparison_q, c("variable","names","SCFA"), "_")%>%
+  mutate(comparison_q=paste(SCFA, sep="_"))%>%
+  select(-c(variable, names))%>%
+  filter(comparison_p==comparison_q)%>%
+  select(-c(comparison_q, comparison_effectSize,comparison_status))%>%
+  mutate(fdr= as_factor(case_when(corr_p <= 0.05 ~ "*", corr_p <= 0.01 ~ "**", corr_p <= 0.001 ~ "***", corr_p <= 0.1 ~ ".")))
+
+library(gtools)
+effect_table_sig_long%>%
+    ggplot(aes (x = SCFA, y = rowname))+ 
+    geom_point (aes (fill = effectSize, shape = as.factor (sign (effectSize)), size = abs (effectSize), color=(fdr))) +
+    scale_shape_manual (values = c (25, 24)) + 
+    scale_fill_gradient2 (low = "blue", high = "red", mid = "white", midpoint = 0) +
+    scale_color_manual(values=c("gray22","gray1","gray85"))+
+    geom_text (aes (label = stars.pval(corr_p)))+
+    theme_grey() +
+    theme(axis.text.x = element_text(), #angle = 0, hjust = 0, vjust = 1
+          #To remove legend = legend.position = "none"
+          legend.position = "right",axis.text.y = element_text(face = "italic")) + scale_y_discrete(position = "left") + ylab("Functional modules")
+
+#Heatmap
+ggplot(effect_table_sig_long, aes(x = SCFA, y = reorder(rowname, effectSize))) +
+    # do the heatmap tile coloring based on effect sizes
+    geom_tile(aes(fill = effectSize)) +
+    scale_fill_gradient2 (low = "blue", high = "red", mid = "white", midpoint = 0) +
+    # add significance stars/circles for deconfounded/confounded associations
+    geom_text (aes (label = stars.pval(corr_p)))+
+    guides(color = guide_legend(override.aes = list(shape = c(1,8)) ) ) +
+    
+    # make it pretty
+    theme_classic() +
+    theme(axis.text.x = element_text(size = 7,
+                                     angle = 90,
+                                     hjust = 1,
+                                     vjust = 0.3),
+          axis.text.y = element_text(size = 7,
+                                     angle = 0,
+                                     hjust = 1,
+                                     vjust = 0.35),
+          plot.title.position = "plot",
+          plot.title = element_text(hjust = 0),
+          plot.subtitle=element_text(size=8)) +
+    labs(title="SCFAs and modules correlation heatmap",
+         subtitle="FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = * ",
+         x = "SCFAs",
+         y = "Modules")
+```
+
+##Wilcoxon test
+```{r Wilcoxon test}
+hist((abundances(picrust_res, transform = "compositional")), 113)
+
+set.seed(321)
+ps.t<- subset_samples(picrust_res, Group %in% c("ccl4+rif", "ccl4"))
+test.taxa <- taxa(ps.t)
+pvalue.wilcoxon <- c()
+foldchange <- c()
+for (taxa in test.taxa) {
+    # Create a new data frame for each taxonomic group
+    df <- data.frame(Abundance = abundances(ps.t)[taxa,],
+                     Group = meta(ps.t)$Group)
+    # Calculate pvalue and effect size (difference beween log means)       
+    pvalue.wilcoxon[[taxa]] <- wilcox.test(Abundance ~ Group, data = df)$p.value
+}
+    # Correct p-values for multiple testing
+    pvalue.wilcoxon.adjusted[[taxa]] <- t(as.data.frame(p.adjust(pvalue.wilcoxon[[taxa]])))
+
+write.csv(as.data.frame(pvalue.wilcoxon.adjusted), "Wilcocxon_ccl4vsccl4rif")
+```

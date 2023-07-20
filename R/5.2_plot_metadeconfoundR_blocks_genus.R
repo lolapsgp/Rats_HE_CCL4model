@@ -60,6 +60,7 @@ head(otu_export)[5]
 
 ##MetadeconfoundR
 library(metadeconfoundR)
+library(gtools)
 library(dplyr)
 ps.rel<-microbiome::transform(ps_0_genus, "compositional")
 latest_annotations <- get_latest_annotation(ps.rel)
@@ -126,7 +127,7 @@ ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames
     plot.subtitle = element_text(size = 8)
   ) +
   labs(
-    title = "All metadata and significant taxa correlation heatmap",
+    title = "Significant metadata and significant genus correlation heatmap",
     subtitle = "FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = *",
     x = "Variables",
     y = "ASVs",
@@ -215,7 +216,7 @@ effect_table_sig_long <- effect_table_sig%>%
     comparison_p %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning.index.Rmaze", "Average.velocity") ~ "Cognitive tests",
     comparison_p %in% c("Antibiotic", "Treated.CCL") ~ "Treatments",
     comparison_p %in% c("Ammonia") ~ "Ammonia levels",
-    comparison_p %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL.10", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine",  "TNF.a", "TGF.b") ~ "Cytokines brain",
+    comparison_p %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL.10", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine","IL_4", "TNF.a", "TGF.b") ~ "Cytokines brain",
     comparison_p %in% c("GLAST", "GLT1", "GAT1", "GAT3", "TNFR1", "NR2B", "NR2A", "NR1", "GLUA1", "GLUA2") ~ "Membrane expression receptors",
     comparison_p %in% c("SCFA.AA", "SCFA.BA", "SCFA.CA", "SCFA.PA", "SCFA.VA") ~ "SCFAs"))%>%
   mutate(ordernames1 = case_when(
@@ -247,7 +248,7 @@ ggplot(effect_table_sig_long, aes(x = variable, y = fct_reorder(rowname, orderna
         plot.title.position = "plot",
         plot.title = element_text(hjust = 0),
         plot.subtitle=element_text(size=8)) +
-  labs(title="All metadata and significant taxa correlation heatmap",
+  labs(title="All metadata and significant genus correlation heatmap",
        subtitle="FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = * ",
        x = "Variables",
        y = "ASVs")
