@@ -14,28 +14,48 @@ Check that variance homogeneity assumptions hold (to ensure the reliability of t
 
 Note the assumption of similar multivariate spread among the groups ie. analogous to variance homogeneity
 ```{r homogeneity}
+library(vegan)
+library(microbiome)
 ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
 pseq.rel <- microbiome::transform(ps_0, "compositional")
 otu <- abundances(pseq.rel)
 dist <- vegdist(t(otu))
 meta <- meta(pseq.rel)
+#Check homogeneity of variances
 anova(betadisper(dist, meta$Group))
+#Check normality
+library(ISLR)
+install.packages("dlookr")
+library(dlookr)
+d %>% 
+  group_by(education) %>% 
+  normality(wage) 
+
 ```
 
 ## Permanova/ADONIS
 ```{r PERMANOVA/ADONIS}
 library(vegan)
 #PERMANOVA/ADONIS
-ps <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps.Rds")
-pseq.rel <- microbiome::transform(ps, "compositional")
+ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
+pseq.rel <- microbiome::transform(ps_0, "compositional")
 otu <- abundances(pseq.rel)
 meta <- meta(pseq.rel)
-permanova <- adonis(t(otu) ~  Batch+ Antibiotic + Treated_CCL,
+permanova <- adonis(t(otu) ~  Batch*Antibiotic + Batch*Treated_CCL,
                     data = meta, permutations=999, method = "bray", by = NULL)
 
 # P-value
 permanova$aov.tab
 
+#Using the same data as for Beta Div representation
+ps<- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps.Rds")
+otu <- abundances(ps)
+meta <- meta(ps)
+permanova <- adonis(t(otu) ~  Batch + Antibiotic + Treated_CCL,
+                    data = meta, permutations=999, method = "euclidean", by = NULL)
+
+# P-value
+permanova$aov.tab
 ```
 
 ```{r Adonis}
