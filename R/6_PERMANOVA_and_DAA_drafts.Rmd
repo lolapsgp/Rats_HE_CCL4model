@@ -47,6 +47,15 @@ permanova <- adonis(t(otu) ~  Batch*Antibiotic + Batch*Treated_CCL,
 # P-value
 permanova$aov.tab
 
+#Using the same data as for Beta Div representation
+ps<- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps.Rds")
+otu <- abundances(ps)
+meta <- meta(ps)
+permanova <- adonis(t(otu) ~  Batch + Antibiotic + Treated_CCL,
+                    data = meta, permutations=999, method = "euclidean", by = NULL)
+
+# P-value
+permanova$aov.tab
 ```
 
 ```{r Adonis}
