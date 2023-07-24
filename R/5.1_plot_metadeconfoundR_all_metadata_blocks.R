@@ -210,7 +210,7 @@ ggplot(effect_table_sig_long, aes(x = variable, y = fct_reorder(rowname, orderna
         plot.title = element_text(hjust = 0),
         plot.subtitle=element_text(size=8)) +
   labs(title="All metadata and significant taxa correlation heatmap",
-       subtitle="FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = * ",
+       subtitle="FDR-values: < 0.001 = ***, < 0.01 = **, < 0.05 = *, < 0.1 = . ",
        x = "Variables",
        y = "ASVs")
 
