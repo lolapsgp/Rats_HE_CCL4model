@@ -359,3 +359,52 @@ saveRDS(Output1_ctrrifvsctrrif, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_
 saveRDS(Output2_batch_ctrrifvsctrrif, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/MetadeconfoundR/Output2_batch_ctrrifvsctrrif.Rds")
 
 ```
+
+#Save ctrvsctrrif and ccl4vscll4rif comparisons in excel
+```{r MetadeconfoundR heatmaps}
+Output2_batch_asRandVar_ctrvsctrrif <- readRDS("path/Output2_batch_asRandVar_ctrvsctrrif.Rds")
+Output2_batch_ccl4vsccl4rif <- readRDS("path/Output2_batch_ccl4vsccl4rif.Rds")
+#ctr
+library(openxlsx)
+
+# Create a new Excel workbook
+wb_ctrvsctrrif <- createWorkbook()
+
+# Add the data frames as separate sheets in the workbook
+addWorksheet(wb_ctrvsctrrif, "Ps")
+writeData(wb_ctrvsctrrif, sheet = "Ps", Output2_batch_asRandVar_ctrvsctrrif$Ps, rowNames = TRUE)
+
+addWorksheet(wb_ctrvsctrrif, "Qs")
+writeData(wb_ctrvsctrrif, sheet = "Qs", Output2_batch_asRandVar_ctrvsctrrif$Qs, rowNames = TRUE)
+
+addWorksheet(wb_ctrvsctrrif, "Status")
+writeData(wb_ctrvsctrrif, sheet = "Status", Output2_batch_asRandVar_ctrvsctrrif$status, rowNames = TRUE)
+
+addWorksheet(wb_ctrvsctrrif, "Ds")
+writeData(wb_ctrvsctrrif, sheet = "Ds", Output2_batch_asRandVar_ctrvsctrrif$Ds,  rowNames = TRUE)
+
+# Save the workbook to a file
+saveWorkbook(wb_ctrvsctrrif, "output_ctrvsctrrif.xlsx")
+
+#ccl4
+library(openxlsx)
+
+# Create a new Excel workbook
+wb_ccl4vsccl4rif <- createWorkbook()
+
+# Add the data frames as separate sheets in the workbook
+addWorksheet(wb_ccl4vsccl4rif, "Ps")
+writeData(wb_ccl4vsccl4rif, sheet = "Ps", Output2_batch_ccl4vsccl4rif$Ps,  rowNames = TRUE)
+
+addWorksheet(wb_ccl4vsccl4rif, "Qs")
+writeData(wb_ccl4vsccl4rif, sheet = "Qs", Output2_batch_ccl4vsccl4rif$Qs,  rowNames = TRUE)
+
+addWorksheet(wb_ccl4vsccl4rif, "Status")
+writeData(wb_ccl4vsccl4rif, sheet = "Status", Output2_batch_ccl4vsccl4rif$status,  rowNames = TRUE)
+
+addWorksheet(wb_ccl4vsccl4rif, "Ds")
+writeData(wb_ccl4vsccl4rif, sheet = "Ds", Output2_batch_ccl4vsccl4rif$Ds,  rowNames = TRUE)
+
+# Save the workbook to a file
+saveWorkbook(wb_ccl4vsccl4rif, "output_ccl4vsccl4rif.xlsx")
+```
