@@ -23,13 +23,6 @@ dist <- vegdist(t(otu))
 meta <- meta(pseq.rel)
 #Check homogeneity of variances
 anova(betadisper(dist, meta$Group))
-#Check normality
-library(ISLR)
-install.packages("dlookr")
-library(dlookr)
-d %>% 
-  group_by(education) %>% 
-  normality(wage) 
 
 ```
 
@@ -41,7 +34,7 @@ ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
 pseq.rel <- microbiome::transform(ps_0, "compositional")
 otu <- abundances(pseq.rel)
 meta <- meta(pseq.rel)
-permanova <- adonis(t(otu) ~  Batch*Antibiotic + Batch*Treated_CCL,
+permanova <- adonis(t(otu) ~  Batch + Antibiotic + Treated_CCL,
                     data = meta, permutations=999, method = "bray", by = NULL)
 
 # P-value
@@ -65,6 +58,69 @@ ordination<- ordinate(ps_0,
                       method="PCoA", distance= BC_dist)
 #Adonis2
 vegan::adonis(BC_dist~ Batch+ Antibiotic + Treated_CCL , permutations = 999, data = metadata, na.action = F)
+```
+
+#Cirrhosis/dysbiosis ratio
+```{r Cirrhosis/dysbiosis ratio}
+ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
+library(phyloseq)
+library(microbiome)
+library(tidyverse)
+library(ggpubr)
+library(ggsignif)
+
+# Assuming you already have the phyloseq object pseq.rel
+
+# Define the list of taxa families and order you want to keep for different groups
+taxa_to_keep_LRC <- c("Lachnospiraceae", "Ruminococcaceae", "Clostridia UCG-014")
+#Changed Bacteroidales instead of Bacteroidaceae
+taxa_to_keep_EB <- c("Enterobacteriaceae", "Bacteroidales")
+
+# Define the list of groups
+groups <- c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+
+# Initialize an empty data frame to store CDR values for each sample
+CDR_data <- data.frame()
+
+# Loop through each sample and calculate CDR
+for (sample_id in sample_names(pseq.rel)) {
+  # Subset the original phyloseq object to keep only the taxa for the current sample
+  pseq.sample <- subset_samples(pseq.rel, SampleID == sample_id)
+  
+  # Subset the taxa for the current sample
+  pseq.filtered_LRC <- subset_taxa(pseq.sample, Family %in% taxa_to_keep_LRC | Order %in% taxa_to_keep_LRC)
+  pseq.filtered_EB <- subset_taxa(pseq.sample, Family %in% taxa_to_keep_EB | Order %in% taxa_to_keep_EB)
+  
+  # Calculate the sum of Lachnospiraceae, Ruminococcaceae, and Clostridialies XIV
+  sum_LR_CXIV <- colSums(as.data.frame(taxa_sums(pseq.filtered_LRC)))
+  
+  # Calculate the sum of Enterobacteriaceae and Bacteroidaceae
+  sum_EB <- colSums(as.data.frame(taxa_sums(pseq.filtered_EB)))
+  
+  # Calculate CDR for the current sample
+  CDR <- sum_LR_CXIV / sum_EB
+  
+  # Create a data frame with CDR values and sample ID
+  CDR_data_sample <- data.frame(SampleID = sample_id, CDR)
+  
+  # Append the data for the current sample to the overall CDR_data
+  CDR_data <- rbind(CDR_data, CDR_data_sample)
+}
+
+# Print or manipulate the CDR_data as needed
+CDR_data<-as.data.frame(CDR_data)
+print(CDR_data)
+metadata<-data.frame(sample_data(ps_0))
+metadata$CDR<-CDR_data$CDR
+sample_data(ps_0)<-metadata
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"))
+as.data.frame(meta(ps_0)) %>%
+    arrange() %>%
+    mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+    ggplot( aes(x=Group, y=CDR, color = Group)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)+ geom_violin() +
+    theme(axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
+    xlab("")
 ```
 
 ##Wilcoxon & Welch test using transformed data
