@@ -127,10 +127,10 @@ ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames
     plot.subtitle = element_text(size = 8)
   ) +
   labs(
-    title = "Significant metadata and significant genus correlation heatmap",
+    title = "Significant metadata correlation heatmap",
     subtitle = "FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = *",
     x = "Variables",
-    y = "ASVs",
+    y = "ASVs agglomerated by Genus",
     fill = "Effect size", 
     color = "Confounding status"
   )
