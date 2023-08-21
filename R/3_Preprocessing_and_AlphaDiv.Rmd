@@ -141,15 +141,14 @@ I have tested with and without rarefaction and filtering the zeros and without a
 ```{r AlphaDiversity plots}
 ps_2 <- readRDS("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ps_2.Rds")
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
-
+metadata<- data.frame(sample_data(ps_2)) 
 
 Chao1<-phyloseq::estimate_richness(ps_2, measures = "Chao1")
-metadata<- data.frame(sample_data(ps_2)) 
 Chao1$Group<-metadata$Group
 pChao1 <-ggplot(Chao1, aes(x=Group, y=Chao1))+
   geom_violin(aes(color = Group), trim = FALSE) +  
   geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.text = element_text(size = 16), text = element_text(size = 16))  +
   geom_pwc(label = "{p.format}{p.signif}", hide.ns = "p.adj") 
 #Re-arranging the order of the figure, controls first
 pChao1$data$Group <- as.character(pChao1$data$Group)
@@ -158,12 +157,11 @@ pChao1
 
 
 Shannon<-phyloseq::estimate_richness(ps_2, measures = "shannon")
-metadata<- data.frame(sample_data(ps_2)) 
 Shannon$Group<-metadata$Group
 pShannon <-ggplot(Shannon, aes(x=Group, y=Shannon))+
   geom_violin(aes(color = Group), trim = FALSE) +  
   geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.text = element_text(size = 16), text = element_text(size = 16))  +
   geom_pwc(label = "{p.format}{p.signif}", hide.ns = "p.adj") 
 #Re-arranging the order of the figure, controls first
 pShannon$data$Group <- as.character(pShannon$data$Group)
@@ -171,24 +169,24 @@ pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
 pShannon
 
 Fisher<-phyloseq::estimate_richness(ps_2, measures = "fisher")
-metadata<- data.frame(sample_data(ps_2)) 
 Fisher$Group<-metadata$Group
 pFisher <-ggplot(Fisher, aes(x=Group, y=Fisher))+
   geom_violin(aes(color = Group), trim = FALSE) +  
   geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.text = element_text(size = 16), text = element_text(size = 16))  +
   geom_pwc(label = "{p.format}{p.signif}", hide.ns = "p.adj") 
 #Re-arranging the order of the figure, controls first
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
 pFisher
 
-ggarrange(pShannon, pChao1, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+ggarrange(pShannon, pChao1, pFisher,common.legend = TRUE, legend="bottom",nrow = 1) +
+  theme(legend.text = element_text(size = 16))
 
 all_ASVs_boxplots <- ggarrange(pShannon, pChao1, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
 
 # Modify the legend order in the updated plot
-all_ASVs_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_genus_boxplots.pdf", width = 12, height = 8)
+all_ASVs_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_ASVs_padj.pdf", width = 12, height = 8)
 ```
 
 ###Alpha Diversity statistical tests (check)
