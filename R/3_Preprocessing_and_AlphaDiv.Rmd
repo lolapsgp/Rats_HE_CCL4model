@@ -144,12 +144,13 @@ newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 metadata<- data.frame(sample_data(ps_2)) 
 
 Chao1<-phyloseq::estimate_richness(ps_2, measures = "Chao1")
+metadata<- data.frame(sample_data(ps_2)) 
 Chao1$Group<-metadata$Group
 pChao1 <-ggplot(Chao1, aes(x=Group, y=Chao1))+
   geom_violin(aes(color = Group), trim = FALSE) +  
   geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.text = element_text(size = 16), text = element_text(size = 16))  +
-  geom_pwc(label = "{p.format}{p.signif}", hide.ns = "p.adj") 
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
 #Re-arranging the order of the figure, controls first
 pChao1$data$Group <- as.character(pChao1$data$Group)
 pChao1$data$Group <- factor(pChao1$data$Group, levels=newSTorder)
@@ -157,87 +158,98 @@ pChao1
 
 
 Shannon<-phyloseq::estimate_richness(ps_2, measures = "shannon")
+metadata<- data.frame(sample_data(ps_2)) 
 Shannon$Group<-metadata$Group
 pShannon <-ggplot(Shannon, aes(x=Group, y=Shannon))+
   geom_violin(aes(color = Group), trim = FALSE) +  
   geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.text = element_text(size = 16), text = element_text(size = 16))  +
-  geom_pwc(label = "{p.format}{p.signif}", hide.ns = "p.adj") 
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
 #Re-arranging the order of the figure, controls first
 pShannon$data$Group <- as.character(pShannon$data$Group)
 pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
 pShannon
 
 Fisher<-phyloseq::estimate_richness(ps_2, measures = "fisher")
+metadata<- data.frame(sample_data(ps_2)) 
 Fisher$Group<-metadata$Group
 pFisher <-ggplot(Fisher, aes(x=Group, y=Fisher))+
   geom_violin(aes(color = Group), trim = FALSE) +  
   geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16), legend.text = element_text(size = 16), text = element_text(size = 16))  +
-  geom_pwc(label = "{p.format}{p.signif}", hide.ns = "p.adj") 
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
 #Re-arranging the order of the figure, controls first
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
 pFisher
 
-ggarrange(pShannon, pChao1, pFisher,common.legend = TRUE, legend="bottom",nrow = 1) +
-  theme(legend.text = element_text(size = 16))
+ggarrange(pShannon, pFisher, pChao1, common.legend = TRUE, legend="bottom",nrow = 1)
+
 
 all_ASVs_boxplots <- ggarrange(pShannon, pChao1, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
 
 # Modify the legend order in the updated plot
-all_ASVs_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_ASVs_padj.pdf", width = 12, height = 8)
+all_ASVs_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDiv_ASVs_padj.pdf", width = 12, height = 8)
 ```
 
 ###Alpha Diversity statistical tests (check)
 ```{r Alpha Diversity statistical tests}
-## pairwise test with Wilcoxon rank-sum test, corrected by FDR method.
-rich = estimate_richness(ps_2, measures = c("Observed", "Chao1","Shannon", "Fisher"))
-wilcox.observed <- pairwise.wilcox.test(rich$Observed, 
-                                        sample_data(ps_2)$Group, 
-                                        p.adjust.method = "BH")
-wilcox.observed
+Alpha<-estimate_richness(ps_2, measures = c("Observed", "Chao1","Shannon", "Fisher"))
 
-tab.observed <- wilcox.observed$p.value %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "group1") %>%
-  gather(key="group2", value="p.adj", -group1) %>%
-  na.omit()
-tab.observed
+Alpha%>%
+  rownames_to_column()%>%
+  dplyr::rename(SampleID = rowname)->tmp1
 
-#Lo mismo pero usando el índice de Shannon
-wilcox.shannon <- pairwise.wilcox.test(rich$Shannon, 
-                                       sample_data(ps_2)$Group, 
-                                       p.adjust.method = "BH")
-wilcox.shannon 
-tab.shannon <- wilcox.shannon$p.value %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "group1") %>%
-  gather(key="group2", value="p.adj", -group1) %>%
-  na.omit()
-tab.shannon
+as_tibble(sample_data(ps_2))->tmp2
 
-#Lo mismo pero usando el índice Chao1
-wilcox.chao <- pairwise.wilcox.test(rich$Chao1, 
-                                    sample_data(ps_2)$Group, 
-                                    p.adjust.method = "BH")
-wilcox.chao 
-tab.chao <- wilcox.chao$p.value %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "group1") %>%
-  gather(key="group2", value="p.adj", -group1) %>%
-  na.omit()
-tab.chao
+tmp1<-inner_join(tmp1, tmp2, by="SampleID")
+rownames(tmp1)<- tmp1$SampleID
+tmp1$SampleID<- NULL
+sdt<- tmp1
+rm(tmp1,tmp2)
 
-#Lo mismo pero usando el índice Fisher
-wilcox.fisher <- pairwise.wilcox.test(rich$Fisher, 
-                                      sample_data(ps_2)$Group, 
-                                      p.adjust.method = "BH")
-wilcox.fisher 
-tab.fisher <- wilcox.fisher$p.value %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "group1") %>%
-  gather(key="group2", value="p.adj", -group1) %>%
-  na.omit()
-tab.fisher
+###Alpha diversity 
+##Q1: Differences in alpha diversity among days between sample types
+##Richness Shannon
+sdt%>% 
+  mutate(Group = fct_relevel(Group, 
+                             "ctr", "ctr+rif", "ccl4", "ccl4+rif"))%>%
+  wilcox_test(Shannon ~ Group)%>%
+  adjust_pvalue(method = "BH") %>%
+  add_significance()%>%
+  add_xy_position(x = "Group")-> stats.test
+
+##Save statistical analysis
+x <- stats.test
+x$groups<- NULL
+write.csv(x, "~/Rats_HE_CCL4model/output/Tables/Shannon.csv")
+
+##Richness Fisher
+sdt%>% 
+  mutate(Group = fct_relevel(Group, 
+                             "ctr", "ctr+rif", "ccl4", "ccl4+rif"))%>%
+  wilcox_test(Fisher ~ Group)%>%
+  adjust_pvalue(method = "BH") %>%
+  add_significance()%>%
+  add_xy_position(x = "Group")-> stats.test
+
+##Save statistical analysis
+x <- stats.test
+x$groups<- NULL
+write.csv(x, "~/Rats_HE_CCL4model/output/Tables/Fisher.csv")
+
+##Richness Chao1
+sdt%>% 
+  mutate(Group = fct_relevel(Group, 
+                             "ctr", "ctr+rif", "ccl4", "ccl4+rif"))%>%
+  wilcox_test(Chao1 ~ Group)%>%
+  adjust_pvalue(method = "BH") %>%
+  add_significance()%>%
+  add_xy_position(x = "Group")-> stats.test
+
+##Save statistical analysis
+x <- stats.test
+x$groups<- NULL
+write.csv(x, "~/Rats_HE_CCL4model/output/Tables/Chao1.csv")
+
 ```
