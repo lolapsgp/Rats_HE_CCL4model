@@ -1,0 +1,554 @@
+---
+title: "Drafts_Alpha_Div"
+author: "Lola"
+date: "8/21/2023"
+output: html_document
+---
+
+```{r Libraries}
+library(phyloseq)
+library(microbiome)
+library(tidyverse)
+library(ggpubr)
+library(rstatix)
+library(data.table)
+library(knitr)
+library(grid)
+library(gridExtra)
+```
+
+
+```{r rarefaction}
+ps_1 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_1.Rds")
+otu_ok <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/otu_ok.Rds")
+# keep result reproductive
+ set.seed(111)
+ ps.rarefied = rarefy_even_depth(ps_1, rngseed=1, replace=F)
+ ps.rarefied
+
+```
+
+```{r Counts}
+reads_per_sample <- as.matrix(rowSums(t(otu_ok)))
+reads_per_sample_after_raref <- as.matrix(rowSums(t(as.matrix(otu_table(ps.rarefied)))))
+```
+
+```{r Clean}
+ # Remove samples with less than MINREADS from phyloseq object
+ps_2 <- prune_taxa(taxa_sums(ps_1) > 0, ps_1)
+# merge all taxa that are detected rare
+total_samples <- phyloseq::nsamples(ps_2)
+ps_2
+saveRDS(ps_2, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+
+ # Remove samples with less than MINREADS from phyloseq object
+ps.rarefied.clean <- prune_taxa(taxa_sums(ps.rarefied) > 1, ps.rarefied)
+# merge all taxa that are detected rare
+total_samples2 <- phyloseq::nsamples(ps.rarefied.clean)
+ps.rarefied.clean
+
+ps_2_genus <- tax_glom(ps_2, taxrank = 'Genus', NArm = FALSE)
+ps_raref_genus <- tax_glom(ps.rarefied.clean, taxrank = 'Genus', NArm = FALSE)
+```
+
+#Trees
+```{r random tress}
+myTaxa = names(sort(taxa_sums(ps_2), decreasing = TRUE)[1:100])
+ex1 = prune_taxa(myTaxa, ps_2)
+plot(phy_tree(ex1), show.node.label = FALSE)
+plot_tree(ex1, color = "Group", label.tips = "Phylum", ladderize = "left", justify = "left" , size = "Abundance")
+```
+
+It is important to not use filtered data because many richness estimates are modeled on singletons and doubletons in the occurrence table. So, you need to leave them in the dataset if you want a meaningful estimate.
+Moreover, we usually not using normalized data because we want to assess the diversity on the raw data and we are not comparing samples to each other but only assessing diversity within each sample.
+
+I have tested with and without rarefaction and filtering the zeros and without and the differences stay consisent.
+
+# AlphaDiversity 
+
+##Alpha div plots without raref and using genus.
+
+Añade: pdf("my_plot.pdf", width = 5.0, height = 6.81) 
+pon el script del plot
+dev.off()
+
+Para guardar los plots en pdf.
+
+```{r Alpha Diversity}
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+library(ggsignif)
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved
+
+
+#Shannon
+pShannon <-  plot_richness(ps_2_genus, x="Group", measures=c("Shannon"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_2_genus, x="Group", measures=c("Chao1"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao
+
+#Fisher
+pFisher <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher
+
+
+# Create the updated plot with the modified legend order
+all_genus_boxplots <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+# Modify the legend order in the updated plot
+all_genus_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_genus_boxplots.pdf", width = 12, height = 8)
+
+```
+
+```{r Alpha Diversity violin shaped}
+library(ggsignif)
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+library(ggsignif)
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_2_genus, x="Group", measures=c("Observed"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved
+
+
+#Shannon
+pShannon <-  plot_richness(ps_2_genus, x="Group", measures=c("Shannon"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_2_genus, x="Group", measures=c("Chao1"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao
+
+#Fisher
+pFisher <- plot_richness(ps_2_genus, x="Group", measures=c("Fisher"))+
+   geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher
+
+
+# Create the updated plot with the modified legend order
+all_genus_violin <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+all_genus_violin
+# Modify the legend order in the updated plot
+all_genus_violin <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_genus_violin.pdf", width = 12, height = 8)
+```
+
+##Test Wilcoxon y Shannon
+
+```{r Wilcoxon y Shannon}
+ ## pairwise test with Wilcoxon rank-sum test, corrected by FDR method.
+ rich = estimate_richness(ps_2_genus, measures = c("Observed", "Chao1","Shannon", "Fisher"))
+ wilcox.observed <- pairwise.wilcox.test(rich$Observed, 
+                                         sample_data(ps_2_genus)$Group, 
+                                         p.adjust.method = "BH")
+ wilcox.observed
+
+ tab.observed <- wilcox.observed$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.observed
+ 
+#Lo mismo pero usando el índice de Shannon
+ wilcox.shannon <- pairwise.wilcox.test(rich$Shannon, 
+                                        sample_data(ps_2_genus)$Group, 
+                                        p.adjust.method = "BH")
+ wilcox.shannon 
+ tab.shannon <- wilcox.shannon$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.shannon
+ 
+ #Lo mismo pero usando el índice Chao1
+ wilcox.chao <- pairwise.wilcox.test(rich$Chao1, 
+                                        sample_data(ps_2_genus)$Group, 
+                                        p.adjust.method = "BH")
+ wilcox.chao 
+ tab.chao <- wilcox.chao$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.chao
+ 
+  #Lo mismo pero usando el índice Fisher
+ wilcox.fisher <- pairwise.wilcox.test(rich$Fisher, 
+                                        sample_data(ps_2_genus)$Group, 
+                                        p.adjust.method = "BH")
+ wilcox.fisher 
+ tab.fisher <- wilcox.fisher$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.fisher
+```
+
+##Alpha div plots with raref and using genus.
+```{r Alpha Diversity with raref}
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+library(ggsignif)
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"), c("ctr", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_raref_genus, x="Group", measures=c("Observed"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved
+
+
+#Shannon
+pShannon <-  plot_richness(ps_raref_genus, x="Group", measures=c("Shannon"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_raref_genus, x="Group", measures=c("Chao1"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao
+
+#Fisher
+pFisher <- plot_richness(ps_raref_genus, x="Group", measures=c("Fisher"))+
+    geom_boxplot() +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher
+
+
+# Create the updated plot with the modified legend order
+all_raref_genus_boxplots <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+# Modify the legend order in the updated plot
+all_raref_genus_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_raref_genus_boxplots.pdf", width = 12, height = 8)
+```
+
+```{r Alpha Diversity violin shaped}
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+library(ggsignif)
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"), c("ctr", "ccl4+rif"))
+#Observed
+pObserved <- plot_richness(ps_raref_genus, x="Group", measures=c("Observed"))+
+    geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved
+
+
+#Shannon
+pShannon <-  plot_richness(ps_raref_genus, x="Group", measures=c("Shannon"))+
+    geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon
+
+
+#Chao1
+pChao <-plot_richness(ps_raref_genus, x="Group", measures=c("Chao1"))+
+    geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao
+
+#Fisher
+pFisher <- plot_richness(ps_raref_genus, x="Group", measures=c("Fisher"))+
+    geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) + 
+    stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher
+
+
+# Create the updated plot with the modified legend order
+all_raref_genus_violin <- ggarrange(pObserved, pShannon, pChao, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+# Modify the legend order in the updated plot
+all_raref_genus_violin <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDIV_all_raref_genus_violin.pdf", width = 12, height = 8) 
+
+```
+
+##Test Wilcoxon y Shannon
+
+```{r Wilcoxon y Shannon}
+ ## pairwise test with Wilcoxon rank-sum test, corrected by FDR method.
+ rich = estimate_richness(ps_raref_genus, measures = c("Observed", "Chao1","Shannon", "Fisher"))
+ wilcox.observed <- pairwise.wilcox.test(rich$Observed, 
+                                         sample_data(ps_raref_genus)$Group, 
+                                         p.adjust.method = "BH")
+ wilcox.observed
+
+ tab.observed <- wilcox.observed$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.observed
+ 
+#Lo mismo pero usando el índice de Shannon
+ wilcox.shannon <- pairwise.wilcox.test(rich$Shannon, 
+                                        sample_data(ps_raref_genus)$Group, 
+                                        p.adjust.method = "BH")
+ wilcox.shannon 
+ tab.shannon <- wilcox.shannon$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.shannon
+ 
+ #Lo mismo pero usando el índice Chao1
+ wilcox.chao <- pairwise.wilcox.test(rich$Chao1, 
+                                        sample_data(ps_raref_genus)$Group, 
+                                        p.adjust.method = "BH")
+ wilcox.chao 
+ tab.chao <- wilcox.chao$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.chao
+ 
+  #Lo mismo pero usando el índice Fisher
+ wilcox.fisher <- pairwise.wilcox.test(rich$Fisher, 
+                                        sample_data(ps_raref_genus)$Group, 
+                                        p.adjust.method = "BH")
+ wilcox.fisher 
+ tab.fisher <- wilcox.fisher$p.value %>%
+   as.data.frame() %>%
+   tibble::rownames_to_column(var = "group1") %>%
+   gather(key="group2", value="p.adj", -group1) %>%
+   na.omit()
+ tab.fisher
+```
+#Alpha Div T5
+```{r T5}
+ps_T5 <- prune_samples(sample_data(ps_2)$Batch == "T5", ps_2)
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"))
+library(ggsignif)
+#Observed
+pObserved <- plot_richness(ps_T5, x="Group", measures=c("Observed"))+
+  geom_boxplot() + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme( legend.position = "none", strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_blank()) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved$layers<-pObserved$layers[-1]
+pObserved+ labs(color = "Group")
+
+#Shannon
+pShannon <- plot_richness(ps_T5, x="Group", measures=c("Shannon")) +
+  geom_boxplot(outlier.shape = NA) + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme(legend.position = "none",strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_blank()) +
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon$layers<-pShannon$layers[-1]
+pShannon+ labs(color = "Group")
+
+
+#Chao1
+pChao <- plot_richness(ps_T5, x="Group", measures=c("Chao1")) +
+  geom_boxplot(outlier.shape = NA) + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme(legend.position = "none", strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_blank()) +
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao$layers<-pChao$layers[-1]
+pChao+ labs(color = "Group")
+
+#Fisher
+pFisher <- plot_richness(ps_T5, x="Group", measures=c("Fisher")) +
+  geom_boxplot(outlier.shape = NA) +geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme(legend.position = "none", strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_text(size = 16)) +
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher$layers<-pFisher$layers[-1]
+pFisher+ labs(color = "Group")
+
+library(gridExtra)
+library(grid)
+library(ggplot2)
+library(lattice)
+grid.arrange(pFisher, pChao, pShannon, pObserved,nrow = 1)
+```
+
+#Alpha Div T7
+```{r T7}
+ps_T7 <- prune_samples(sample_data(ps_2)$Batch == "T7", ps_2)
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+my_comparisons <- list( c("ctr", "ctr+rif"), c("ctr+rif", "ccl4"), c("ccl4", "ccl4+rif"), c("ctr+rif", "ccl4+rif"))
+library(ggsignif)
+#Observed
+pObserved <- plot_richness(ps_T7, x="Group", measures=c("Observed"))+
+  geom_boxplot() + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme( legend.position = "none", strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_blank()) + 
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pObserved$data$Group <- as.character(pObserved$data$Group)
+pObserved$data$Group <- factor(pObserved$data$Group, levels=newSTorder)
+pObserved$layers<-pObserved$layers[-1]
+pObserved+ labs(color = "Group")
+
+#Shannon
+pShannon <- plot_richness(ps_T7, x="Group", measures=c("Shannon")) +
+  geom_boxplot(outlier.shape = NA) + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme(legend.position = "none",strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_blank()) +
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon$layers<-pShannon$layers[-1]
+pShannon+ labs(color = "Group")
+
+
+#Chao1
+pChao <- plot_richness(ps_T7, x="Group", measures=c("Chao1")) +
+  geom_boxplot(outlier.shape = NA) + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme(legend.position = "none", strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_blank()) +
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+#Re-arranging the order of the figure, controls first
+pChao$data$Group <- as.character(pChao$data$Group)
+pChao$data$Group <- factor(pChao$data$Group, levels=newSTorder)
+pChao$layers<-pChao$layers[-1]
+pChao+ labs(color = "Group")
+
+#Fisher
+pFisher <- plot_richness(ps_T7, x="Group", measures=c("Fisher")) +
+  geom_boxplot(outlier.shape = NA) +geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1))+
+  theme_classic() + theme(legend.position = "none", strip.background = element_blank(), axis.text.x.bottom = element_text(angle = 0), axis.text.x = element_text(size = 10), axis.title.y = element_text(size = 16)) +
+  stat_compare_means(label= "p.signif", comparisons = my_comparisons)
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher$layers<-pFisher$layers[-1]
+pFisher+ labs(color = "Group")
+
+library(gridExtra)
+library(grid)
+library(ggplot2)
+library(lattice)
+grid.arrange(pFisher, pChao, pShannon, pObserved,nrow = 1)
+```
+
+#Quickview comparisons
+```{r Comparisons}
+#Glom to genus not rarefied
+plot_richness(ps_2_genus, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
+     geom_boxplot() +
+    theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+#Glom to genus rarefied
+plot_richness(ps_raref_genus, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
+    geom_boxplot() +
+     theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+#ASVs (not glom) not rarefied
+ plot_richness(ps_2, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
+     geom_boxplot() +
+     theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+#ASVs (not glom) rarefied
+plot_richness(ps.rarefied.clean, x="Group", measures=c("Observed", "Chao1", "Shannon", "Fisher")) +
+     geom_boxplot() +
+     theme_classic() +
+     theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
+```
