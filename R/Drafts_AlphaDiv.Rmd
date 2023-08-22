@@ -552,3 +552,123 @@ plot_richness(ps.rarefied.clean, x="Group", measures=c("Observed", "Chao1", "Sha
      theme_classic() +
      theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90))
 ```
+
+#Proper stats
+###Alpha Diversity statistical tests (check)
+```{r Alpha Diversity statistical tests}
+Alpha<-estimate_richness(ps_2, measures = c("Observed", "Chao1","Shannon", "Fisher"))
+
+Alpha%>%
+  rownames_to_column()%>%
+  dplyr::rename(SampleID = rowname)->tmp1
+
+as_tibble(sample_data(ps_2))->tmp2
+
+tmp1<-inner_join(tmp1, tmp2, by="SampleID")
+rownames(tmp1)<- tmp1$SampleID
+tmp1$SampleID<- NULL
+sdt<- tmp1
+rm(tmp1,tmp2)
+
+###Alpha diversity 
+##Q1: Differences in alpha diversity among days between sample types
+##Richness Shannon
+sdt%>% 
+  group_by(Batch)%>%
+  mutate(Group = fct_relevel(Group, 
+                             "ctr", "ctr+rif", "ccl4", "ccl4+rif"))%>%
+  wilcox_test(Shannon ~ Group)%>%
+  adjust_pvalue(method = "BH") %>%
+  add_significance()%>%
+  add_xy_position(x = "Group")-> stats.test
+
+##Save statistical analysis
+x <- stats.test
+x$groups<- NULL
+write.csv(x, "~/Rats_HE_CCL4model/output/Tables/Shannon.csv")
+
+##Richness Fisher
+sdt%>% 
+  mutate(Group = fct_relevel(Group, 
+                             "ctr", "ctr+rif", "ccl4", "ccl4+rif"))%>%
+  wilcox_test(Fisher ~ Group)%>%
+  adjust_pvalue(method = "BH") %>%
+  add_significance()%>%
+  add_xy_position(x = "Group")-> stats.test
+
+##Save statistical analysis
+x <- stats.test
+x$groups<- NULL
+write.csv(x, "~/Rats_HE_CCL4model/output/Tables/Fisher.csv")
+
+##Richness Chao1
+sdt%>% 
+  mutate(Group = fct_relevel(Group, 
+                             "ctr", "ctr+rif", "ccl4", "ccl4+rif"))%>%
+  wilcox_test(Chao1 ~ Group)%>%
+  adjust_pvalue(method = "BH") %>%
+  add_significance()%>%
+  add_xy_position(x = "Group")-> stats.test
+
+##Save statistical analysis
+x <- stats.test
+x$groups<- NULL
+write.csv(x, "~/Rats_HE_CCL4model/output/Tables/Chao1.csv")
+
+```
+
+#AlphaDiv plots geom_pwc
+###Alpha Diversity plots
+```{r AlphaDiversity plots}
+ps_2 <- readRDS("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
+metadata<- data.frame(sample_data(ps_2)) 
+
+Chao1<-phyloseq::estimate_richness(ps_2, measures = "Chao1")
+metadata<- data.frame(sample_data(ps_2)) 
+Chao1$Group<-metadata$Group
+pChao1 <-ggplot(Chao1, aes(x=Group, y=Chao1))+
+  geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+#Re-arranging the order of the figure, controls first
+pChao1$data$Group <- as.character(pChao1$data$Group)
+pChao1$data$Group <- factor(pChao1$data$Group, levels=newSTorder)
+pChao1
+
+
+Shannon<-phyloseq::estimate_richness(ps_2, measures = "shannon")
+metadata<- data.frame(sample_data(ps_2)) 
+Shannon$Group<-metadata$Group
+pShannon <-ggplot(Shannon, aes(x=Group, y=Shannon))+
+  geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+#Re-arranging the order of the figure, controls first
+pShannon$data$Group <- as.character(pShannon$data$Group)
+pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
+pShannon
+
+Fisher<-phyloseq::estimate_richness(ps_2, measures = "fisher")
+metadata<- data.frame(sample_data(ps_2)) 
+Fisher$Group<-metadata$Group
+pFisher <-ggplot(Fisher, aes(x=Group, y=Fisher))+
+  geom_violin(aes(color = Group), trim = FALSE) +  
+  geom_boxplot(width = 0.2) +
+  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+#Re-arranging the order of the figure, controls first
+pFisher$data$Group <- as.character(pFisher$data$Group)
+pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
+pFisher
+
+ggarrange(pShannon, pFisher, pChao1, common.legend = TRUE, legend="bottom",nrow = 1)
+
+
+all_ASVs_boxplots <- ggarrange(pShannon, pChao1, pFisher,common.legend = TRUE, legend="bottom",nrow = 1)
+
+# Modify the legend order in the updated plot
+all_ASVs_boxplots <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/AphaDiv_ASVs_padj.pdf", width = 12, height = 8)
+```
