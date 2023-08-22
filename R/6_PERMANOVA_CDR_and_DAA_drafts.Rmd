@@ -34,8 +34,8 @@ ps_0 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_0.Rds")
 pseq.rel <- microbiome::transform(ps_0, "compositional")
 otu <- abundances(pseq.rel)
 meta <- meta(pseq.rel)
-permanova <- adonis(t(otu) ~  Batch + Antibiotic + Treated_CCL,
-                    data = meta, permutations=999, method = "bray", by = NULL)
+permanova <- adonis(t(otu) ~   Antibiotic + Treated_CCL, strata = meta$Batch,
+                    data = meta, permutations=999, method = "bray", by = "margin")
 
 # P-value
 permanova$aov.tab
@@ -44,8 +44,8 @@ permanova$aov.tab
 ps<- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps.Rds")
 otu <- abundances(ps)
 meta <- meta(ps)
-permanova <- adonis(t(otu) ~  Batch + Antibiotic + Treated_CCL,
-                    data = meta, permutations=999, method = "euclidean", by = NULL)
+permanova <- adonis(t(otu) ~   Antibiotic + Treated_CCL,
+                    data = meta, permutations=999, method = "bray", by = "margin")
 
 # P-value
 permanova$aov.tab
