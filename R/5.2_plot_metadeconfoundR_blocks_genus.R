@@ -135,6 +135,52 @@ ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames
     color = "Confounding status"
   )
 
+
+
+#Same heatmap changing aesthetics
+names<-get_latest_annotation(ps_0_genus)
+families<-tax_table(ps_0_genus) %>%
+      as.data.frame() %>%
+     rownames_to_column('ASV') %>%select(c(ASV, Family))
+# Perform a left join based on the ASV column
+Families_data <- left_join(names, families, by = "ASV")
+Families_data$feature<-Families_data$TaxaID
+Families_data<-Families_data[,c("feature", "Family")]
+Metadec_table<-left_join(Metadec_table, Families_data, by = "feature")
+
+heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames1))) +
+  geom_tile(aes(fill = Ds)) +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
+  geom_text(aes(label = stars, colour = status), size = 2, key_glyph = "point") +
+  scale_color_manual(values = c("black", "gray22"), labels = c("Confounded", "Deconfounded")) +
+  guides(color = guide_legend(override.aes = list(shape = c(1, 8)))) +
+  theme_classic()  +
+  theme(
+    axis.text.x = element_text(size = 7, angle = 90, hjust = 1, vjust = 0.3),
+    axis.text.y = element_text(size = 7, angle = 0, hjust = 1, vjust = 0.35),
+    plot.title.position = "plot",
+    plot.title = element_text(hjust = 0),
+    plot.subtitle = element_text(size = 8),
+  ) +
+  labs(
+    title = "Significant metadata correlation heatmap",
+    subtitle = "FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = *",
+    x = "Variables",
+    y = "ASVs agglomerated by Genus",
+    fill = "Effect size", 
+    shape = "Confounding status"
+  )+
+  facet_grid(. ~ (Metadec_table$Blocks), scales = "free", space='free', switch = "x") 
+
+scatter_plot <- ggplot(data = Metadec_table, aes(x = "Family", y = reorder(featureNames, ordernames1), color = Family)) +
+  geom_point() +
+  xlab("Family") +
+  ylab("Feature Value")+ theme(legend.position = "left")
+print(scatter_plot)
+
+ggpubr::ggarrange(scatter_plot, heatmap)
+
+
 #Heatmap including all variables
 View(Output_batch)
 raw_p <- Output_batch[1]
