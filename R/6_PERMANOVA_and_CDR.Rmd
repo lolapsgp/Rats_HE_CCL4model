@@ -24,6 +24,14 @@ meta <- meta(pseq.rel)
 #Check homogeneity of variances
 anova(betadisper(dist, meta$Group))
 
+
+pseq.rel <- microbiome::transform(ps, "identity")
+otu <- abundances(pseq.rel)
+dist <- vegdist(t(otu))
+meta <- meta(pseq.rel)
+#Check homogeneity of variances
+anova(betadisper(dist, meta$Group))
+
 ```
 
 ## Permanova/ADONIS
