@@ -5,6 +5,7 @@ date: "2023-04-27"
 ---
 ###Open the data
 ```{r Data}
+#ps_2 contains raw data removing ASVs that are all zeros (prune_taxa(taxa_sums(ps_1) > 0, ps_1))
 ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
 library(readxl)
 metadata <- read_excel("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/metadata.xlsx")
