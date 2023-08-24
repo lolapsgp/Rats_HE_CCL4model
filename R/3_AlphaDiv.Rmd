@@ -58,78 +58,6 @@ plot_tree(ex1, color = "Group", label.tips = "Phylum", ladderize = "left", justi
 ```
 
 
-#Number of taxa per group
-```{r descriptive analysis}
-ps_1 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_1.Rds")
-ps_1
-ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
-ps_2
-ps.ctr<-ps_2 %>% subset_samples(Group %in% c("ctr"))
-ps.ctr<-prune_taxa(taxa_sums(ps.ctr) > 0, ps.ctr)
-ps.ctr
-ps.ctrrif<-ps_2 %>% subset_samples(Group %in% c("ctr+rif"))
-ps.ctrrif<-prune_taxa(taxa_sums(ps.ctrrif) > 0, ps.ctrrif)
-ps.ctrrif
-ps.ccl4<-ps_2 %>% subset_samples(Group %in% c("ccl4"))
-ps.ccl4<-prune_taxa(taxa_sums(ps.ccl4) > 0, ps.ccl4)
-ps.ccl4
-ps.ccl4rif<-ps_2 %>% subset_samples(Group %in% c("ccl4+rif"))
-ps.ccl4rif<-prune_taxa(taxa_sums(ps.ccl4rif) > 0, ps.ccl4rif)
-ps.ccl4rif
-```
-
-#Dominant taxa
-```{r descriptive analysis 2}
-library(repmod)
-#Phylum level
-ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
-ps.rel<-ps_2 %>% microbiome::transform("compositional") %>% tax_glom(taxrank = 'Phylum', NArm = FALSE) 
-# generate a vector containing the full taxonomy path for all OTUs
-wholetax <- do.call(paste, c(as.data.frame(tax_table(ps.rel))
-                             [c("Kingdom", "Phylum")], 
-                             sep = "__"))  # to distinguish from "_" within tax ranks
-
-# turn the otu_table into a data.frame
-otu_export <- as.data.frame(t(otu_table(ps.rel)))
-tmp <- names(otu_export)
-
-# paste wholetax and OTU_ids together
-for(i in 1:length(tmp)){
-    names(tmp)[i] = paste(wholetax[i], tmp[i], sep = "__")
-}
-# overwrite old names
-names(otu_export) <- names(tmp)
-otu_export<-t(otu_export)
-View(as.data.frame(rowSums(otu_export)))
-otu_export1<-as.data.frame(rowSums(otu_export))
-make_csv_table(otu_export1, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dominant_phyla", info = "Dominant_phyla")
-
-#Family level
-ps_2 <- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps_2.Rds")
-ps.rel2<-ps_2 %>% microbiome::transform("compositional") %>% tax_glom(taxrank = 'Family', NArm = FALSE)
-# generate a vector containing the full taxonomy path for all OTUs
-wholetax <- do.call(paste, c(as.data.frame(tax_table(ps.rel2))
-                             [c("Kingdom", "Phylum", "Class", "Order", "Family")], 
-                             sep = "__"))  # to distinguish from "_" within tax ranks
-
-# turn the otu_table into a data.frame
-otu_export.fam <- as.data.frame(t(otu_table(ps.rel2)))
-tmp <- names(otu_export.fam)
-
-# paste wholetax and OTU_ids together
-for(i in 1:length(tmp)){
-    names(tmp)[i] = paste(wholetax[i], tmp[i], sep = "__")
-}
-# overwrite old names
-names(otu_export.fam) <- names(tmp)
-otu_export.fam<-t(otu_export.fam)
-View(as.data.frame(rowSums(otu_export.fam)))
-otu_export2<-as.data.frame(rowSums(otu_export.fam))
-make_csv_table(otu_export2, "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Tables/Dominant_families", info = "Dominant_fam")
-```
-
-
-
 
 It is important to not use filtered data because many richness estimates are modeled on singletons and doubletons in the occurrence table. So, you need to leave them in the dataset if you want a meaningful estimate.
 Moreover, we usually not using normalized data because we want to assess the diversity on the raw data and we are not comparing samples to each other but only assessing diversity within each sample.
@@ -139,17 +67,17 @@ I have tested with and without rarefaction and filtering the zeros and without a
 #Alpha Diversity 
 ###Alpha Diversity statistical tests (check)
 ```{r Alpha Diversity statistical tests}
-ps_2 <- readRDS("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+ps_1 <- readRDS("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ps_1.Rds")
 require(lme4)
 require("lmtest")
 library(tidyverse)
-Alpha<-estimate_richness(ps_2, measures = c("Observed", "Chao1","Shannon", "Fisher"))
+Alpha<-estimate_richness(ps_1, measures = c("Observed", "Chao1","Shannon", "Fisher"))
 
 Alpha%>%
   rownames_to_column()%>%
   dplyr::rename(SampleID = rowname)->tmp1
 
-as_tibble(sample_data(ps_2))->tmp2
+as_tibble(sample_data(ps_1))->tmp2
 
 tmp1<-inner_join(tmp1, tmp2, by="SampleID")
 rownames(tmp1)<- tmp1$SampleID
@@ -358,55 +286,54 @@ write.csv(chao1_results, "~/Rats_HE_CCL4model/output/Tables/Chao1_models.csv")
 
 ###Alpha Diversity plots
 ```{r AlphaDiversity plots}
-ps_2 <- readRDS("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ps_2.Rds")
+ps_1 <- readRDS("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ps_1.Rds")
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
-metadata<- data.frame(sample_data(ps_2)) 
+metadata<- data.frame(sample_data(ps_1)) 
 library(ggsignif)
 
-Chao1<-phyloseq::estimate_richness(ps_2, measures = "Chao1")
-metadata<- data.frame(sample_data(ps_2)) 
+Chao1<-phyloseq::estimate_richness(ps_1, measures = "Chao1")
+metadata<- data.frame(sample_data(ps_1)) 
 Chao1$Group<-metadata$Group
 pChao1 <-ggplot(Chao1, aes(x=Group, y=Chao1))+
-  geom_violin(aes(color = Group), trim = FALSE) +  
-  geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16)) +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4), y=c(425, 430, 435), annotation=c("***", " *** ", "**")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr", "ccl4")), annotations="**",  y_position = 440, tip_length = 0, vjust=0.4)  +
-   geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="**",  y_position = 480, tip_length = 0, vjust=0.4) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 460, tip_length = 0, vjust=0.4) 
+    geom_violin(aes(color = Group), trim = FALSE) +  
+    geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title = element_text(size = 16), axis.text.y = element_text(size = 14), legend.text = element_text(size = 14), legend.title = element_text(size = 14)) +
+    geom_signif(stat="identity",
+                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4), y=c(425, 430, 435), annotation=c("***", " *** ", "**")),
+                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
+    geom_signif(comparisons=list(c("ctr", "ccl4")), annotations="**",  y_position = 440, tip_length = 0, vjust=0.4)  +
+    geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="**",  y_position = 480, tip_length = 0, vjust=0.4) +
+    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 460, tip_length = 0, vjust=0.4) 
 #Re-arranging the order of the figure, controls first
 pChao1$data$Group <- as.character(pChao1$data$Group)
 pChao1$data$Group <- factor(pChao1$data$Group, levels=newSTorder)
 pChao1
 
 
-Shannon<-phyloseq::estimate_richness(ps_2, measures = "shannon")
-metadata<- data.frame(sample_data(ps_2)) 
+Shannon<-phyloseq::estimate_richness(ps_1, measures = "shannon")
+metadata<- data.frame(sample_data(ps_1)) 
 Shannon$Group<-metadata$Group
 pShannon <-ggplot(Shannon, aes(x=Group, y=Shannon))+
-  geom_violin(aes(color = Group), trim = FALSE) +  
-  geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
-  ggtitle("p=0.73;Df=3;Chi-sq=1.31")  # Add title
+    geom_violin(aes(color = Group), trim = FALSE) +  
+    geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title = element_text(size = 16), axis.text.y = element_text(size = 14), legend.text = element_text(size = 14), legend.title = element_text(size = 14))  
 
 #Re-arranging the order of the figure, controls first
 pShannon$data$Group <- as.character(pShannon$data$Group)
 pShannon$data$Group <- factor(pShannon$data$Group, levels=newSTorder)
 pShannon
 
-Fisher<-phyloseq::estimate_richness(ps_2, measures = "fisher")
-metadata<- data.frame(sample_data(ps_2)) 
+Fisher<-phyloseq::estimate_richness(ps_1, measures = "fisher")
+metadata<- data.frame(sample_data(ps_1)) 
 Fisher$Group<-metadata$Group
 pFisher <-ggplot(Fisher, aes(x=Group, y=Fisher))+
-  geom_violin(aes(color = Group), trim = FALSE) +  
-  geom_boxplot(width = 0.2) +
-  theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title.y = element_text(size = 16))  +
-      geom_signif(stat="identity",
-               data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4), y=c(55, 57, 59), annotation=c("**", " ** ", "*")),
-               aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-   geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 60, tip_length = 0, vjust=0.4) 
+    geom_violin(aes(color = Group), trim = FALSE) +  
+    geom_boxplot(width = 0.2) +
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title = element_text(size = 16), axis.text.y = element_text(size = 14), legend.text = element_text(size = 14), legend.title = element_text(size = 14))  +
+    geom_signif(stat="identity",
+                data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4), y=c(55, 57, 59), annotation=c("**", " ** ", "*")),
+                aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
+    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 60, tip_length = 0, vjust=0.4) 
 #Re-arranging the order of the figure, controls first
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)
