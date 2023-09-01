@@ -93,6 +93,10 @@ plot(right)
 
 #Heatmap blocks
 Metadec_table<-data.frame(right[["data"]])
+row_names <-Metadec_table$feature
+# Remove "ASV-number" prefix
+cleaned_row_names <- sub("^ASV\\d+\\s", "", row_names)
+Metadec_table$cleaned_row_names <- as.factor(cleaned_row_names)
 Metadec_table<-Metadec_table%>%
   mutate(Blocks = case_when(
     metaVariable %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning_index_Rmaze", "Average.velocity") ~ "Cognitive tests",
@@ -148,7 +152,8 @@ Families_data$feature<-Families_data$TaxaID
 Families_data<-Families_data[,c("feature", "Family")]
 Metadec_table<-left_join(Metadec_table, Families_data, by = "feature")
 
-heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames1))) +
+
+heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(cleaned_row_names, ordernames1))) +
   geom_tile(aes(fill = Ds)) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
   geom_text(aes(label = stars, colour = status), size = 2, key_glyph = "point") +
@@ -157,10 +162,11 @@ heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, o
   theme_classic()  +
   theme(
     axis.text.x = element_text(size = 7, angle = 90, hjust = 1, vjust = 0.3),
-    axis.text.y = element_text(size = 7, angle = 0, hjust = 1, vjust = 0.35),
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
     plot.title.position = "plot",
     plot.title = element_text(hjust = 0),
-    plot.subtitle = element_text(size = 8),
+    plot.subtitle = element_text(size = 8) ,
   ) +
   labs(
     title = "Significant metadata correlation heatmap",
@@ -172,13 +178,23 @@ heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, o
   )+
   facet_grid(. ~ (Metadec_table$Blocks), scales = "free", space='free', switch = "x") 
 
-scatter_plot <- ggplot(data = Metadec_table, aes(x = "Family", y = reorder(featureNames, ordernames1), color = Family)) +
+scatter_plot <- ggplot(data = Metadec_table, aes(x = "Family", y = reorder(cleaned_row_names, ordernames1), color = Family)) +
   geom_point() +
   xlab("Family") +
-  ylab("Feature Value")+ theme(legend.position = "left")
+  ylab("Feature Value")+ theme(legend.position = "left", panel.background = element_blank(),
+                               legend.text = element_text(size = 10),  # Adjust the legend text size if needed
+                               legend.title = element_text(size = 12),  # Adjust the legend title size if needed
+                               legend.box.spacing = unit(0.2, "cm"),  # Adjust the spacing between legend items if needed
+                               legend.spacing = unit(0.2, "cm"),  # Adjust the spacing between legend columns if needed
+                               legend.direction = "vertical",  # Set the direction to vertical
+                               legend.box = "vertical",  # Set the box layout to vertical
+                               )+
+  guides(color = guide_legend(ncol = 1)  )
 print(scatter_plot)
-
-ggpubr::ggarrange(scatter_plot, heatmap)
+#Change relwith to 1.5 if we keep the legend of scater_plot
+plot_fam<-cowplot::plot_grid(scatter_plot, heatmap, align = "h", axis = "ltb", rel_widths = c(1,3))
+plot_fam
+ggsave("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Figures/plot_fam.svg", plot_fam, width = 12.38, height = 7.38, device = "svg")  # Adjust width and height as needed
 
 
 #Heatmap including all variables
