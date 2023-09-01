@@ -93,16 +93,12 @@ plot(right)
 
 #Heatmap blocks
 Metadec_table<-data.frame(right[["data"]])
-row_names <-Metadec_table$feature
-# Remove "ASV-number" prefix
-cleaned_row_names <- sub("^ASV\\d+\\s", "", row_names)
-Metadec_table$cleaned_row_names <- as.factor(cleaned_row_names)
 Metadec_table<-Metadec_table%>%
   mutate(Blocks = case_when(
-    metaVariable %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning_index_Rmaze", "Average.velocity") ~ "Cognitive tests",
+    metaVariable %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning_index_Rmaze", "Average.velocity") ~ "Cognition",
     metaVariable %in% c("Antibiotic", "Treated_CCL") ~ "Treatments",
     metaVariable %in% c("Ammonia") ~ "Ammonia levels",
-    metaVariable %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL_10", "IL.15", "IL.17", "IL_4", "IL.6", "Occludine",  "TNF_a", "TGF.b") ~ "Cytokines brain",
+    metaVariable %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL_10", "IL.15", "IL.17", "IL_4", "IL.6", "Occludine",  "TNF_a", "TGF.b") ~ "Cytokines",
     metaVariable %in% c("GLAST", "GLT1", "GAT1", "GAT3", "TNFR1", "NR2B", "NR2A", "NR1", "GLUA1", "GLUA2") ~ "Memb. receptors",
     metaVariable %in% c("SCFA_AA", "SCFA_BA", "SCFA_CA", "SCFA_PA", "SCFA_VA") ~ "SCFAs"))%>%
   mutate(ordernames1 = case_when(
@@ -110,7 +106,7 @@ Metadec_table<-Metadec_table%>%
 
 
 # Define the desired order of levels for facet_wrap
-facet_order <- c("Treatments", "SCFAs", "Memb. receptors", "Cytokines brain", "Cognitive tests")
+facet_order <- c("Treatments", "SCFAs", "Memb. receptors", "Cytokines", "Cognition")
 
 # Convert the Blocks column to a factor with the desired order
 Metadec_table$Blocks <- factor(Metadec_table$Blocks, levels = facet_order)
@@ -153,7 +149,7 @@ Families_data<-Families_data[,c("feature", "Family")]
 Metadec_table<-left_join(Metadec_table, Families_data, by = "feature")
 
 
-heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(cleaned_row_names, ordernames1))) +
+heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames1))) +
   geom_tile(aes(fill = Ds)) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
   geom_text(aes(label = stars, colour = status), size = 2, key_glyph = "point") +
@@ -178,7 +174,7 @@ heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(cleaned_row_nam
   )+
   facet_grid(. ~ (Metadec_table$Blocks), scales = "free", space='free', switch = "x") 
 
-scatter_plot <- ggplot(data = Metadec_table, aes(x = "Family", y = reorder(cleaned_row_names, ordernames1), color = Family)) +
+scatter_plot <- ggplot(data = Metadec_table, aes(x = "Family", y = reorder(featureNames, ordernames1), color = Family)) +
   geom_point() +
   xlab("Family") +
   ylab("Feature Value")+ theme(legend.position = "left", panel.background = element_blank(),
