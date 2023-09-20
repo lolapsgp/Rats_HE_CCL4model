@@ -8,6 +8,9 @@
    id="svg1315"
    sodipodi:docname="plot_fam.svg"
    inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   inkscape:export-filename="plot_fam.pdf"
+   inkscape:export-xdpi="406.50409"
+   inkscape:export-ydpi="406.50409"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -23,15 +26,16 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
-     inkscape:zoom="0.66083328"
-     inkscape:cx="620.4288"
-     inkscape:cy="359.39473"
+     inkscape:zoom="0.62491937"
+     inkscape:cx="504.86513"
+     inkscape:cy="308.03974"
      inkscape:window-width="1440"
      inkscape:window-height="900"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg1315" />
+     inkscape:current-layer="g1315"
+     inkscape:export-bgcolor="#ffffffff" />
   <defs
      id="defs1">
     <style
@@ -9111,7 +9115,8 @@
        style="font-size:8px;font-family:'Liberation Sans'"
        textLength="200.64"
        lengthAdjust="spacingAndGlyphs"
-       id="text1314">FDR-values: &lt; 0.001 = ***, &lt; 0.01 = **, &lt; 0.1 = *</text>
+       id="text1314"
+       transform="matrix(0.93201966,0,0,1,33.941844,0)">FDR-values: &lt; 0.001 = ***, &lt; 0.01 = **, &lt; 0.1 = *</text>
     <text
        x="498.51001"
        y="15.1"
@@ -9119,6 +9124,6 @@
        textLength="275.92999"
        lengthAdjust="spacingAndGlyphs"
        id="text1315"
-       transform="matrix(0.97920286,0,0,1,10.381766,0)">Significant metadata correlation heatmap</text>
+       transform="matrix(0.91993737,0,0,1,39.966619,0)">Significant metadata correlation heatmap</text>
   </g>
 </svg>
