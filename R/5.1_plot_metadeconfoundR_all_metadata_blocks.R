@@ -67,9 +67,9 @@ Output_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
                                metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                                   c("Batch")))
 View(Output_batch)
-saveRDS(Output_batch, "~/Rats_HE_CCL4model/output/MetadeconfoundR/Output2_batch_all.Rds")
+saveRDS(Output_batch, "~/Rats_HE_CCL4model/output/MetadeconfoundR/Output_batch_figure")
 
-right <- BuildHeatmap(Output2_batch_all)
+right <- BuildHeatmap(Output_batch_figure)
 Metadec_table<-data.frame(right[["data"]])
 Metadec_table<-Metadec_table%>%
   mutate(Blocks = case_when(
@@ -92,11 +92,11 @@ Metadec_table <- Metadec_table %>%
   select(stars, status_ok, feature, metaVariable)
 
 
-View(Output2_batch_all)
-raw_p <- Output2_batch_all[1]
-corr_p <- Output2_batch_all[2]
-effect_size<- Output2_batch_all[3]
-status<- Output2_batch_all[4]
+View(Output_batch_figure)
+raw_p <- Output_batch_figure[1]
+corr_p <- Output_batch_figure[2]
+effect_size<- Output_batch_figure[3]
+status<- Output_batch_figure[4]
 
 raw_p_df <- data.frame(raw_p$Ps)
 raw_p_df  <- raw_p_df  %>% 
