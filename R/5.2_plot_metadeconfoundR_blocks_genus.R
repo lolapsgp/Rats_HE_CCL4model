@@ -149,8 +149,7 @@ Families_data<-Families_data[,c("feature", "Family")]
 Metadec_table<-left_join(Metadec_table, Families_data, by = "feature")
 
 
-heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames1))) +
-  geom_tile(aes(fill = Ds)) +
+heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames1))) + geom_tile(aes(fill = Ds)) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
   geom_text(aes(label = stars, colour = status), size = 2, key_glyph = "point") +
   scale_color_manual(values = c("black", "gray22"), labels = c("Confounded", "Deconfounded")) +
@@ -177,7 +176,7 @@ heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, o
 scatter_plot <- ggplot(data = Metadec_table, aes(x = "Family", y = reorder(featureNames, ordernames1), color = Family)) +
   geom_point() +
   xlab("Family") +
-  ylab("Feature Value")+ theme(legend.position = "left", panel.background = element_blank(),
+  ylab("Feature Value")+ theme(legend.position = "bottom", panel.background = element_blank(),
                                legend.text = element_text(size = 10),  # Adjust the legend text size if needed
                                legend.title = element_text(size = 12),  # Adjust the legend title size if needed
                                legend.box.spacing = unit(0.2, "cm"),  # Adjust the spacing between legend items if needed
@@ -185,7 +184,7 @@ scatter_plot <- ggplot(data = Metadec_table, aes(x = "Family", y = reorder(featu
                                legend.direction = "vertical",  # Set the direction to vertical
                                legend.box = "vertical",  # Set the box layout to vertical
                                )+
-  guides(color = guide_legend(ncol = 1)  )
+  guides(color = guide_legend(ncol = 5)  )
 print(scatter_plot)
 #Change relwith to 1.5 if we keep the legend of scater_plot
 plot_fam<-cowplot::plot_grid(scatter_plot, heatmap, align = "h", axis = "ltb", rel_widths = c(1,3))
@@ -193,120 +192,3 @@ plot_fam
 ggsave("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Figures/plot_fam.svg", plot_fam, width = 12.38, height = 7.38, device = "svg")  # Adjust width and height as needed
 
 
-#Heatmap including all variables
-View(Output_batch)
-raw_p <- Output_batch[1]
-corr_p <- Output_batch[2]
-effect_size<- Output_batch[3]
-status<- Output_batch[4]
-
-raw_p_df <- data.frame(raw_p$Ps)
-raw_p_df  <- raw_p_df  %>% 
-  select(-c(Batch))%>%
-  rename_with(~ gsub("_", ".", .))%>%
-  rename_all(~paste0("p_",.))%>%
-  rownames_to_column()
-
-
-corr_p_df <- data.frame(corr_p$Qs)
-corr_p_df  <- corr_p_df %>%  
-  select(-c(Batch))%>%
-  rename_with(~ gsub("_", ".", .))%>%
-  rename_all(~paste0("q_",.))%>%
-  rownames_to_column()
-
-
-effect_size_df <- data.frame(effect_size$Ds)
-effect_size_df  <- effect_size_df %>%  
-  select(-c(Batch))%>%
-  rename_with(~ gsub("_", ".", .))%>%
-  rename_all(~paste0("effect_size_",.))%>%
-  rownames_to_column()
-
-
-status_df <- data.frame(status$status)
-status_df  <- status_df %>%  
-  select(-c(Batch))%>%
-  rename_with(~ gsub("_", ".", .))%>%
-  rename_all(~paste0("status_",.))%>%
-  rownames_to_column()
-
-#create two-column-dataframe containing corresponding "human-readable" names to the "machine-readable" feature names used as row.names in metaDeconfOutput.  
-taxtable <- latest_annotations
-taxtable$rowname <- latest_annotations$ASV
-taxtable<- cbind(rowname=taxtable$rowname,subset(taxtable,select = -c(rowname)))
-
-effect_table <- raw_p_df%>%
-  full_join(corr_p_df, by="rowname")%>%
-  full_join(effect_size_df, by="rowname")%>%
-  full_join(status_df, by="rowname")%>%
-  full_join(taxtable, by="rowname")
-
-# remove the entries which have NS and AD in status
-effect_table_sig <- effect_table%>%
-  filter(if_any(starts_with("status_"), ~. != "NS"))
-
-
-#pivot long format
-
-effect_table_sig_long <- effect_table_sig%>%
-  pivot_longer(cols = starts_with("status"), names_to = "comparison_status", values_to = "status")%>%
-  separate(comparison_status, c("name" ,"variable"), "_")%>%
-  mutate(comparison_status=paste(variable, sep="_"))%>%
-  select(-c(name, variable))%>%
-  pivot_longer(cols = starts_with("p_"), names_to = "comparison_p", values_to = "raw_p")%>%
-  separate(comparison_p, c("name","variable"), "_")%>%
-  mutate(comparison_p=paste(variable, sep="_"))%>%
-  select(-c(name, variable))%>%
-  filter(comparison_p==comparison_status)%>%
-  pivot_longer(cols = starts_with("effect_size"), names_to = "comparison_effectSize", values_to = "effectSize")%>%
-  separate(comparison_effectSize, c("name","size", "variable"), "_")%>%
-  mutate(comparison_effectSize=paste(variable, sep="_"))%>%
-  select(-c(name, size, variable))%>%
-  filter(comparison_p==comparison_effectSize)%>%
-  pivot_longer(cols = starts_with("q"), names_to = "comparison_q", values_to = "corr_p")%>%
-  separate(comparison_q, c("name","variable"), "_")%>%
-  mutate(comparison_q=paste(variable, sep="_"))%>%
-  select(-c(name))%>%
-  filter(comparison_p==comparison_q)%>%
-  select(-c(comparison_q, comparison_effectSize,comparison_status, ASV, TaxaID))%>%
-  mutate(Blocks = case_when(
-    comparison_p %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning.index.Rmaze", "Average.velocity") ~ "Cognitive tests",
-    comparison_p %in% c("Antibiotic", "Treated.CCL") ~ "Treatments",
-    comparison_p %in% c("Ammonia") ~ "Ammonia levels",
-    comparison_p %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL.10", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine","IL_4", "TNF.a", "TGF.b") ~ "Cytokines brain",
-    comparison_p %in% c("GLAST", "GLT1", "GAT1", "GAT3", "TNFR1", "NR2B", "NR2A", "NR1", "GLUA1", "GLUA2") ~ "Membrane expression receptors",
-    comparison_p %in% c("SCFA.AA", "SCFA.BA", "SCFA.CA", "SCFA.PA", "SCFA.VA") ~ "SCFAs"))%>%
-  mutate(ordernames1 = case_when(
-    comparison_p %in% c("Antibiotic") ~ effectSize))%>%
-  mutate(fdr= as_factor(case_when(corr_p <= 0.05 ~ "*", corr_p <= 0.01 ~ "**", corr_p <= 0.001 ~ "***", corr_p <= 0.1 ~ ".")))
-
-
-
-#Heatmap all variables
-ggplot(effect_table_sig_long, aes(x = variable, y = fct_reorder(rowname, ordernames1, .fun = function(x) mean(x, na.rm = TRUE)))) +
-  # do the heatmap tile coloring based on effect sizes
-  geom_tile(aes(fill = effectSize)) +
-  scale_fill_gradient2 (low = "blue", high = "red", mid = "white", midpoint = 0) +
-  # add significance stars/circles for deconfounded/confounded associations
-  geom_text (aes (label = stars.pval(corr_p)))+
-  guides(color = guide_legend(override.aes = list(shape = c(1,8)) ) ) +
-  
-  # make it pretty
-  theme_classic() +
-  facet_wrap(vars(effect_table_sig_long$Blocks), nrow =1, scales = "free_x")+
-  theme(axis.text.x = element_text(size = 7,
-                                   angle = 90,
-                                   hjust = 1,
-                                   vjust = 0.3),
-        axis.text.y = element_text(size = 7,
-                                   angle = 0,
-                                   hjust = 1,
-                                   vjust = 0.35),
-        plot.title.position = "plot",
-        plot.title = element_text(hjust = 0),
-        plot.subtitle=element_text(size=8)) +
-  labs(title="All metadata and significant genus correlation heatmap",
-       subtitle="FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = * ",
-       x = "Variables",
-       y = "ASVs")

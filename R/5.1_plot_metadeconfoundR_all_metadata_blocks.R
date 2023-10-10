@@ -37,35 +37,10 @@ get_latest_annotation <- function(phyloseq_obj) {
   return(tax_table)
 }
 
-##Usage latest_annotations <- get_latest_annotation(phyloseq_obj)
-latest_annotations <- get_latest_annotation(ps_0)
-latest_annotations<-as.data.frame(latest_annotations)
-short_names<-as.data.frame(otu_table(ps_0))
-rownames(short_names)<-latest_annotations$TaxaID
-
-# generate a vector containing the full taxonomy path for all OTUs
-wholetax <- do.call(paste, c(as.data.frame(tax_table(ps_0))
-                             [c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")], 
-                             sep = "__"))  # to distinguish from "_" within tax ranks
-
-# turn the otu_table into a data.frame
-otu_export <- as.data.frame(t(otu_table(ps_0)))
-tmp <- names(otu_export)
-
-# paste wholetax and OTU_ids together
-for(i in 1:length(tmp)){
-  names(tmp)[i] = paste(wholetax[i], tmp[i], sep = "__")
-}
-
-# overwrite old names
-names(otu_export) <- names(tmp)
-otu_export<-t(otu_export)
-
-head(otu_export)[5]
-
-
+#Heatmap including all variables
 ##MetadeconfoundR
 library(metadeconfoundR)
+library(gtools)
 library(dplyr)
 ps.rel<-microbiome::transform(ps_0, "compositional")
 latest_annotations <- get_latest_annotation(ps.rel)
@@ -89,19 +64,39 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 Meta_Species<- as.data.frame(Meta_Species)
 
 Output_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
-                                metaMat = as.data.frame(metadata_R), nnodes = 4, randomVar = list("+ (1|Batch)",
+                               metaMat = as.data.frame(metadata_R), nnodes = 14, randomVar = list("+ (1|Batch)",
                                                                                                   c("Batch")))
 View(Output_batch)
+saveRDS(Output_batch, "~/Rats_HE_CCL4model/output/MetadeconfoundR/Output2_batch_all.Rds")
 
-right <- BuildHeatmap(Output_batch)
-plot(right)
-saveRDS(Output_batch, "/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Output_batch_figure.Rds")
+right <- BuildHeatmap(Output2_batch_all)
+Metadec_table<-data.frame(right[["data"]])
+Metadec_table<-Metadec_table%>%
+  mutate(Blocks = case_when(
+    metaVariable %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning_index_Rmaze", "Average.velocity") ~ "Cognition",
+    metaVariable %in% c("Antibiotic", "Treated_CCL") ~ "Treatments",
+    metaVariable %in% c("Ammonia") ~ "Ammonia levels",
+    metaVariable %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL_10", "IL.15", "IL.17", "IL_4", "IL.6", "Occludine",  "TNF_a", "TGF.b") ~ "Cytokines",
+    metaVariable %in% c("GLAST", "GLT1", "GAT1", "GAT3", "TNFR1", "NR2B", "NR2A", "NR1", "GLUA1", "GLUA2") ~ "Memb. receptors",
+    metaVariable %in% c("SCFA_AA", "SCFA_BA", "SCFA_CA", "SCFA_PA", "SCFA_VA") ~ "SCFAs"))%>%
+  mutate(ordernames1 = case_when(
+    metaVariable %in% c("Antibiotic") ~ Ds))
+# Define the desired order of levels for facet_wrap
+facet_order <- c("Treatments", "SCFAs", "Memb. receptors", "Cytokines", "Cognition")
+# Convert the Blocks column to a factor with the desired order
+Metadec_table$Blocks <- factor(Metadec_table$Blocks, levels = facet_order)
+Metadec_table$status_ok <- Metadec_table$status
+# Replace "_" with "."
+Metadec_table$metaVariable <- gsub("_", ".", Metadec_table$metaVariable)
+Metadec_table <- Metadec_table %>%
+  select(stars, status_ok, feature, metaVariable)
 
-View(Output_batch)
-raw_p <- Output_batch[1]
-corr_p <- Output_batch[2]
-effect_size<- Output_batch[3]
-status<- Output_batch[4]
+
+View(Output2_batch_all)
+raw_p <- Output2_batch_all[1]
+corr_p <- Output2_batch_all[2]
+effect_size<- Output2_batch_all[3]
+status<- Output2_batch_all[4]
 
 raw_p_df <- data.frame(raw_p$Ps)
 raw_p_df  <- raw_p_df  %>% 
@@ -177,84 +172,36 @@ effect_table_sig_long <- effect_table_sig%>%
     comparison_p %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning.index.Rmaze", "Average.velocity") ~ "Cognitive tests",
     comparison_p %in% c("Antibiotic", "Treated.CCL") ~ "Treatments",
     comparison_p %in% c("Ammonia") ~ "Ammonia levels",
-    comparison_p %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL.10", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine",  "TNF.a", "TGF.b") ~ "Cytokines brain",
+    comparison_p %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL.10", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine","IL_4", "TNF.a", "TGF.b") ~ "Cytokines brain",
     comparison_p %in% c("GLAST", "GLT1", "GAT1", "GAT3", "TNFR1", "NR2B", "NR2A", "NR1", "GLUA1", "GLUA2") ~ "Membrane expression receptors",
-    comparison_p %in% c("SCFA.AA", "SCFA.BA", "SCFA.CA", "SCFA.PA", "SCFA.VA") ~ "SCFAs"))%>%
+    comparison_p %in% c("SCFA.AA", "SCFA.BA", "SCFA.CA", "SCFA.PA", "SCFA.VA") ~ "SCFAs")) %>%
+  left_join(Metadec_table, by = c("rowname" = "feature", "variable" = "metaVariable")) %>%
+  mutate(stars = ifelse(is.na(stars), "", stars))%>%
   mutate(ordernames1 = case_when(
-    comparison_p %in% c("Antibiotic") ~ effectSize))%>%
-  mutate(fdr= as_factor(case_when(corr_p <= 0.05 ~ "*", corr_p <= 0.01 ~ "**", corr_p <= 0.001 ~ "***", corr_p <= 0.1 ~ ".")))
+    comparison_p %in% c("Antibiotic") ~ effectSize))
 
-                                                        
 
 #Heatmap all variables
-ggplot(effect_table_sig_long, aes(x = variable, y = fct_reorder(rowname, ordernames1, .fun = function(x) mean(x, na.rm = TRUE)))) +
-  # do the heatmap tile coloring based on effect sizes
-  geom_tile(aes(fill = effectSize)) +
-  scale_fill_gradient2 (low = "blue", high = "red", mid = "white", midpoint = 0) +
-  # add significance stars/circles for deconfounded/confounded associations
-  geom_text (aes (label = stars.pval(corr_p)))+
-  guides(color = guide_legend(override.aes = list(shape = c(1,8)) ) ) +
-  
-  # make it pretty
-  theme_classic() +
-  facet_wrap(vars(effect_table_sig_long$Blocks), nrow =1, scales = "free_x")+
-  theme(axis.text.x = element_text(size = 7,
-                                   angle = 90,
-                                   hjust = 1,
-                                   vjust = 0.3),
-        axis.text.y = element_text(size = 7,
-                                   angle = 0,
-                                   hjust = 1,
-                                   vjust = 0.35),
-        plot.title.position = "plot",
-        plot.title = element_text(hjust = 0),
-        plot.subtitle=element_text(size=8)) +
-  labs(title="All metadata and significant taxa correlation heatmap",
-       subtitle="FDR-values: < 0.001 = ***, < 0.01 = **, < 0.05 = *, < 0.1 = . ",
-       x = "Variables",
-       y = "ASVs")
-
-#Heatmap only significant variables
-Metadec_table<-data.frame(right[["data"]])
-Metadec_table<-Metadec_table%>%
-  mutate(Blocks = case_when(
-    metaVariable %in% c("Ambulatory.Counts", "Vertcal.Counts", "Stereotipic.Counts", "Learning_index_Rmaze", "Average.velocity") ~ "Cognitive tests",
-    metaVariable %in% c("Antibiotic", "Treated_CCL") ~ "Treatments",
-    metaVariable %in% c("Ammonia") ~ "Ammonia levels",
-    metaVariable %in% c("CCL2", "CCL5","CCR5","CCL20","CCR2", "CX3CL1", "CX3CR1", "IFN.gamma", "IL_10", "IL_4", "IL.15", "IL.17", "IL.4", "IL.6", "Occludine",  "TNF_a", "TGF.b") ~ "Cytokines brain",
-    metaVariable %in% c("GLAST", "GLT1", "GAT1", "GAT3", "TNFR1", "NR2B", "NR2A", "NR1", "GLUA1", "GLUA2") ~ "Memb. receptors",
-    metaVariable %in% c("SCFA_AA", "SCFA_BA", "SCFA_CA", "SCFA_PA", "SCFA_VA") ~ "SCFAs"))%>%
-  mutate(ordernames1 = case_when(
-    metaVariable %in% c("Antibiotic") ~ Ds))
-
-
-# Define the desired order of levels for facet_wrap
-facet_order <- c("Treatments", "SCFAs", "Memb. receptors", "Cytokines brain", "Cognitive tests")
-
-# Convert the Blocks column to a factor with the desired order
-Metadec_table$Blocks <- factor(Metadec_table$Blocks, levels = facet_order)
-
-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames1))) +
-  geom_tile(aes(fill = Ds)) +
+heatmap_all<-ggplot(effect_table_sig_long, aes(x = variable, y = fct_reorder(rowname, ordernames1, .fun = function(x) mean(x, na.rm = TRUE)))) + geom_tile(aes(fill = effectSize)) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
-  geom_text(aes(label = stars, colour = status), size = 2, key_glyph = "point") +
-  scale_color_manual(values = c("black", "gray22"), labels = c("Confounded", "Deconfounded")) +
-  guides(color = guide_legend(override.aes = list(shape = c(1, 8)))) +
-  theme_classic() +
-  facet_wrap(vars(Metadec_table$Blocks), nrow = 1, scales = "free_x") +
+  geom_text(aes(label = stars), size = 2, key_glyph = "point") +
+  theme_classic()  +
   theme(
     axis.text.x = element_text(size = 7, angle = 90, hjust = 1, vjust = 0.3),
     axis.text.y = element_text(size = 7, angle = 0, hjust = 1, vjust = 0.35),
     plot.title.position = "plot",
     plot.title = element_text(hjust = 0),
-    plot.subtitle = element_text(size = 8)
+    plot.subtitle = element_text(size = 8) ,
   ) +
   labs(
-    title = "All metadata and significant taxa correlation heatmap",
+    title = "Significant metadata correlation heatmap",
     subtitle = "FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = *",
     x = "Variables",
-    y = "ASVs",
+    y = "ASVs agglomerated by Genus",
     fill = "Effect size", 
-    color = "Confounding status"
-  )
+    shape = "Confounding status"
+  )+
+  facet_grid(. ~ (effect_table_sig_long$Blocks), scales = "free", space='free', switch = "x") 
 
+heatmap_all
+ggsave("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Figures/All_variables_blockplots.svg", heatmap_all, width = 12.38, height = 7.38, device = "svg")  # Adjust width and height as needed
