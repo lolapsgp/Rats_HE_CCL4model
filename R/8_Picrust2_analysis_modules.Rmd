@@ -144,14 +144,26 @@ all(order(rownames(metadata_R)) == order(rownames(Meta_Species)))
 ## [1] TRUE
 Meta_Species<- as.data.frame(Meta_Species)
 
-Output_batch <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
+metadec2_batch_picrust <- MetaDeconfound(featureMat = as.data.frame(Meta_Species),
                                      metaMat = as.data.frame(metadata_R), nnodes = 10, randomVar = list("+ (1|Batch)",
                                                                                         c("Batch")))
-View(Output_batch)
-raw_p <- Output_batch[1]
-corr_p <- Output_batch[2]
-effect_size<- Output_batch[3]
-status<- Output_batch[4]
+
+right <- BuildHeatmap(metadec2_batch_picrust)
+Metadec_table<-data.frame(right[["data"]])
+# Values you want to select
+values_to_select <- c("SCFA_AA", "SCFA_BA", "SCFA_CA", "SCFA_PA", "SCFA_VA")
+# Filter the rows based on the values_to_select
+Metadec_table <- Metadec_table[Metadec_table$metaVariable %in% values_to_select, ]
+Metadec_table <- Metadec_table %>%
+  select(stars, feature, metaVariable)%>%
+  separate(metaVariable, c("variable","SCFA"), "_")
+
+
+View(metadec2_batch_picrust)
+raw_p <- metadec2_batch_picrust[1]
+corr_p <- metadec2_batch_picrust[2]
+effect_size<- metadec2_batch_picrust[3]
+status<- metadec2_batch_picrust[4]
 
 raw_p_df <- data.frame(raw_p$Ps)
 raw_p_df  <- raw_p_df %>% subset(select = c(SCFA_AA, SCFA_BA, SCFA_CA, SCFA_PA, SCFA_VA)) %>%
@@ -234,20 +246,8 @@ effect_table_sig_long <- effect_table_sig%>%
   select(-c(variable, names))%>%
   filter(comparison_p==comparison_q)%>%
   select(-c(comparison_q, comparison_effectSize,comparison_status))%>%
-  mutate(fdr= as_factor(case_when(corr_p <= 0.05 ~ "*", corr_p <= 0.01 ~ "**", corr_p <= 0.001 ~ "***", corr_p <= 0.1 ~ ".")))
-
-library(gtools)
-effect_table_sig_long%>%
-    ggplot(aes (x = SCFA, y = rowname))+ 
-    geom_point (aes (fill = effectSize, shape = as.factor (sign (effectSize)), size = abs (effectSize), color=(fdr))) +
-    scale_shape_manual (values = c (25, 24)) + 
-    scale_fill_gradient2 (low = "blue", high = "red", mid = "white", midpoint = 0) +
-    scale_color_manual(values=c("gray22","gray1","gray85"))+
-    geom_text (aes (label = stars.pval(corr_p)))+
-    theme_grey() +
-    theme(axis.text.x = element_text(), #angle = 0, hjust = 0, vjust = 1
-          #To remove legend = legend.position = "none"
-          legend.position = "right",axis.text.y = element_text(face = "italic")) + scale_y_discrete(position = "left") + ylab("Functional modules")
+  left_join(Metadec_table, by = c("rowname" = "feature", "SCFA" = "SCFA")) %>%
+  mutate(stars = ifelse(is.na(stars), "", stars))
 
 #Heatmap
 ggplot(effect_table_sig_long, aes(x = SCFA, y = reorder(rowname, effectSize))) +
@@ -255,7 +255,7 @@ ggplot(effect_table_sig_long, aes(x = SCFA, y = reorder(rowname, effectSize))) +
     geom_tile(aes(fill = effectSize)) +
     scale_fill_gradient2 (low = "blue", high = "red", mid = "white", midpoint = 0) +
     # add significance stars/circles for deconfounded/confounded associations
-    geom_text (aes (label = stars.pval(corr_p)))+
+    geom_text(aes(label = stars), size = 2, key_glyph = "point") +
     guides(color = guide_legend(override.aes = list(shape = c(1,8)) ) ) +
     
     # make it pretty
