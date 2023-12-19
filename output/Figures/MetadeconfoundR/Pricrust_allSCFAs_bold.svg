@@ -23,15 +23,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
-     inkscape:zoom="2.0687218"
-     inkscape:cx="205.92426"
-     inkscape:cy="95.227884"
+     inkscape:zoom="0.92885372"
+     inkscape:cx="431.71491"
+     inkscape:cy="278.83831"
      inkscape:window-width="1440"
-     inkscape:window-height="771"
+     inkscape:window-height="769"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g348" />
+     inkscape:current-layer="svg348" />
   <defs
      id="defs1">
     <style
@@ -1830,7 +1830,7 @@
        x="168.78"
        y="501.35999"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="58"
        lengthAdjust="spacingAndGlyphs"
        id="text244">starch degradation</text>
@@ -1838,7 +1838,7 @@
        x="168.78"
        y="489.35999"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="57.610001"
        lengthAdjust="spacingAndGlyphs"
        id="text245">mucin degradation</text>
@@ -1846,7 +1846,7 @@
        x="168.78"
        y="477.35999"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="67.360001"
        lengthAdjust="spacingAndGlyphs"
        id="text246">alanine degradation II</text>
@@ -1862,7 +1862,7 @@
        x="168.78"
        y="453.35001"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="79.029999"
        lengthAdjust="spacingAndGlyphs"
        id="text248">methionine degradation II</text>
@@ -2030,10 +2030,11 @@
        x="168.78"
        y="201.31"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#4d4d4d"
        textLength="89.540001"
        lengthAdjust="spacingAndGlyphs"
-       id="text269">4-aminobutyrate degradation</text>
+       id="text269"
+       transform="matrix(1.2398424,0,0,1,-40.417681,0)">4-aminobutyrate degradation (GABA)</text>
     <text
        x="168.78"
        y="189.31"
@@ -2046,7 +2047,7 @@
        x="168.78"
        y="177.31"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="72.029999"
        lengthAdjust="spacingAndGlyphs"
        id="text271">threonine degradation I</text>
@@ -2062,7 +2063,7 @@
        x="168.78"
        y="153.3"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="70.830002"
        lengthAdjust="spacingAndGlyphs"
        id="text273">pyruvate:formate lyase</text>
@@ -2078,7 +2079,7 @@
        x="168.78"
        y="129.3"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="84.43"
        lengthAdjust="spacingAndGlyphs"
        id="text275">acetyl-CoA to crotonyl-CoA</text>
@@ -2086,7 +2087,7 @@
        x="168.78"
        y="117.3"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="68.510002"
        lengthAdjust="spacingAndGlyphs"
        id="text276">cysteine degradation I</text>
@@ -2094,7 +2095,7 @@
        x="168.78"
        y="105.3"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="67.339996"
        lengthAdjust="spacingAndGlyphs"
        id="text277">sucrose degradation I</text>
@@ -2102,7 +2103,7 @@
        x="168.78"
        y="93.290001"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="68.900002"
        lengthAdjust="spacingAndGlyphs"
        id="text278">glycerol degradation II</text>
@@ -2118,7 +2119,7 @@
        x="168.78"
        y="69.290001"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="60.34"
        lengthAdjust="spacingAndGlyphs"
        id="text280">fructan degradation</text>
@@ -2126,7 +2127,7 @@
        x="168.78"
        y="57.290001"
        text-anchor="end"
-       style="font-size:7px;font-family:Arial;fill:#4d4d4d"
+       style="font-size:7px;font-family:Arial;fill:#4d4d4d;-inkscape-font-specification:'Arial Bold';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
        textLength="70.470001"
        lengthAdjust="spacingAndGlyphs"
        id="text281">arginine degradation V</text>
