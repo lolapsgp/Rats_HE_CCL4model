@@ -1,7 +1,0 @@
-"",".y.","group1","group2","n1","n2","statistic","p","p.adj","p.adj.signif","y.position","xmin","xmax"
-"1","Shannon","ctr","ctr+rif",8,8,33,0.959,1,"ns",4.5582,1,2
-"2","Shannon","ctr","ccl4",8,8,33,0.959,1,"ns",4.58484,1,3
-"3","Shannon","ctr","ccl4+rif",8,8,15,0.083,0.21,"ns",4.61148,1,4
-"4","Shannon","ctr+rif","ccl4",8,8,32,1,1,"ns",4.63812,2,3
-"5","Shannon","ctr+rif","ccl4+rif",8,8,16,0.105,0.21,"ns",4.66476,2,4
-"6","Shannon","ccl4","ccl4+rif",8,8,14,0.065,0.21,"ns",4.6914,3,4
