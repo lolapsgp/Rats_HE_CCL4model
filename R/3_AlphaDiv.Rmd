@@ -289,6 +289,11 @@ write.csv(chao1_results, "~/Rats_HE_CCL4model/output/Tables/Chao1_models.csv")
 ps_1 <- readRDS("~/Library/CloudStorage/OneDrive-UniversitatdeValencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/ps_1.Rds")
 newSTorder = c("ctr", "ctr+rif", "ccl4", "ccl4+rif")
 metadata<- data.frame(sample_data(ps_1)) 
+# Define custom labels
+custom_labels <- c("ctr" ="Control" ,
+                   "ctr+rif" ="Control+rif",
+                   "ccl4"="CCl4",
+                   "ccl4+rif"="CCl4+rif")
 library(ggsignif)
 
 Chao1<-phyloseq::estimate_richness(ps_1, measures = "Chao1")
@@ -303,7 +308,8 @@ pChao1 <-ggplot(Chao1, aes(x=Group, y=Chao1))+
                 aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
     geom_signif(comparisons=list(c("ctr", "ccl4")), annotations="**",  y_position = 440, tip_length = 0, vjust=0.4)  +
     geom_signif(comparisons=list(c("ctr", "ccl4+rif")), annotations="**",  y_position = 480, tip_length = 0, vjust=0.4) +
-    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 460, tip_length = 0, vjust=0.4) 
+    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 460, tip_length = 0, vjust=0.4) +
+    scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+rif","CCl4","CCl4+rif"))
 #Re-arranging the order of the figure, controls first
 pChao1$data$Group <- as.character(pChao1$data$Group)
 pChao1$data$Group <- factor(pChao1$data$Group, levels=newSTorder)
@@ -316,7 +322,8 @@ Shannon$Group<-metadata$Group
 pShannon <-ggplot(Shannon, aes(x=Group, y=Shannon))+
     geom_violin(aes(color = Group), trim = FALSE) +  
     geom_boxplot(width = 0.2) +
-    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title = element_text(size = 16), axis.text.y = element_text(size = 14), legend.text = element_text(size = 14), legend.title = element_text(size = 14))  
+    theme_classic() + theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text.x = element_text(size = 16), axis.title = element_text(size = 16), axis.text.y = element_text(size = 14), legend.text = element_text(size = 14), legend.title = element_text(size = 14))  +
+    scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+rif","CCl4","CCl4+rif"))
 
 #Re-arranging the order of the figure, controls first
 pShannon$data$Group <- as.character(pShannon$data$Group)
@@ -333,7 +340,8 @@ pFisher <-ggplot(Fisher, aes(x=Group, y=Fisher))+
     geom_signif(stat="identity",
                 data=data.frame(x=c(1, 2, 3), xend=c(2, 3, 4), y=c(55, 57, 59), annotation=c("**", " ** ", "*")),
                 aes(x=x,xend=xend, y=y, yend=y, annotation=annotation)) +
-    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 60, tip_length = 0, vjust=0.4) 
+    geom_signif(comparisons=list(c("ctr+rif", "ccl4+rif")), annotations="***",  y_position = 60, tip_length = 0, vjust=0.4) +
+    scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+rif","CCl4","CCl4+rif"))
 #Re-arranging the order of the figure, controls first
 pFisher$data$Group <- as.character(pFisher$data$Group)
 pFisher$data$Group <- factor(pFisher$data$Group, levels=newSTorder)

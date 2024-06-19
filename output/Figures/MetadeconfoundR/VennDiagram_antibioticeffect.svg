@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    class="svglite"
-   width="830pt"
-   height="506pt"
-   viewBox="0 0 830 506"
+   width="805pt"
+   height="480pt"
+   viewBox="0 0 805 480"
    version="1.1"
    id="svg82"
    sodipodi:docname="VennDiagram_antibioticeffect.svg"
    inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   inkscape:export-filename="../../../../Paper/Figure_2.pdf"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -22,15 +25,16 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
-     inkscape:zoom="0.75254657"
-     inkscape:cx="547.47443"
-     inkscape:cy="320.91037"
-     inkscape:window-width="1440"
-     inkscape:window-height="766"
+     inkscape:zoom="0.52235154"
+     inkscape:cx="532.20863"
+     inkscape:cy="235.4736"
+     inkscape:window-width="1280"
+     inkscape:window-height="673"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg82" />
+     inkscape:current-layer="svg82"
+     inkscape:export-bgcolor="#ffffffff" />
   <defs
      id="defs1">
     <style
@@ -73,15 +77,15 @@
     </clipPath>
   </defs>
   <polygon
-     points="234.69,69.41 221.76,70.03 208.89,71.46 196.14,73.71 183.56,76.76 171.2,80.61 159.1,85.23 147.32,90.61 135.91,96.72 124.91,103.55 114.37,111.06 104.32,119.22 94.81,128 85.87,137.37 77.55,147.29 69.87,157.72 62.87,168.61 56.58,179.92 51.01,191.61 46.2,203.63 42.16,215.93 38.91,228.47 36.46,241.18 34.82,254.02 34,266.94 34,279.89 34.82,292.81 36.46,305.65 38.91,318.37 42.16,330.9 46.2,343.2 51.01,355.22 56.58,366.91 62.87,378.22 69.87,389.11 77.55,399.54 85.87,409.46 94.81,418.83 104.32,427.61 114.37,435.78 124.91,443.29 135.91,450.11 147.32,456.23 159.1,461.6 171.2,466.23 183.56,470.07 196.14,473.12 208.89,475.37 221.76,476.81 234.69,477.42 247.64,477.22 260.54,476.19 273.36,474.35 286.03,471.7 298.51,468.25 310.74,464.01 322.69,459.01 334.29,453.26 345.5,446.79 356.28,439.61 366.58,431.77 376.36,423.3 385.59,414.21 394.22,404.56 402.23,394.39 409.57,383.72 416.22,372.62 422.15,361.11 427.34,349.25 431.77,337.08 435.42,324.66 438.27,312.03 440.32,299.24 441.55,286.36 441.96,273.42 441.55,260.48 440.32,247.59 438.27,234.8 435.42,222.17 431.77,209.75 427.34,197.59 422.15,185.72 416.22,174.22 409.57,163.11 402.23,152.44 394.22,142.27 385.59,132.62 376.36,123.54 366.58,115.06 356.28,107.22 345.5,100.05 334.29,93.57 322.69,87.82 310.74,82.82 298.51,78.59 286.03,75.14 273.36,72.48 260.54,70.64 247.64,69.62 "
-     style="fill:#99f099;fill-opacity:0.44999999;stroke:none;stroke-width:1.07;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10"
+     points="322.69,459.01 334.29,453.26 345.5,446.79 356.28,439.61 366.58,431.77 376.36,423.3 385.59,414.21 394.22,404.56 402.23,394.39 409.57,383.72 416.22,372.62 422.15,361.11 427.34,349.25 431.77,337.08 435.42,324.66 438.27,312.03 440.32,299.24 441.55,286.36 441.96,273.42 441.55,260.48 440.32,247.59 438.27,234.8 435.42,222.17 431.77,209.75 427.34,197.59 422.15,185.72 416.22,174.22 409.57,163.11 402.23,152.44 394.22,142.27 385.59,132.62 376.36,123.54 366.58,115.06 356.28,107.22 345.5,100.05 334.29,93.57 322.69,87.82 310.74,82.82 298.51,78.59 286.03,75.14 273.36,72.48 260.54,70.64 247.64,69.62 234.69,69.41 221.76,70.03 208.89,71.46 196.14,73.71 183.56,76.76 171.2,80.61 159.1,85.23 147.32,90.61 135.91,96.72 124.91,103.55 114.37,111.06 104.32,119.22 94.81,128 85.87,137.37 77.55,147.29 69.87,157.72 62.87,168.61 56.58,179.92 51.01,191.61 46.2,203.63 42.16,215.93 38.91,228.47 36.46,241.18 34.82,254.02 34,266.94 34,279.89 34.82,292.81 36.46,305.65 38.91,318.37 42.16,330.9 46.2,343.2 51.01,355.22 56.58,366.91 62.87,378.22 69.87,389.11 77.55,399.54 85.87,409.46 94.81,418.83 104.32,427.61 114.37,435.78 124.91,443.29 135.91,450.11 147.32,456.23 159.1,461.6 171.2,466.23 183.56,470.07 196.14,473.12 208.89,475.37 221.76,476.81 234.69,477.42 247.64,477.22 260.54,476.19 273.36,474.35 286.03,471.7 298.51,468.25 310.74,464.01 "
+     style="fill:#99f099;fill-opacity:0.45;stroke:none;stroke-width:1.07;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10"
      id="polygon3"
-     transform="matrix(0.9471525,0,0,0.9787697,-18.315682,-7.7922924)" />
+     transform="matrix(0.9471525,0,0,0.9787697,-22.580968,-14.014435)" />
   <polygon
-     points="376.36,119.22 366.85,128 357.91,137.37 349.59,147.29 341.91,157.72 334.91,168.61 328.62,179.92 323.05,191.61 318.24,203.63 314.2,215.93 310.95,228.47 308.5,241.18 306.86,254.02 306.04,266.94 306.04,279.89 306.86,292.81 308.5,305.65 310.95,318.37 314.2,330.9 318.24,343.2 323.05,355.22 328.62,366.91 334.91,378.22 341.91,389.11 349.59,399.54 357.91,409.46 366.85,418.83 376.36,427.61 386.41,435.78 396.95,443.29 407.95,450.11 419.37,456.23 431.14,461.6 443.24,466.23 455.6,470.07 468.18,473.12 480.93,475.37 493.8,476.81 506.73,477.42 519.68,477.22 532.58,476.19 545.4,474.35 558.07,471.7 570.55,468.25 582.78,464.01 594.73,459.01 606.33,453.26 617.54,446.79 628.32,439.61 638.62,431.77 648.41,423.3 657.63,414.21 666.27,404.56 674.27,394.39 681.61,383.72 688.26,372.62 694.19,361.11 699.38,349.25 703.81,337.08 707.46,324.66 710.31,312.03 712.36,299.24 713.59,286.36 714,273.42 713.59,260.48 712.36,247.59 710.31,234.8 707.46,222.17 703.81,209.75 699.38,197.59 694.19,185.72 688.26,174.22 681.61,163.11 674.27,152.44 666.27,142.27 657.63,132.62 648.41,123.54 638.62,115.06 628.32,107.22 617.54,100.05 606.33,93.57 594.73,87.82 582.78,82.82 570.55,78.59 558.07,75.14 545.4,72.48 532.58,70.64 519.68,69.62 506.73,69.41 493.8,70.03 480.93,71.46 468.18,73.71 455.6,76.76 443.24,80.61 431.14,85.23 419.37,90.61 407.95,96.72 396.95,103.55 386.41,111.06 "
-     style="fill:#ffc0de;fill-opacity:0.44999999;stroke:none;stroke-width:1.07;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10"
+     points="694.19,361.11 699.38,349.25 703.81,337.08 707.46,324.66 710.31,312.03 712.36,299.24 713.59,286.36 714,273.42 713.59,260.48 712.36,247.59 710.31,234.8 707.46,222.17 703.81,209.75 699.38,197.59 694.19,185.72 688.26,174.22 681.61,163.11 674.27,152.44 666.27,142.27 657.63,132.62 648.41,123.54 638.62,115.06 628.32,107.22 617.54,100.05 606.33,93.57 594.73,87.82 582.78,82.82 570.55,78.59 558.07,75.14 545.4,72.48 532.58,70.64 519.68,69.62 506.73,69.41 493.8,70.03 480.93,71.46 468.18,73.71 455.6,76.76 443.24,80.61 431.14,85.23 419.37,90.61 407.95,96.72 396.95,103.55 386.41,111.06 376.36,119.22 366.85,128 357.91,137.37 349.59,147.29 341.91,157.72 334.91,168.61 328.62,179.92 323.05,191.61 318.24,203.63 314.2,215.93 310.95,228.47 308.5,241.18 306.86,254.02 306.04,266.94 306.04,279.89 306.86,292.81 308.5,305.65 310.95,318.37 314.2,330.9 318.24,343.2 323.05,355.22 328.62,366.91 334.91,378.22 341.91,389.11 349.59,399.54 357.91,409.46 366.85,418.83 376.36,427.61 386.41,435.78 396.95,443.29 407.95,450.11 419.37,456.23 431.14,461.6 443.24,466.23 455.6,470.07 468.18,473.12 480.93,475.37 493.8,476.81 506.73,477.42 519.68,477.22 532.58,476.19 545.4,474.35 558.07,471.7 570.55,468.25 582.78,464.01 594.73,459.01 606.33,453.26 617.54,446.79 628.32,439.61 638.62,431.77 648.41,423.3 657.63,414.21 666.27,404.56 674.27,394.39 681.61,383.72 688.26,372.62 "
+     style="fill:#ffc0de;fill-opacity:0.45;stroke:none;stroke-width:1.07;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10"
      id="polygon4"
-     transform="matrix(1.3168095,0,0,1.0444227,-138.62856,-19.10879)" />
+     transform="matrix(1.3168095,0,0,1.0444227,-142.89384,-25.330933)" />
   <text
      x="210.72"
      y="28.58"
@@ -90,7 +94,7 @@
      textLength="25.27"
      lengthAdjust="spacingAndGlyphs"
      id="text6"
-     transform="matrix(2.8249236,0,0,0.97348902,-393.74929,23.198141)">Control</text>
+     transform="matrix(2.8249236,0,0,0.97348902,-398.01457,16.975999)">Control</text>
   <text
      x="537.16998"
      y="28.58"
@@ -99,7 +103,7 @@
      textLength="40.459999"
      lengthAdjust="spacingAndGlyphs"
      id="text7"
-     transform="matrix(1.1936217,0,0,0.81840073,-99.324295,24.011608)">CCL<tspan
+     transform="matrix(1.1936217,0,0,0.81840073,-101.4464,17.789466)">CCl<tspan
    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:24.3187px;font-family:Arial;-inkscape-font-specification:'Arial Bold';baseline-shift:sub;fill:#a800a8;fill-opacity:1"
    id="tspan82">4</tspan></text>
   <text
@@ -110,7 +114,7 @@
      textLength="161.72"
      lengthAdjust="spacingAndGlyphs"
      id="text8"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV160 Lachnospiraceae NK4A136 group</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV160 Lachnospiraceae NK4A136 group</text>
   <text
      x="210.72"
      y="258.04001"
@@ -119,7 +123,7 @@
      textLength="161.72"
      lengthAdjust="spacingAndGlyphs"
      id="text9"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV207 Lachnospiraceae NK4A136 group</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV207 Lachnospiraceae NK4A136 group</text>
   <text
      x="210.72"
      y="270.32999"
@@ -128,7 +132,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text10"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV225 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV225 Clostridia UCG-014</text>
   <text
      x="210.72"
      y="282.62"
@@ -137,7 +141,9 @@
      textLength="89.629997"
      lengthAdjust="spacingAndGlyphs"
      id="text11"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV292 Enterorhabdus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV292<tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan1"> Enterorhabdus</tspan></text>
   <text
      x="210.72"
      y="294.91"
@@ -146,7 +152,9 @@
      textLength="78.720001"
      lengthAdjust="spacingAndGlyphs"
      id="text12"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV371 Fournierella</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV371 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan2">Fournierella</tspan></text>
   <text
      x="210.72"
      y="307.20001"
@@ -155,7 +163,9 @@
      textLength="110.94"
      lengthAdjust="spacingAndGlyphs"
      id="text13"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV509 Escherichia-Shigella</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV509 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan3">Escherichia-Shigella</tspan></text>
   <text
      x="537.16998"
      y="-98.419998"
@@ -164,7 +174,9 @@
      textLength="84.860001"
      lengthAdjust="spacingAndGlyphs"
      id="text14"
-     transform="matrix(0.99999998,0,0,1.0104743,108.85434,201.69414)">ASV17 Ruminococcus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,104.58906,195.472)">ASV17 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan31">Ruminococcus</tspan></text>
   <text
      x="537.16998"
      y="-86.129997"
@@ -173,7 +185,7 @@
      textLength="89.139999"
      lengthAdjust="spacingAndGlyphs"
      id="text15"
-     transform="matrix(0.99999998,0,0,1.0104743,108.85434,201.69414)">ASV38 Muribaculaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,104.58906,195.472)">ASV38 Muribaculaceae</text>
   <text
      x="537.16998"
      y="-73.830002"
@@ -182,7 +194,7 @@
      textLength="102.89"
      lengthAdjust="spacingAndGlyphs"
      id="text16"
-     transform="matrix(0.99999998,0,0,1.0104743,108.85434,201.69414)">ASV40 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,104.58906,195.472)">ASV40 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="-61.540001"
@@ -191,15 +203,19 @@
      textLength="177.34"
      lengthAdjust="spacingAndGlyphs"
      id="text17"
-     transform="matrix(0.99999998,0,0,1.0104743,108.85434,199.81141)"><tspan
+     transform="matrix(0.99999998,0,0,1.0104743,104.58906,193.58927)"><tspan
        sodipodi:role="line"
        id="tspan85"
        x="537.16998"
-       y="-61.540001">ASV49 [Eubacterium]</tspan><tspan
+       y="-61.540001">ASV49 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan29">[Eubacterium]</tspan></tspan><tspan
        sodipodi:role="line"
        id="tspan86"
        x="537.16998"
-       y="-50.865002"> coprostanoligenes group</tspan></text>
+       y="-50.853424"><tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan30"> coprostanoligenes</tspan> group</tspan></text>
   <text
      x="537.16998"
      y="-49.25"
@@ -208,7 +224,7 @@
      textLength="89.139999"
      lengthAdjust="spacingAndGlyphs"
      id="text18"
-     transform="matrix(0.99999998,0,0,1.0104743,108.85433,211.10783)">ASV58 Muribaculaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,104.58905,204.88569)">ASV58 Muribaculaceae</text>
   <text
      x="537.16998"
      y="-36.959999"
@@ -217,7 +233,7 @@
      textLength="102.89"
      lengthAdjust="spacingAndGlyphs"
      id="text19"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV61 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.73527)">ASV61 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="-24.67"
@@ -226,7 +242,7 @@
      textLength="89.139999"
      lengthAdjust="spacingAndGlyphs"
      id="text20"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV65 Muribaculaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV65 Muribaculaceae</text>
   <text
      x="537.16998"
      y="-12.38"
@@ -235,7 +251,9 @@
      textLength="177.34"
      lengthAdjust="spacingAndGlyphs"
      id="text21"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV69 [Eubacterium] coprostanoligenes group</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV69 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan28">[Eubacterium] coprostanoligenes</tspan> group</text>
   <text
      x="537.16998"
      y="-0.085000001"
@@ -244,7 +262,7 @@
      textLength="128.50999"
      lengthAdjust="spacingAndGlyphs"
      id="text22"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV104 Prevotellaceae UCG-001</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV104 Prevotellaceae UCG-001</text>
   <text
      x="537.16998"
      y="12.21"
@@ -253,7 +271,7 @@
      textLength="93.889999"
      lengthAdjust="spacingAndGlyphs"
      id="text23"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV109 Muribaculaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV109 Muribaculaceae</text>
   <text
      x="537.16998"
      y="24.5"
@@ -262,7 +280,7 @@
      textLength="93.889999"
      lengthAdjust="spacingAndGlyphs"
      id="text24"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV126 Muribaculaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV126 Muribaculaceae</text>
   <text
      x="537.16998"
      y="36.790001"
@@ -271,7 +289,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text25"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV142 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV142 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="49.080002"
@@ -280,7 +298,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text26"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV146 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV146 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="61.369999"
@@ -289,7 +307,7 @@
      textLength="98.639999"
      lengthAdjust="spacingAndGlyphs"
      id="text27"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV148 Lachnospiraceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV148 Lachnospiraceae</text>
   <text
      x="537.16998"
      y="73.660004"
@@ -298,7 +316,9 @@
      textLength="89.629997"
      lengthAdjust="spacingAndGlyphs"
      id="text28"
-     transform="matrix(0.99999998,0,0,1.0104743,107.00788,208.49501)">ASV162 Enterorhabdus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,102.74259,202.27287)">ASV162 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan27">Enterorhabdus</tspan></text>
   <text
      x="537.16998"
      y="85.959999"
@@ -307,7 +327,7 @@
      textLength="96.239998"
      lengthAdjust="spacingAndGlyphs"
      id="text29"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV170 Oscillospiraceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV170 Oscillospiraceae</text>
   <text
      x="537.16998"
      y="98.25"
@@ -316,7 +336,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text30"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV179 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV179 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="110.54"
@@ -325,7 +345,7 @@
      textLength="93.889999"
      lengthAdjust="spacingAndGlyphs"
      id="text31"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV182 Muribaculaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV182 Muribaculaceae</text>
   <text
      x="537.16998"
      y="122.83"
@@ -334,7 +354,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text32"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV186 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV186 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="135.12"
@@ -343,7 +363,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text33"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV190 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV190 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="147.41"
@@ -352,7 +372,7 @@
      textLength="70.190002"
      lengthAdjust="spacingAndGlyphs"
      id="text34"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV196 UBA1819</text>
+     transform="matrix(1.8123669,0,0,1.0104743,-483.39522,-21.604965)">ASV196 Ruminococcaceae UBA1819</text>
   <text
      x="537.16998"
      y="159.71001"
@@ -361,7 +381,9 @@
      textLength="74.43"
      lengthAdjust="spacingAndGlyphs"
      id="text35"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV203 caecimuris</text>
+     transform="matrix(1.8345014,0,0,1.0104743,-495.05032,-21.604965)">ASV203 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan8">Frisingicoccus caecimuris</tspan></text>
   <text
      x="537.16998"
      y="172"
@@ -370,7 +392,7 @@
      textLength="98.639999"
      lengthAdjust="spacingAndGlyphs"
      id="text36"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV206 Lachnospiraceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV206 Lachnospiraceae</text>
   <text
      x="537.16998"
      y="184.28999"
@@ -379,7 +401,9 @@
      textLength="182.09"
      lengthAdjust="spacingAndGlyphs"
      id="text37"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV211 [Eubacterium] coprostanoligenes group</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV211 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan9">[Eubacterium] coprostanoligenes</tspan> group</text>
   <text
      x="537.16998"
      y="196.58"
@@ -388,7 +412,9 @@
      textLength="56.91"
      lengthAdjust="spacingAndGlyphs"
      id="text38"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV223 Dorea</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV223<tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan10"> Dorea</tspan></text>
   <text
      x="537.16998"
      y="208.87"
@@ -397,7 +423,7 @@
      textLength="110.96"
      lengthAdjust="spacingAndGlyphs"
      id="text39"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV226 Desulfovibrionaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV226 Desulfovibrionaceae</text>
   <text
      x="537.16998"
      y="221.16"
@@ -406,7 +432,9 @@
      textLength="116.62"
      lengthAdjust="spacingAndGlyphs"
      id="text40"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV242 Erysipelatoclostridium</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV242 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan11">Erysipelatoclostridium</tspan></text>
   <text
      x="537.16998"
      y="233.46001"
@@ -415,7 +443,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text41"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV243 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV243 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="245.75"
@@ -424,7 +452,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text42"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV264 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV264 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="258.04001"
@@ -433,7 +461,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text43"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV265 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV265 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="270.32999"
@@ -442,7 +470,7 @@
      textLength="93.889999"
      lengthAdjust="spacingAndGlyphs"
      id="text44"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV269 Muribaculaceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV269 Muribaculaceae</text>
   <text
      x="537.16998"
      y="282.62"
@@ -451,7 +479,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text45"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV300 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV300 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="294.91"
@@ -460,7 +488,9 @@
      textLength="72.550003"
      lengthAdjust="spacingAndGlyphs"
      id="text46"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV302 Roseburia</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV302 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan12">Roseburia</tspan></text>
   <text
      x="537.16998"
      y="307.20001"
@@ -469,7 +499,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text47"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV310 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV310 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="319.5"
@@ -478,7 +508,7 @@
      textLength="137.03999"
      lengthAdjust="spacingAndGlyphs"
      id="text48"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV324 Defluviitaleaceae UCG-011</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV324 Defluviitaleaceae UCG-011</text>
   <text
      x="537.16998"
      y="331.79001"
@@ -487,7 +517,7 @@
      textLength="110.02"
      lengthAdjust="spacingAndGlyphs"
      id="text49"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV326 Gastranaerophilales</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV326 Gastranaerophilales</text>
   <text
      x="537.16998"
      y="344.07999"
@@ -496,7 +526,9 @@
      textLength="162.63"
      lengthAdjust="spacingAndGlyphs"
      id="text50"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV351 [Eubacterium] xylanophilum group</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV351<tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan13"> [Eubacterium] xylanophilum</tspan> group</text>
   <text
      x="537.16998"
      y="356.37"
@@ -505,7 +537,9 @@
      textLength="89.610001"
      lengthAdjust="spacingAndGlyphs"
      id="text51"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV355 Marvinbryantia</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV355 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan14">Marvinbryantia</tspan></text>
   <text
      x="537.16998"
      y="368.66"
@@ -514,7 +548,9 @@
      textLength="92.93"
      lengthAdjust="spacingAndGlyphs"
      id="text52"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV375 Colidextribacter</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV375 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan15">Colidextribacter</tspan></text>
   <text
      x="537.16998"
      y="380.95001"
@@ -523,7 +559,7 @@
      textLength="98.639999"
      lengthAdjust="spacingAndGlyphs"
      id="text53"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV377 Lachnospiraceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV377 Lachnospiraceae</text>
   <text
      x="537.16998"
      y="393.25"
@@ -532,7 +568,9 @@
      textLength="73.019997"
      lengthAdjust="spacingAndGlyphs"
      id="text54"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV379 Paludicola</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV379 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan16">Paludicola</tspan></text>
   <text
      x="537.16998"
      y="405.54001"
@@ -541,7 +579,7 @@
      textLength="71.120003"
      lengthAdjust="spacingAndGlyphs"
      id="text55"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV430 bacterium</text>
+     transform="matrix(2.8448984,0,0,1.0104743,-1036.0849,-21.604965)">ASV430 Lachnospiraceae NK4A136 group bacterium</text>
   <text
      x="537.16998"
      y="417.82999"
@@ -550,7 +588,7 @@
      textLength="98.639999"
      lengthAdjust="spacingAndGlyphs"
      id="text56"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV440 Lachnospiraceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV440 Lachnospiraceae</text>
   <text
      x="537.16998"
      y="430.12"
@@ -559,7 +597,7 @@
      textLength="98.639999"
      lengthAdjust="spacingAndGlyphs"
      id="text57"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV446 Lachnospiraceae</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV446 Lachnospiraceae</text>
   <text
      x="537.16998"
      y="442.41"
@@ -568,7 +606,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text58"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV456 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV456 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="454.70001"
@@ -577,7 +615,9 @@
      textLength="137.98"
      lengthAdjust="spacingAndGlyphs"
      id="text59"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV468 Candidatus Saccharimonas</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV468 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan17">Candidatus Saccharimonas</tspan></text>
   <text
      x="537.16998"
      y="467"
@@ -586,7 +626,9 @@
      textLength="102.41"
      lengthAdjust="spacingAndGlyphs"
      id="text60"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV484 Lachnoclostridium</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV484 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan19">Lachnoclostridium</tspan></text>
   <text
      x="537.16998"
      y="479.29001"
@@ -595,7 +637,9 @@
      textLength="87.709999"
      lengthAdjust="spacingAndGlyphs"
      id="text61"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-15.382822)">ASV501 Streptococcus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-21.604965)">ASV501 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan18">Streptococcus</tspan></text>
   <text
      x="537.16998"
      y="491.57999"
@@ -604,7 +648,9 @@
      textLength="73.019997"
      lengthAdjust="spacingAndGlyphs"
      id="text62"
-     transform="matrix(0.99999998,0,0,1.0104743,105.95338,-203.35273)">ASV504 Paludicola</text>
+     transform="matrix(0.99999998,0,0,1.0104743,101.68809,-209.57487)">ASV504 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan26">Paludicola</tspan></text>
   <text
      x="537.16998"
      y="503.87"
@@ -613,7 +659,9 @@
      textLength="62.580002"
      lengthAdjust="spacingAndGlyphs"
      id="text63"
-     transform="matrix(0.99999998,0,0,1.0104743,105.95338,-203.35273)">ASV512 faecalis</text>
+     transform="matrix(1.8149963,0,0,1.0104743,-335.5664,-209.57487)">ASV512 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan25">Enterococcus faecalis</tspan></text>
   <text
      x="537.16998"
      y="516.15997"
@@ -622,7 +670,9 @@
      textLength="102.41"
      lengthAdjust="spacingAndGlyphs"
      id="text64"
-     transform="matrix(0.99999998,0,0,1.0104743,105.95338,-203.35273)">ASV523 Lachnoclostridium</text>
+     transform="matrix(0.99999998,0,0,1.0104743,101.68809,-209.57487)">ASV523 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan24">Lachnoclostridium</tspan></text>
   <text
      x="537.16998"
      y="528.45001"
@@ -631,7 +681,7 @@
      textLength="44.099998"
      lengthAdjust="spacingAndGlyphs"
      id="text65"
-     transform="matrix(0.99999998,0,0,1.0104743,105.95338,-203.35273)">ASV538 A2</text>
+     transform="matrix(2.6316476,0,0,1.0104743,-772.09096,-210.03727)">ASV538 Lachnospiraceae A2</text>
   <text
      x="537.16998"
      y="540.75"
@@ -640,7 +690,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text66"
-     transform="matrix(0.99999998,0,0,1.0104743,105.95338,-203.35273)">ASV542 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,101.68809,-209.57487)">ASV542 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="553.03998"
@@ -649,7 +699,7 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text67"
-     transform="matrix(0.99999998,0,0,1.0104743,105.95338,-203.35273)">ASV551 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,101.68809,-209.57487)">ASV551 Clostridia UCG-014</text>
   <text
      x="537.16998"
      y="565.33002"
@@ -658,7 +708,7 @@
      textLength="97.699997"
      lengthAdjust="spacingAndGlyphs"
      id="text68"
-     transform="matrix(0.99999998,0,0,1.0104743,105.95338,-203.35273)">ASV569 GCA-900066575</text>
+     transform="matrix(1.7729977,0,0,1.0104743,-309.99404,-209.57487)">ASV569 Lachnospiraceae GCA-900066575</text>
   <text
      x="537.16998"
      y="577.62"
@@ -667,7 +717,9 @@
      textLength="89.150002"
      lengthAdjust="spacingAndGlyphs"
      id="text69"
-     transform="matrix(0.99999998,0,0,1.0104743,107.79983,-201.68127)">ASV646 Anaerotruncus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,103.53455,-207.90341)">ASV646 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan23">Anaerotruncus</tspan></text>
   <text
      x="537.16998"
      y="589.90997"
@@ -676,7 +728,9 @@
      textLength="81.080002"
      lengthAdjust="spacingAndGlyphs"
      id="text70"
-     transform="matrix(0.99999998,0,0,1.0104743,107.79983,-201.68127)">ASV665 Anaerofustis</text>
+     transform="matrix(0.99999998,0,0,1.0104743,103.53455,-207.90341)">ASV665 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan22">Anaerofustis</tspan></text>
   <text
      x="537.16998"
      y="602.20001"
@@ -685,7 +739,7 @@
      textLength="54.529999"
      lengthAdjust="spacingAndGlyphs"
      id="text71"
-     transform="matrix(0.99999998,0,0,1.0104743,107.79983,-201.68127)">ASV684 RF39</text>
+     transform="matrix(1.5196427,0,0,1.0104743,-173.91421,-207.90341)">ASV684 Bacilli RF39</text>
   <text
      x="537.16998"
      y="614.48999"
@@ -694,7 +748,7 @@
      textLength="54.529999"
      lengthAdjust="spacingAndGlyphs"
      id="text72"
-     transform="matrix(0.99999998,0,0,1.0104743,107.79983,-201.68127)">ASV727 RF39</text>
+     transform="matrix(1.5451989,0,0,1.0104743,-187.40762,-207.90341)">ASV727 Bacilli RF39</text>
   <text
      x="537.16998"
      y="626.78998"
@@ -703,7 +757,9 @@
      textLength="95.790001"
      lengthAdjust="spacingAndGlyphs"
      id="text73"
-     transform="matrix(0.99999998,0,0,1.0104743,107.79983,-201.68127)">ASV754 Parabacteroides</text>
+     transform="matrix(0.99999998,0,0,1.0104743,103.53455,-207.90341)">ASV754 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan21">Parabacteroides</tspan></text>
   <text
      x="537.16998"
      y="639.08002"
@@ -712,7 +768,9 @@
      textLength="88.160004"
      lengthAdjust="spacingAndGlyphs"
      id="text74"
-     transform="matrix(0.99999998,0,0,1.0104743,107.79983,-201.68127)">ASV772 Butyricicoccus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,103.53455,-207.90341)">ASV772 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan20">Butyricicoccus</tspan></text>
   <text
      x="537.16998"
      y="651.37"
@@ -721,25 +779,29 @@
      textLength="107.63"
      lengthAdjust="spacingAndGlyphs"
      id="text75"
-     transform="matrix(0.99999998,0,0,1.0104743,107.79983,-201.68127)">ASV844 Clostridia UCG-014</text>
+     transform="matrix(0.99999998,0,0,1.0104743,103.53455,-207.90341)">ASV844 Clostridia UCG-014</text>
   <text
      x="373.95001"
      y="245.75"
      text-anchor="middle"
-     style="font-size:8.54px;font-family:Arial;white-space:pre;fill:#ff0000"
+     style="font-size:8.54px;font-family:Arial;white-space:pre;fill:#0000ff"
      textLength="84.860001"
      lengthAdjust="spacingAndGlyphs"
      id="text76"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV20 Ruminococcus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.107565,-16.894197)">ASV20 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#0000ff"
+   id="tspan4">Ruminococcus</tspan></text>
   <text
      x="373.95001"
      y="258.04001"
      text-anchor="middle"
-     style="font-size:8.54px;font-family:Arial;white-space:pre;fill:#0000ff"
+     style="font-size:8.54px;font-family:Arial;white-space:pre;fill:#ff0000"
      textLength="84.860001"
      lengthAdjust="spacingAndGlyphs"
      id="text77"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV34 Ruminococcus</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-44.668256,-40.154911)">ASV34 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#ff0000"
+   id="tspan5">Ruminococcus</tspan></text>
   <text
      x="373.95001"
      y="270.32999"
@@ -748,7 +810,9 @@
      textLength="67.809998"
      lengthAdjust="spacingAndGlyphs"
      id="text78"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV44 Roseburia</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV44 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan6">Roseburia</tspan></text>
   <text
      x="373.95001"
      y="282.62"
@@ -757,7 +821,9 @@
      textLength="67.809998"
      lengthAdjust="spacingAndGlyphs"
      id="text79"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV45 Roseburia</text>
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)">ASV45 <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Italic'"
+   id="tspan7">Roseburia</tspan></text>
   <text
      x="373.95001"
      y="294.91"
@@ -766,7 +832,7 @@
      textLength="54.529999"
      lengthAdjust="spacingAndGlyphs"
      id="text80"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)">ASV339 RF39</text>
+     transform="matrix(1.4770491,0,0,1.0104743,-225.19111,-29.150845)">ASV339 Bacilli RF39</text>
   <text
      x="373.95001"
      y="307.20001"
@@ -775,7 +841,7 @@
      textLength="151.27"
      lengthAdjust="spacingAndGlyphs"
      id="text81"
-     transform="matrix(0.99999998,0,0,1.0104743,-41.672154,-22.928702)"><tspan
+     transform="matrix(0.99999998,0,0,1.0104743,-45.93744,-29.150845)"><tspan
        sodipodi:role="line"
        id="tspan83"
        x="373.95001"

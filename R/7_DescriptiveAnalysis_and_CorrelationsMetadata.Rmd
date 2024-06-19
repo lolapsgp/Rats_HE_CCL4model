@@ -135,7 +135,7 @@ ps.melt_sum <- ps.melt %>%
 ggplot(ps.melt_sum, aes(x = Sample, y = Abundance, fill = Phylum)) + 
     geom_bar(stat = "identity", aes(fill=Phylum)) + 
     labs(x="", y="%") +
-    facet_wrap(~Group, scales= "free_x", nrow=1) +
+    facet_wrap(~Group, scales= "free_x", nrow=1,  labeller = labeller(Group = c(ctr = "Control", "ctr+rif" = "Control+rif", ccl4 = "CCl4", "ccl4+rif" = "CCl4+rif"))) +
     theme_classic() + 
     theme(strip.background = element_blank(), 
           axis.text.x.bottom = element_text(angle = -90))

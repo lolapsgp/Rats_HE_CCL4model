@@ -52,7 +52,15 @@ permanova$aov.tab
 ps<- readRDS("~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/ps.Rds")
 otu <- abundances(ps)
 meta <- meta(ps)
+#Antibiotic and Tratment separately
 permanova <- adonis(t(otu) ~   Antibiotic + Treated_CCL,
+                    data = meta, permutations=999, method = "bray", by = "margin")
+
+# P-value
+permanova$aov.tab
+
+#Group (4) for the beta div plot
+permanova <- adonis(t(otu) ~   Group,
                     data = meta, permutations=999, method = "bray", by = "margin")
 
 # P-value

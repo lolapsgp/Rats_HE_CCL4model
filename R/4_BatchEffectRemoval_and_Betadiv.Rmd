@@ -333,7 +333,7 @@ plot<-plot.points %>%
         legend.position = "bottom",  # Legend at the bottom
         legend.text = element_text(size = 20),  # Set legend text size
         legend.title = element_blank()  # Remove legend title
-    )
+    )+scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+Rifaximin","CCl4","CCl4+Rifaximin"))
 plot
 plot <- ggsave(filename = "~/Documents/Lola/CIPF_2018/Rats_HE_CCL4model/output/Figures/BetaDiv_PCoA_log10_ARSyN_Group_removing3zeros.pdf", width = 9, height = 8)
 

@@ -275,6 +275,7 @@ ggplot(effect_table_sig_long, aes(x = SCFA, y = reorder(rowname, effectSize))) +
          subtitle="FDR-values: < 0.001 = ***, < 0.01 = **, < 0.05 = *, < 0.1 = . ",
          x = "SCFAs",
          y = "Modules")
+ggsave("~/Rplot.svg", width = 5.9, height = 8.5, device = "svg") 
 ```
 
 ##Wilcoxon test

@@ -102,37 +102,61 @@ dev.off()
 
 #Boxplots SCFAs
 library(ggpubr)
+custom_labels <- c("ctr" ="Control" ,
+                   "ctr+rif" ="Control+rif",
+                   "ccl4"="CCl4",
+                   "ccl4+rif"="CCl4+rif")
 # Acetic acid
-AA<-ggplot(newmetadata, aes(x = Group, y = `Acetic acid`)) +   geom_boxplot() + 
-  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1)) +
+AA<-newmetadata %>%
+  arrange(newmetadata$`Acetic acid`) %>% 
+  mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+  ggplot(aes(x = Group, y = `Acetic acid`)) +   geom_boxplot() + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.05, jitter.width = 0.1, jitter.height = 0.01)) +
   theme_classic()+ theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text = element_text(size = 16), axis.title = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16))  +
-  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") +
+  scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+Rifaximin","CCl4","CCl4+Rifaximin"))
 
 # Butyric acid
-BA<-ggplot(newmetadata, aes(x = Group, y = `Butyric acid`)) +   geom_boxplot() + 
-  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1)) +
+BA<-newmetadata %>%
+  arrange(newmetadata$`Butyric acid`) %>% 
+  mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+  ggplot(aes(x = Group, y = `Butyric acid`)) +   geom_boxplot() + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.05, jitter.width = 0.1, jitter.height = 0.01)) +
   theme_classic()+ theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text = element_text(size = 16), axis.title = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16))  +
-  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") +
+  scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+Rifaximin","CCl4","CCl4+Rifaximin"))
 
 # Caproic acid
-CA<-ggplot(newmetadata, aes(x = Group, y = `Caproic acid`)) +   geom_boxplot() + 
-  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1)) +
+CA<-newmetadata %>%
+  arrange(newmetadata$`Caproic acid`) %>% 
+  mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+  ggplot(aes(x = Group, y = `Caproic acid`)) +   geom_boxplot() + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.05, jitter.width = 0.1, jitter.height = 0.01)) +
   theme_classic()+ theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text = element_text(size = 16), axis.title = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16))  +
-  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") +
+  scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+Rifaximin","CCl4","CCl4+Rifaximin"))
 
 # Propionic acid
-PA<-ggplot(newmetadata, aes(x = Group, y = `Propionic acid`)) +   geom_boxplot() + 
-  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1)) +
+PA<-newmetadata %>%
+  arrange(newmetadata$`Propionic acid`) %>% 
+  mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+  ggplot(aes(x = Group, y = `Propionic acid`)) +   geom_boxplot() + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.05, jitter.width = 0.1, jitter.height = 0.01)) +
   theme_classic()+ theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text = element_text(size = 16), axis.title = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16))  +
-  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") +
+  scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+Rifaximin","CCl4","CCl4+Rifaximin"))
 
 # Valeric acid
-VA<-ggplot(newmetadata, aes(x = Group, y = `Valeric acid`)) +   geom_boxplot() + 
-  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.65, jitter.width = 0.1, jitter.height = 0.1)) +
+VA<-newmetadata %>%
+  arrange(newmetadata$`Valeric acid`) %>% 
+  mutate(Group = factor(Group, levels=c("ctr", "ctr+rif", "ccl4", "ccl4+rif"))) %>%
+  ggplot(aes(x = Group, y = `Valeric acid`)) +   geom_boxplot() + 
+  geom_jitter(aes(color = Group), position = position_jitterdodge(dodge.width = 0.05, jitter.width = 0.1, jitter.height = 0.01)) +
   theme_classic()+ theme(strip.background = element_blank(), axis.text.x.bottom = element_text(angle = -90), axis.text = element_text(size = 16), axis.title = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16))  +
-  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") 
+  geom_pwc(label = "{p.adj}{p.adj.signif}", hide.ns = TRUE, method = "wilcox_test", p.adjust.method = "BH") +
+  scale_x_discrete(labels = custom_labels) +scale_colour_discrete(name = "Group", labels = c("Control" ,"Control+Rifaximin","CCl4","CCl4+Rifaximin"))
 
-ggarrange(AA, BA, CA, PA, VA, common.legend = TRUE, legend="bottom",nrow = 2)
+ggarrange(AA, BA, CA, PA, VA, common.legend = TRUE, legend="bottom",nrow = 1)
 
 ggsave(filename = "~/OneDrive - Universitat de Valencia/Doctorado/Estudios/CIPF_Estudio1_2018/Rats_HE_CCL4model/output/Figures/SCFAs_final/Boxplots.tiff")
 

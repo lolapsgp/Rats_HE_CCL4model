@@ -147,21 +147,24 @@ Families_data <- left_join(names, families, by = "ASV")
 Families_data$feature<-Families_data$TaxaID
 Families_data<-Families_data[,c("feature", "Family")]
 Metadec_table<-left_join(Metadec_table, Families_data, by = "feature")
-
+# Convert 'featureNames' to a factor and reorder it based on 'Family' to order the rows by Family
+Metadec_table$featureNames <- factor(Metadec_table$featureNames, levels = unique(Metadec_table$featureNames[order(Metadec_table$Family)]))
 
 heatmap<-ggplot(Metadec_table, aes(x = metaVariable, y = reorder(featureNames, ordernames1))) + geom_tile(aes(fill = Ds)) +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
-  geom_text(aes(label = stars, colour = status), size = 2, key_glyph = "point") +
+  geom_text(aes(label = stars, colour = status), size = 5, key_glyph = "point") +
   scale_color_manual(values = c("black", "gray22"), labels = c("Confounded", "Deconfounded")) +
   guides(color = guide_legend(override.aes = list(shape = c(1, 8)))) +
   theme_classic()  +
   theme(
-    axis.text.x = element_text(size = 7, angle = 90, hjust = 1, vjust = 0.3),
+    axis.text.x = element_text(size = 12, angle = 90, hjust = 1, vjust = 0.3),
     axis.text.y = element_blank(),
     axis.title.y = element_blank(),
     plot.title.position = "plot",
     plot.title = element_text(hjust = 0),
     plot.subtitle = element_text(size = 8) ,
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 12)
   ) +
   labs(
     title = "Significant metadata correlation heatmap",
@@ -190,5 +193,83 @@ print(scatter_plot)
 plot_fam<-cowplot::plot_grid(scatter_plot, heatmap, align = "h", axis = "ltb", rel_widths = c(1,3))
 plot_fam
 ggsave("/fast/AG_Forslund/Lola/CIPF_2018/Analysis/Rats_HE_CCL4model/output/Figures/plot_fam.svg", plot_fam, width = 12.38, height = 7.38, device = "svg")  # Adjust width and height as needed
+
+#New aesthetics
+# Replace specific substrings in featureNames based on feature column
+Metadec_table$featureNames <- ifelse(Metadec_table$feature == "ASV36 NK4A214 group", 
+                                     "ASV36 Oscillospiraceae NK4A214 group", 
+                                     ifelse(Metadec_table$feature == "ASV196 UBA1819", 
+                                            "ASV196 Ruminococcaceae UBA1819",
+                                            ifelse(Metadec_table$feature == "ASV538 A2", 
+                                                   "ASV538 Lachnospiraceae UBA1819",
+                                                   Metadec_table$feature)))
+# Replace NAs in Family based on feature column
+Metadec_table$Family <- ifelse(Metadec_table$feature == "ASV31 Clostridia UCG-014", 
+                                     "Clostridia UCG-014", 
+                                     ifelse(Metadec_table$feature == "ASV328 Clostridia", 
+                                            "Order Clostridia; Family NA",
+                                            ifelse(Metadec_table$feature == "ASV335 Clostridia vadinBB60 group", 
+                                                   "Clostridia vadinBB60 group",
+                                                   ifelse(Metadec_table$feature == "ASV326 Gastranaerophilales", 
+                                                                                       "Order Gastranaerophilales; Family NA",
+                                                   Metadec_table$Family))))
+# Replace substrings in the metaVariable column
+Metadec_table$metaVariable <- gsub("SCFA_AA", "Acetic Acid", Metadec_table$metaVariable)
+Metadec_table$metaVariable <- gsub("SCFA_BA", "Butyric Acid", Metadec_table$metaVariable)
+Metadec_table$metaVariable <- gsub("SCFA_CA", "Caproic Acid", Metadec_table$metaVariable)
+Metadec_table$metaVariable <- gsub("Treated_CCL", "Treated CCl4", Metadec_table$metaVariable)
+Metadec_table$Blocks <- gsub("Treatments", "Treat.", Metadec_table$Blocks)
+Metadec_table$Blocks <- gsub("Memb. receptors", "Receptors", Metadec_table$Blocks)
+Metadec_table$Blocks <- gsub("Cytokines", "Cyt", Metadec_table$Blocks)
+Metadec_table$Blocks <- gsub("Cognition", "Cog", Metadec_table$Blocks)
+
+# Remove ASV number from featureNames
+Metadec_table$featureNames <- gsub("^ASV[0-9]+\\s", "", Metadec_table$featureNames)
+# Convert featureNames back to factor if necessary
+Metadec_table$featureNames <- as.factor(Metadec_table$featureNames)
+# Convert 'featureNames' to a factor and reorder it based on 'Family' to order the rows by Family
+Metadec_table$featureNames <- factor(Metadec_table$featureNames, levels = unique(Metadec_table$featureNames[order(Metadec_table$Family)]))
+
+heatmap<-ggplot(Metadec_table, aes(x = reorder(featureNames, ordernames1), y = metaVariable)) + geom_tile(aes(fill = Ds)) +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
+  geom_text(aes(label = stars, colour = status), size = 6.5, key_glyph = "point") +
+  scale_color_manual(values = c("black", "gray22"), labels = c("Confounded", "Deconfounded")) +
+  guides(color = guide_legend(override.aes = list(shape = c(1, 8)))) +
+  theme_classic()  +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_text(size = 12),
+    axis.title.y = element_blank(),
+    plot.title.position = "plot",
+    plot.title = element_text(hjust = 0),
+    plot.subtitle = element_text(size = 8) ,
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 12)
+  ) +
+  labs(
+    title = "Significant metadata correlation heatmap",
+    subtitle = "FDR-values: < 0.001 = ***, < 0.01 = **, < 0.1 = *",
+    x = "Variables",
+    y = "ASVs agglomerated by Genus",
+    fill = "Effect size", 
+    shape = "Confounding status"
+  )+
+  facet_grid(Blocks~., scales = "free",space='free', switch = "y")
+scatter_plot <-ggplot(data = Metadec_table, aes(x = reorder(featureNames, ordernames1), y = "Family", color = Family)) +
+  geom_point() +
+  xlab("Family") +
+  ylab("Feature Value")+ theme(legend.position = "bottom", panel.background = element_blank(),
+                               legend.text = element_text(size = 10),  # Adjust the legend text size if needed
+                               legend.title = element_text(size = 12),  # Adjust the legend title size if needed
+                               legend.box.spacing = unit(0.2, "cm"),  # Adjust the spacing between legend items if needed
+                               legend.spacing = unit(0.2, "cm"),  # Adjust the spacing between legend columns if needed
+                               legend.direction = "vertical",  # Set the direction to vertical
+                               legend.box = "vertical",  # Set the box layout to vertical
+                               axis.text.x = element_text(size = 12, angle = 45, hjust = 1, vjust = 0.999),
+                               axis.text.y = element_text(size = 12))+
+  guides(color = guide_legend(ncol = 5) )
+plot_fam<-cowplot::plot_grid(heatmap, scatter_plot, align = "v", axis = "tblr", rel_widths = c(1,3), nrow = 2)
+plot_fam
+ggsave("~/plot_fam.svg", plot_fam, width = 13, height = 9, device = "svg")  # Adjust width and height as needed
 
 

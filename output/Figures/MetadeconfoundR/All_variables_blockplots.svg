@@ -23,11 +23,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
-     inkscape:zoom="1.376882"
-     inkscape:cx="1180.929"
-     inkscape:cy="655.8296"
-     inkscape:window-width="1440"
-     inkscape:window-height="771"
+     inkscape:zoom="1.105276"
+     inkscape:cx="245.64"
+     inkscape:cy="1170.2959"
+     inkscape:window-width="1280"
+     inkscape:window-height="680"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
@@ -39735,7 +39735,8 @@
        style="font-size:8.8px;font-family:Arial;fill:#1a1a1a"
        textLength="57.689999"
        lengthAdjust="spacingAndGlyphs"
-       id="text5626">Cognitive tests</text>
+       id="text5626"
+       transform="matrix(1.271388,0,0,1,-67.536124,0)">Behavioural tests</text>
   </g>
   <g
      clip-path="url(#cpMC4wMHwxMDM1LjM2fDAuMDB8MTAzNS4zNg==)"
@@ -39923,35 +39924,35 @@
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="59.540001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5641">Ambulatory.Counts</text>
+       id="text5641">Ambulatory Counts</text>
     <text
        transform="rotate(-90,589.695,357.055)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="51.360001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5642">Average.velocity</text>
+       id="text5642">Average velocity</text>
     <text
        transform="rotate(-90,599.11,347.64)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="70.059998"
        lengthAdjust="spacingAndGlyphs"
-       id="text5643">Learning.index.Rmaze</text>
+       id="text5643">Learning.index R maze</text>
     <text
        transform="rotate(-90,608.525,338.225)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="57.200001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5644">Stereotipic.Counts</text>
+       id="text5644">Stereotipic Counts</text>
     <text
        transform="rotate(-90,617.935,328.815)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="45.91"
        lengthAdjust="spacingAndGlyphs"
-       id="text5645">Vertcal.Counts</text>
+       id="text5645">Vertcal Counts</text>
     <polyline
        points="304.39,941.82 609.41,941.82 "
        style="stroke-width:1.07;stroke-linecap:butt"
@@ -40075,42 +40076,42 @@
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="36.57"
        lengthAdjust="spacingAndGlyphs"
-       id="text5668">IFN.gamma</text>
+       id="text5668">IFN gamma</text>
     <text
        transform="rotate(-90,707.29,239.46)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="15.57"
        lengthAdjust="spacingAndGlyphs"
-       id="text5669">IL.10</text>
+       id="text5669">IL10</text>
     <text
        transform="rotate(-90,716.7,230.05)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="15.57"
        lengthAdjust="spacingAndGlyphs"
-       id="text5670">IL.15</text>
+       id="text5670">IL15</text>
     <text
        transform="rotate(-90,726.115,220.635)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="15.57"
        lengthAdjust="spacingAndGlyphs"
-       id="text5671">IL.17</text>
+       id="text5671">IL17</text>
     <text
        transform="rotate(-90,735.53,211.22)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="11.68"
        lengthAdjust="spacingAndGlyphs"
-       id="text5672">IL.4</text>
+       id="text5672">IL4</text>
     <text
        transform="rotate(-90,744.945,201.805)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="11.68"
        lengthAdjust="spacingAndGlyphs"
-       id="text5673">IL.6</text>
+       id="text5673">IL6</text>
     <text
        transform="rotate(-90,754.36,192.39)"
        text-anchor="end"
@@ -40124,14 +40125,14 @@
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="19.84"
        lengthAdjust="spacingAndGlyphs"
-       id="text5675">TGF.b</text>
+       id="text5675">TGFb</text>
     <text
        transform="rotate(-90,773.185,173.565)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="19.450001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5676">TNF.a</text>
+       id="text5676">TNFa</text>
     <polyline
        points="614.89,941.82 806.94,941.82 "
        style="stroke-width:1.07;stroke-linecap:butt"
@@ -40276,35 +40277,35 @@
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="29.940001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5700">SCFA.AA</text>
+       id="text5700">SCFA AA</text>
     <text
        transform="rotate(-90,895.405,51.345)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="29.940001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5701">SCFA.BA</text>
+       id="text5701">SCFA BA</text>
     <text
        transform="rotate(-90,904.815,41.935)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="30.33"
        lengthAdjust="spacingAndGlyphs"
-       id="text5702">SCFA.CA</text>
+       id="text5702">SCFA CA</text>
     <text
        transform="rotate(-90,914.23,32.52)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="29.940001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5703">SCFA.PA</text>
+       id="text5703">SCFA PA</text>
     <text
        transform="rotate(-90,923.645,23.105)"
        text-anchor="end"
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="29.940001"
        lengthAdjust="spacingAndGlyphs"
-       id="text5704">SCFA.VA</text>
+       id="text5704">SCFA VA</text>
     <polyline
        points="915.81,941.82 957.23,941.82 "
        style="stroke-width:1.07;stroke-linecap:butt"
@@ -40330,7 +40331,9 @@
        style="font-size:7px;font-family:Arial;fill:#4d4d4d"
        textLength="40.080002"
        lengthAdjust="spacingAndGlyphs"
-       id="text5707">Treated.CCL</text>
+       id="text5707">Treated CCl<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan1">4</tspan></text>
     <polyline
        points="172.93,924.80 172.93,36.32 "
        style="stroke-width:1.07;stroke-linecap:butt"
