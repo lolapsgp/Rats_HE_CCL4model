@@ -7,13 +7,8 @@ https://doi.org/10.1038/s41598-025-17229-1
 ### 📘 Overview
 This repository contains all scripts and input files used to perform the microbiome and functional analyses described in the above publication.
 The study investigated how rifaximin, a non‑absorbable antibiotic, modulates the gut microbiome and gut–brain axis in a CCl₄‑induced chronic liver disease rat model.
-The repository includes:
-
-Input ASV, FASTA, and functional prediction files
-Metadata and processed phyloseq objects
-R Markdown scripts for the full analysis workflow
-Scripts for DADA2, diversity analysis, batch‑effect correction, PERMANOVA, SCFA correlations, PICRUSt2, and MetadeconfoundR
-RDS outputs, tables, and figures used in the publication
+The repository includes: R Markdown scripts for the full analysis workflow.
+Scripts for DADA2, diversity analysis, batch‑effect correction, PERMANOVA, SCFA correlations, PICRUSt2, and MetadeconfoundR.
 
 
 ### 📄 Study Abstract
