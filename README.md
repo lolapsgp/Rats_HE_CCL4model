@@ -22,6 +22,7 @@ Rifaximin altered microbiota diversity and composition, increasing α‑diversit
 In healthy rats, short‑chain fatty acids (SCFAs) were strongly inter‑correlated—an association absent in injured or rifaximin‑treated groups. Overall, rifaximin promoted bacterial groups linked to improved cognition and neurotransmission in liver disease, highlighting the relationship between a healthy microbiome and balanced SCFA levels.
 
 ### 📁 Repository Structure
+```
 Rats_HE_CCL4model/
 │
 ├── HEAD
@@ -46,7 +47,7 @@ Rats_HE_CCL4model/
     ├── 7_DescriptiveAnalysis_and_CorrelationsMetadata.Rmd
     ├── 8_Picrust2_analysis_modules.Rmd
     └── 9_Venn_diagram_antibiotic.R
-
+```
 
 ### 🔍 Analysis Workflow
 The analysis is organized into modular R Markdown scripts located in the /R directory:
